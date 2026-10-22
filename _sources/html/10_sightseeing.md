@@ -20,7 +20,7 @@
 import pandas as pd
 
 # 口コミデータの読み込み
-df = pd.read_csv('miyajima_sample.csv', encoding='utf-8', parse_dates=['旅行の時期'])
+df = pd.read_csv("https://mayster8.github.io/nlp/data/miyajima_sample.csv", encoding='utf-8-sig', parse_dates=['旅行の時期'])
 df
 ```
 
@@ -201,7 +201,7 @@ from collections import Counter
 nlp = spacy.load('ja_ginza')
 
 # 口コミデータの読み込み
-df = pd.read_csv('miyajima_sample.csv', encoding='utf-8', parse_dates=['旅行の時期'])
+df = pd.read_csv("https://mayster8.github.io/nlp/data/miyajima_sample.csv", encoding='utf-8-sig', parse_dates=['旅行の時期'])
 
 # 名詞・固有名詞・形容詞
 target_pos = ("NOUN", "PROPN", "ADJ")
@@ -267,7 +267,7 @@ from matplotlib import font_manager
 
 nlp = spacy.load("ja_ginza")
 
-df = pd.read_csv('miyajima_sample.csv', encoding='utf-8', parse_dates=['旅行の時期'])
+df = pd.read_csv("https://mayster8.github.io/nlp/data/miyajima_sample.csv", encoding='utf-8-sig', parse_dates=['旅行の時期'])
 texts = df["口コミ"].to_list()
 # texts = df["タイトル"].to_list()
 
@@ -416,7 +416,7 @@ import pandas as pd
 from IPython.display import HTML
 
 # 口コミデータの読み込み
-df = pd.read_csv("miyajima_sample.csv", encoding="utf-8", parse_dates=["旅行の時期"])
+df = pd.read_csv("https://mayster8.github.io/nlp/data/miyajima_sample.csv", encoding="utf-8-sig", parse_dates=["旅行の時期"])
 
 nlp = spacy.load("ja_ginza")
 
@@ -465,7 +465,7 @@ import pandas as pd
 nlp = spacy.load("ja_ginza")
 
 # 対象文書
-df = pd.read_csv('miyajima_sample.csv', encoding='utf-8', parse_dates=['旅行の時期'])
+df = pd.read_csv("https://mayster8.github.io/nlp/data/miyajima_sample.csv", encoding='utf-8-sig', parse_dates=['旅行の時期'])
 texts = df["口コミ"].to_list()
 
 # 形態素解析：名詞・固有名詞
@@ -598,7 +598,7 @@ pipe = TextClassificationPipeline(
     max_length=512
 )
 
-df = pd.read_csv('miyajima_sample.csv', encoding='utf-8', parse_dates=['旅行の時期'])
+df = pd.read_csv("https://mayster8.github.io/nlp/data/miyajima_sample.csv", encoding='utf-8-sig', parse_dates=['旅行の時期'])
 texts = df["口コミ"].to_list()
 
 # 推論とDataFrame化
