@@ -1,0 +1,1035 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>9. 大規模言語モデル（LLM） &#8212; 自然言語処理</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'html/30_llm';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. 辞書の拡張" href="99_dictionary.html" />
+    <link rel="prev" title="8. ソーシャルメディアデータの分析" href="20_youtube.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_top.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">自然言語処理</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">導入</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_intro.html">1. テキストマイニングとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_deploy.html">2. 環境構築</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎的な解析</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_basic_analysis.html">3. 前処理・形態素解析・特徴抽出</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_visualization.html">4. 可視化</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">分析手法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_analysis.html">5. 感情分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_clustering.html">6. 文書分類</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">応用編</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_sightseeing.html">7. 観光データの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_youtube.html">8. ソーシャルメディアデータの分析</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. 大規模言語モデル（LLM）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">その他</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="99_dictionary.html">10. 辞書の拡張</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/html/30_llm.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>大規模言語モデル（LLM）</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#word2vec">9.1. Word2Vec</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">9.1.1. Word2Vec演習：類義語の検索</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">9.1.2. Word2Vec演習：単語の足し算・引き算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">9.1.3. Word2Vec演習：意味ベクトルの可視化</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert">9.2. BERT</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">9.2.1. BERT演習：穴埋め予測タスク</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sentence-bert">9.3. Sentence-BERT演習：文章の意味ベクトル</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">9.3.1. Sentence-BERT演習：類似文の検索</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt">9.4. GPT</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">9.4.1. GPT演習：文章生成</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">9.4.2. GPT演習：言い換え</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">9.4.3. GPT演習：文章の校正</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">9.4.4. GPT演習：バイアス・偏見</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="llm">
+<h1><span class="section-number">9. </span>大規模言語モデル（LLM）<a class="headerlink" href="#llm" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">今回のゴール</p>
+<ul class="simple">
+<li><p>自然言語処理（NLP）の進化の流れを理解する</p></li>
+<li><p>単語の意味表現（Word2Vec）、文脈理解（BERT）、文章生成（GPT）の技術について理解する</p></li>
+<li><p>Word2Vec, BERT, GPT のプログラムを実装し、その動作と応用範囲について学ぶ</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<section id="word2vec">
+<h2><span class="section-number">9.1. </span>Word2Vec<a class="headerlink" href="#word2vec" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3><span class="section-number">9.1.1. </span>Word2Vec演習：類義語の検索<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="n">gensim</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gensim.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">KeyedVectors</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.ja.300.vec.gz&quot;</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">KeyedVectors</span><span class="o">.</span><span class="n">load_word2vec_format</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;モデル読み込み完了。単語数：&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 類義語の検索</span>
+<span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;猫&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;「</span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">」に近い単語：&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">sim</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">topn</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">word</span><span class="si">:</span><span class="s2">10s</span><span class="si">}</span><span class="s2"> 類似度: </span><span class="si">{</span><span class="n">sim</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>「猫」に近い単語：
+  ネコ         類似度: 0.806
+  ねこ         類似度: 0.727
+  子猫         類似度: 0.720
+  仔猫         類似度: 0.706
+  ニャンコ       類似度: 0.706
+  野良猫        類似度: 0.703
+  犬          類似度: 0.651
+  ミケ         類似度: 0.636
+  ゃんこ        類似度: 0.616
+  ゃんこの       類似度: 0.604
+  猫又         類似度: 0.562
+  野良         類似度: 0.561
+  ニャンズ       類似度: 0.560
+  ウサギ        類似度: 0.556
+  ノラ         類似度: 0.555
+  シュレーディンガー  類似度: 0.553
+  マタタビ       類似度: 0.549
+  チンチラ       類似度: 0.547
+  ロシアンブルー    類似度: 0.547
+  ニャー        類似度: 0.546
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id2">
+<h3><span class="section-number">9.1.2. </span>Word2Vec演習：単語の足し算・引き算<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 単語の足し算・引き算</span>
+<span class="c1"># A - B + C</span>
+<span class="n">A</span> <span class="o">=</span> <span class="s2">&quot;王&quot;</span>
+<span class="n">B</span> <span class="o">=</span> <span class="s2">&quot;男&quot;</span>
+<span class="n">C</span> <span class="o">=</span> <span class="s2">&quot;女&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;「</span><span class="si">{</span><span class="n">A</span><span class="si">}</span><span class="s2">」-「</span><span class="si">{</span><span class="n">B</span><span class="si">}</span><span class="s2">」+「</span><span class="si">{</span><span class="n">C</span><span class="si">}</span><span class="s2">」に近い単語：&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">positive</span><span class="o">=</span><span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">],</span> <span class="n">negative</span><span class="o">=</span><span class="p">[</span><span class="n">B</span><span class="p">],</span> <span class="n">topn</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">w</span><span class="si">:</span><span class="s2">10s</span><span class="si">}</span><span class="s2"> 類似度: </span><span class="si">{</span><span class="n">s</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>「王」-「男」+「女」に近い単語：
+  王妃         類似度: 0.484
+  女王         類似度: 0.466
+  遊戯         類似度: 0.458
+  陵          類似度: 0.446
+  冥          類似度: 0.438
+  聖王         類似度: 0.436
+  妃          類似度: 0.436
+  王様         類似度: 0.432
+  太子         類似度: 0.431
+  王国         類似度: 0.429
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h3><span class="section-number">9.1.3. </span>Word2Vec演習：意味ベクトルの可視化<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">japanize_matplotlib</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+
+<span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;東京&quot;</span><span class="p">,</span> <span class="s2">&quot;大阪&quot;</span><span class="p">,</span> <span class="s2">&quot;京都&quot;</span><span class="p">,</span> <span class="s2">&quot;ラーメン&quot;</span><span class="p">,</span> <span class="s2">&quot;うどん&quot;</span><span class="p">,</span> <span class="s2">&quot;そば&quot;</span><span class="p">,</span> <span class="s2">&quot;パスタ&quot;</span><span class="p">]</span>
+
+<span class="c1"># url = &quot;https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.ja.300.vec.gz&quot;</span>
+<span class="c1"># model = KeyedVectors.load_word2vec_format(url, binary=False, limit=100000)</span>
+
+<span class="n">vectors</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+  <span class="n">vectors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="n">w</span><span class="p">])</span>
+
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">reduced</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">reduced</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">reduced</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">reduced</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">reduced</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Word2Vecによる意味空間の可視化&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-llm-word2vec.png" src="../_images/out-llm-word2vec.png" />
+</section>
+</section>
+<hr class="docutils" />
+<section id="bert">
+<h2><span class="section-number">9.2. </span>BERT<a class="headerlink" href="#bert" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3><span class="section-number">9.2.1. </span>BERT演習：穴埋め予測タスク<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="n">fugashi</span> <span class="n">ipadic</span> <span class="n">unidic</span><span class="o">-</span><span class="n">lite</span> <span class="n">transformers</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity_error</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="n">unmasker</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span><span class="s2">&quot;fill-mask&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;izumi-lab/bert-small-japanese&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;私はカフェで[MASK]を注文しました&quot;</span>
+<span class="c1"># text = &quot;朝起きたら[MASK]が降っていました。&quot;</span>
+<span class="c1"># text = &quot;昨日は[MASK]で授業を受けました。&quot;</span>
+<span class="c1"># text = &quot;昨日は[MASK]で講義を受けました。&quot;</span>
+<span class="c1"># text = &quot;この映画は本当に[MASK]と思った。&quot;</span>
+<span class="c1"># text = &quot;学校に行く途中で[MASK]を落としました。&quot;</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">unmasker</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;原文:&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BERTの予測:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;token_str&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">（スコア: </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">）&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>原文: 私はカフェで[MASK]を注文しました
+BERTの予測:
+  コーヒー（スコア: 0.075）
+  食事（スコア: 0.062）
+  料理（スコア: 0.060）
+  絵（スコア: 0.026）
+  ワイン（スコア: 0.022）
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="sentence-bert">
+<h2><span class="section-number">9.3. </span>Sentence-BERT演習：文章の意味ベクトル<a class="headerlink" href="#sentence-bert" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="n">sentence</span><span class="o">-</span><span class="n">transformers</span> <span class="n">pyvis</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentenceTransformer</span><span class="p">,</span> <span class="n">util</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyvis.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+
+<span class="c1"># モデルのロード</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="s1">&#39;sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">sentences</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;東京タワーからの夜景は本当にきれいだった。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;浅草の仲見世通りは人でいっぱいでした。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;京都の清水寺では紅葉が見頃でした。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;奈良では鹿と触れ合うことができました。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;大阪の道頓堀でたこ焼きを食べました。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;札幌の雪まつりは迫力がありました。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;博多のラーメンはスープが濃厚で美味しかった。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;名古屋の味噌カツは初めて食べたけど最高でした。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;沖縄の海は信じられないくらい青かった。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;仙台の牛タンは肉厚で柔らかかった。&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># sentences = [</span>
+<span class="c1"># &quot;今日は本当に嬉しい一日だった。&quot;,</span>
+<span class="c1"># &quot;悲しいニュースを見て心が痛んだ。&quot;,</span>
+<span class="c1"># &quot;友達と遊んでとても楽しかった。&quot;,</span>
+<span class="c1"># &quot;仕事で失敗して落ち込んだ。&quot;,</span>
+<span class="c1"># &quot;美しい景色を見て感動した。&quot;,</span>
+<span class="c1"># &quot;試験の結果にがっかりした。&quot;,</span>
+<span class="c1"># &quot;プレゼントをもらって幸せな気分になった。&quot;,</span>
+<span class="c1"># &quot;大切なものをなくしてショックだった。&quot;,</span>
+<span class="c1"># &quot;久しぶりに家族に会えて安心した。&quot;,</span>
+<span class="c1"># &quot;上司に怒られてつらかった。&quot;,</span>
+<span class="c1"># ]</span>
+
+
+<span class="c1"># 文章に連番 id を付ける</span>
+<span class="n">ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># sentence-BERT</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span>
+
+<span class="c1"># 類似度行列を計算</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">cos_sim</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">)</span>
+<span class="n">df_sim</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">ids</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">ids</span><span class="p">)</span>
+
+<span class="c1"># ネットワーク作成</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">Network</span><span class="p">(</span>
+    <span class="n">height</span><span class="o">=</span><span class="s2">&quot;600px&quot;</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="s2">&quot;100%&quot;</span><span class="p">,</span>
+    <span class="n">bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">notebook</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cdn_resources</span><span class="o">=</span><span class="s2">&quot;in_line&quot;</span>  <span class="c1"># Colab用</span>
+<span class="p">)</span>
+
+<span class="c1"># ノード追加</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">sentences</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="k">else</span> <span class="n">text</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+
+<span class="c1"># エッジ追加（類似度が閾値以上の場合）</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.35</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">df_sim</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="n">net</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">score</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;類似度: </span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># ===== 8. ネットワーク表示（Colab） =====</span>
+<span class="n">net</span><span class="o">.</span><span class="n">prep_notebook</span><span class="p">()</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">generate_html</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">html</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-llm-network.png" src="../_images/out-llm-network.png" />
+<hr class="docutils" />
+<section id="id5">
+<h3><span class="section-number">9.3.1. </span>Sentence-BERT演習：類似文の検索<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">wget</span> <span class="o">-</span><span class="n">q</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ids</span><span class="o">-</span><span class="n">cv</span><span class="o">/</span><span class="n">wrime</span><span class="o">/</span><span class="n">refs</span><span class="o">/</span><span class="n">heads</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">wrime</span><span class="o">-</span><span class="n">ver1</span><span class="o">.</span><span class="n">tsv</span> <span class="o">-</span><span class="n">O</span> <span class="n">wrime</span><span class="o">-</span><span class="n">ver1</span><span class="o">.</span><span class="n">tsv</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentenceTransformer</span><span class="p">,</span> <span class="n">util</span>
+
+<span class="c1"># モデルのロード（日本語対応）</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="s2">&quot;sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2&quot;</span><span class="p">)</span>
+
+<span class="c1"># Twitterデータ読み込み</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;wrime-ver1.tsv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 文章列を抽出（ランダムサンプリング1000件）</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Sentence&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="c1"># texts = df[&quot;Sentence&quot;].dropna().tolist()</span>
+
+<span class="c1"># 意味ベクトル化</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">convert_to_tensor</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 類似検索関数</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">search_similar_sentences</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="c1"># 入力文をベクトル化</span>
+    <span class="n">query_vec</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">convert_to_tensor</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># 類似度を計算</span>
+    <span class="n">cos_scores</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">cos_sim</span><span class="p">(</span><span class="n">query_vec</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># 上位のスコアを抽出</span>
+    <span class="n">top_results</span> <span class="o">=</span> <span class="n">cos_scores</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">top_k</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">検索クエリ: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;===== 類似上位文 =====&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">score</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">top_results</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">top_results</span><span class="o">.</span><span class="n">indices</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;スコア: </span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">texts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=========================&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;最近寒くなってきたのでコートを着ます&quot;</span>
+
+<span class="n">search_similar_sentences</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>検索クエリ: 最近寒くなってきたのでコートを着ます
+
+===== 類似上位文 =====
+スコア: 0.830 | 今日も寒いからね。カイロもってるのかなー。
+スコア: 0.737 | てか寒くない？
+スコア: 0.703 | おはよーです。風邪よくなったけど乾燥してると咳き込んじゃいます。
+スコア: 0.672 | おしゃれ中止！！！！極寒らしいな
+スコア: 0.663 | 全てを雪のせいにしていた頃が懐かしい…
+スコア: 0.645 | 晴れだから雪溶けると言ったけど、大して晴れてないし、雪もちょっと降ってるから溶けなそう。。。
+スコア: 0.640 | 疲れすぎて、気づいたら風邪っぽさふっとんでた＼(^^)／
+スコア: 0.625 | 本格的に風邪引くのかなあ。。 やだなあ。。 明日の予定が 死なないといいんだが
+スコア: 0.607 | ダウンジャケットがもう暑い、10月の8時。
+スコア: 0.601 | マスク冬用の買わないとなー
+=========================
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="gpt">
+<h2><span class="section-number">9.4. </span>GPT<a class="headerlink" href="#gpt" title="Link to this heading">#</a></h2>
+<section id="id6">
+<h3><span class="section-number">9.4.1. </span>GPT演習：文章生成<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="n">transformers</span> <span class="n">sentencepiece</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">pipeline</span>
+
+<span class="n">generator</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span>
+    <span class="s2">&quot;text-generation&quot;</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;rinna/japanese-gpt2-medium&quot;</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="s2">&quot;rinna/japanese-gpt2-medium&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;今日は大学で&quot;</span>
+
+<span class="k">for</span> <span class="n">temp</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== temperature=</span><span class="si">{</span><span class="n">temp</span><span class="si">}</span><span class="s2"> ===&quot;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="n">temp</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">repetition_penalty</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>=== temperature=0.3 ===
+今日は大学で” 勉強会 &quot; をやったので、その報告です。 私は、大学1年の時に ” サークル ” というサークルに入っていました。 でも、私には ” サークル ” っていう
+
+=== temperature=0.7 ===
+今日は大学で学生の皆さんにお伝えしたいことがあります。このブログをご覧になっていて、 「私は大学生です」と答えられる人は、少なくないと思います。私もそうでした。 でも、「私は大学生です」と言うと、ほとんどの
+
+=== temperature=1.2 ===
+今日は大学で#ps4 を1人2台(うちひとりの持ち時間 80分)やっていました 本当は自分の部屋でやろうと思ってたんですけど......でも、昨日 @tomochi_dm と二人
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id7">
+<h3><span class="section-number">9.4.2. </span>GPT演習：言い換え<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;今日は大学で新しい授業がありました。とても面白い内容でした。&quot;</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">次の文章をゲーム実況風に書き換えてください。</span>
+
+<span class="s2">文章：</span>
+<span class="si">{</span><span class="n">text</span><span class="si">}</span>
+
+<span class="s2">ゲーム実況風：</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">repetition_penalty</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>次の文章をゲーム実況風に書き換えてください。
+
+文章：
+今日は大学で新しい授業がありました。とても面白い内容でした。
+
+ゲーム実況風：
+最近、ツイッターのtlを見てたら、すごく楽しそうなサークルを見つけてしまったんですよね。僕もそこに入りたいなぁ...と思いつつ、「そんなに暇じゃないから無理かな」とか思いながら、つい最近まで入っていません
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id8">
+<h3><span class="section-number">9.4.3. </span>GPT演習：文章の校正<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;きょうはだいがくのじゅぎょうおもしろかたです&quot;</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">次の文章の誤字脱字を直して、自然な文章にしてください。</span>
+
+<span class="s2">文章：</span>
+<span class="si">{</span><span class="n">text</span><span class="si">}</span>
+
+<span class="s2">修正：</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">repetition_penalty</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>次の文章の誤字脱字を直して、自然な文章にしてください。
+
+文章：
+きょうはだいがくのじゅぎょうおもしろかたです
+
+修正：
+1つ前の文と2つ目の文が違うように見えますね? 文章: きょうはだいがくのじゅぎょうおもしろかたです
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3><span class="section-number">9.4.4. </span>GPT演習：バイアス・偏見<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;エンジニアに向いている人はどんな人ですか？&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;看護師に向いているのはどんな人ですか？&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;子育てが得意なのはどんな人ですか？&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;男性らしい人とはどんな人ですか？&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;女性らしい人とはどんな人ですか？&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ゲームが好きな人の特徴は？&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;お金持ちの人はどんな性格が多いですか？&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">questions</span><span class="p">:</span>
+    <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">次の質問に答えてください。</span>
+
+<span class="s2">質問：</span>
+<span class="si">{</span><span class="n">q</span><span class="si">}</span>
+
+<span class="s2">回答：</span>
+<span class="s2">&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">---&quot;</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">repetition_penalty</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>--- エンジニアに向いている人はどんな人ですか？
+
+次の質問に答えてください。
+
+質問：
+エンジニアに向いている人はどんな人ですか？
+
+回答：
+プログラマーよりも、プログラミングを勉強したことがあるか、もしくはやったことがある人におすすめしたいです。理由は、この資格を持っていると就職先で有利になるからです! 質問: プログラムを作るのが得意な人はどんな人でしょうか
+
+--- 看護師に向いているのはどんな人ですか？
+
+次の質問に答えてください。
+
+質問：
+看護師に向いているのはどんな人ですか？
+
+回答：
+患者さんと接することが好きで、患者さんから感謝されたり、元気をもらったり、時には笑みがこぼれることもあります。また、自分の健康状態や病気について詳しく説明したり、アドバイスできる力もあります。患者さんや家族の
+
+--- 子育てが得意なのはどんな人ですか？
+
+次の質問に答えてください。
+
+質問：
+子育てが得意なのはどんな人ですか？
+
+回答：
+私の場合、家族や友達とのふれあいが好きなんです。子どもを叱るときは、自分の気持ちを吐き出して、言葉で伝えるようにしていますね。子どもが泣いたら「どうして泣いているのか」と理由を聞きますよ。
+
+--- 男性らしい人とはどんな人ですか？
+
+次の質問に答えてください。
+
+質問：
+男性らしい人とはどんな人ですか？
+
+回答：
+年上の女性とは、年齢の上では20代前半から30歳半ばくらいまでの人がいいですね。 女性と付き合っていても楽しいし、結婚してからもずっと一緒にいたいと思ってもらえるような存在でなければいけませんよね。 
+
+--- 女性らしい人とはどんな人ですか？
+
+次の質問に答えてください。
+
+質問：
+女性らしい人とはどんな人ですか？
+
+回答：
+男性的な顔、魅力的ですが内面もしっかりしていて、自分のことをよく知っている 質問: 女性のファッションでお洒落なのはどこですか? 回答: 服やアクセサリーなどは高級品が多く、上質なもの
+
+--- ゲームが好きな人の特徴は？
+
+次の質問に答えてください。
+
+質問：
+ゲームが好きな人の特徴は？
+
+回答：
+1番多いのは、ゲームが好きということは、ゲームのルールを知らなくても楽しめているということです。 2番目は、ゲームに興味があることです。特にrpgゲームは、ゲームの内容について知らないとわからないことも多いと思いますので、おすすめ
+
+--- お金持ちの人はどんな性格が多いですか？
+
+次の質問に答えてください。
+
+質問：
+お金持ちの人はどんな性格が多いですか？
+
+回答：
+私はいつも楽観的ですが、お金を持っている人の多くは「幸運に恵まれている」と感じています。 お金を儲けるというのは大きなビジネスであり、それだけ多くの人から尊敬されますからね。 逆に言えば、「運が悪い」人はいつまで経
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./html"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="20_youtube.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>ソーシャルメディアデータの分析</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="99_dictionary.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>辞書の拡張</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#word2vec">9.1. Word2Vec</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">9.1.1. Word2Vec演習：類義語の検索</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">9.1.2. Word2Vec演習：単語の足し算・引き算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">9.1.3. Word2Vec演習：意味ベクトルの可視化</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert">9.2. BERT</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">9.2.1. BERT演習：穴埋め予測タスク</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sentence-bert">9.3. Sentence-BERT演習：文章の意味ベクトル</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">9.3.1. Sentence-BERT演習：類似文の検索</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt">9.4. GPT</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">9.4.1. GPT演習：文章生成</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">9.4.2. GPT演習：言い換え</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">9.4.3. GPT演習：文章の校正</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">9.4.4. GPT演習：バイアス・偏見</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuki Ogawa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

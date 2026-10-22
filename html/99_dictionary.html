@@ -1,0 +1,916 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>10. 辞書の拡張 &#8212; 自然言語処理</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'html/99_dictionary';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="9. 大規模言語モデル（LLM）" href="30_llm.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_top.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">自然言語処理</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">導入</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_intro.html">1. テキストマイニングとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_deploy.html">2. 環境構築</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎的な解析</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_basic_analysis.html">3. 前処理・形態素解析・特徴抽出</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_visualization.html">4. 可視化</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">分析手法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_analysis.html">5. 感情分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_clustering.html">6. 文書分類</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">応用編</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_sightseeing.html">7. 観光データの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_youtube.html">8. ソーシャルメディアデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_llm.html">9. 大規模言語モデル（LLM）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">その他</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. 辞書の拡張</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/html/99_dictionary.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>辞書の拡張</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">10.1. 固有名詞の拡充</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ginza">10.1.1. 確認： GiNZAによる形態素解析</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">10.1.2. 固有名詞の拡充の方法</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">10.1.2.1. プログラム例（自前で用語を追加する）</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#wikipedia">10.1.2.2. プログラム例（Wikipediaページタイトルの用語追加）</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">10.1.3. 参考プログラム（演習用）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#wikipedia-csv">10.1.3.1. Wikipediaのページ（概要）を取得してCSVで保存</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">10. </span>辞書の拡張<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">今回のゴール</p>
+<ul class="simple">
+<li><p>GiNZAによる固有名詞認識（NER）の仕組みを理解する</p></li>
+<li><p>固有名詞を拡充する方法を知る（NEologd, Wikipedia, Pageviewsなど）</p></li>
+<li><p>拡張辞書を使って固有名詞を1語扱いで抽出できるようにする</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<section id="id2">
+<h2><span class="section-number">10.1. </span>固有名詞の拡充<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>固有名詞とは、人名「山田花子」、地名「世田谷区」、組織名「東京都市大学」、商品名「カップヌードル」、作品名「鋼の錬金術師」のように特定の名前を指す用語。</p></li>
+<li><p>GiNZAの日本語モデルでは新語や作品名が検出されにくい。</p></li>
+<li><p>例）「カップヌードル」「鋼の錬金術師」などが1語扱いされない。</p></li>
+</ul>
+<section id="ginza">
+<h3><span class="section-number">10.1.1. </span>確認： GiNZAによる形態素解析<a class="headerlink" href="#ginza" title="Link to this heading">#</a></h3>
+<p><strong>ライブラリインストール（必要に応じて）</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!pip -q install spacy ginza ja-ginza
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;カップヌードルを食べて鋼の錬金術師を見た&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># 形態素解析して用語を出力</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+  <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+  <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+      <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+  <span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;カップ(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;ヌードル(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;を(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;食べ(VERB)&#39;</span><span class="p">,</span> <span class="s1">&#39;て(SCONJ)&#39;</span><span class="p">,</span> <span class="s1">&#39;鋼(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;の(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;錬金(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;術師(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;を(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;見(VERB)&#39;</span><span class="p">,</span> <span class="s1">&#39;た(AUX)&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h3><span class="section-number">10.1.2. </span>固有名詞の拡充の方法<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p><strong>A）自前で用語を追加した辞書を用いる方法</strong></p>
+<ul class="simple">
+<li><p>抽出したい用語を辞書に登録して形態素解析する</p></li>
+<li><p>設定が容易だが、どんな用語を登録するか知識が必要</p></li>
+</ul>
+<p><strong>B）既存の辞書を活用する方法</strong></p>
+<ul class="simple">
+<li><p>MeCab用のNEologd辞書を使う</p></li>
+<li><p>辞書の更新が容易だが、設定が複雑（特に Google Colab では複雑）</p></li>
+</ul>
+<section id="id4">
+<h4><span class="section-number">10.1.2.1. </span>プログラム例（自前で用語を追加する）<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spacy.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">EntityRuler</span>
+
+<span class="c1"># ==== ２つの形態素解析器を用意 ====</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>      <span class="c1"># 通常の形態素解析器</span>
+<span class="n">nlp_dic</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>  <span class="c1"># 辞書拡張した形態素解析器</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s2">&quot;カップヌードルを食べて鋼の錬金術師を見た&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># ==== 通常の形態素解析 ====</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+  <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+  <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+      <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+      <span class="c1"># tokens.append(token.text)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1"># ==== 辞書を使った形態素解析 ====</span>
+<span class="c1"># 辞書に用語を追加 </span>
+<span class="c1"># entity_ruler をパイプラインの先頭に追加する</span>
+<span class="n">ruler</span> <span class="o">=</span> <span class="n">nlp_dic</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="s2">&quot;entity_ruler&quot;</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;USER_DICT&quot;</span><span class="p">,</span> <span class="s2">&quot;pattern&quot;</span><span class="p">:</span> <span class="s2">&quot;カップヌードル&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;USER_DICT&quot;</span><span class="p">,</span> <span class="s2">&quot;pattern&quot;</span><span class="p">:</span> <span class="s2">&quot;鋼の錬金術師&quot;</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">ruler</span><span class="o">.</span><span class="n">add_patterns</span><span class="p">(</span><span class="n">patterns</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+
+  <span class="c1"># 形態素解析器の結果に固有名詞として登録</span>
+  <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp_dic</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+  <span class="k">with</span> <span class="n">doc</span><span class="o">.</span><span class="n">retokenize</span><span class="p">()</span> <span class="k">as</span> <span class="n">retokenizer</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">ents</span><span class="p">:</span>
+          <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;POS&quot;</span><span class="p">:</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">}</span>
+          <span class="n">retokenizer</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">ent</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+
+  <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+      <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+      <span class="c1"># tokens.append(token.text)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;カップ(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;ヌードル(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;を(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;食べ(VERB)&#39;</span><span class="p">,</span> <span class="s1">&#39;て(SCONJ)&#39;</span><span class="p">,</span> <span class="s1">&#39;鋼(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;の(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;錬金(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;術師(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;を(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;見(VERB)&#39;</span><span class="p">,</span> <span class="s1">&#39;た(AUX)&#39;</span><span class="p">]</span>
+
+<span class="p">[</span><span class="s1">&#39;カップヌードル(PROPN)&#39;</span><span class="p">,</span> <span class="s1">&#39;を(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;食べ(VERB)&#39;</span><span class="p">,</span> <span class="s1">&#39;て(SCONJ)&#39;</span><span class="p">,</span> <span class="s1">&#39;鋼の錬金術師(PROPN)&#39;</span><span class="p">,</span> <span class="s1">&#39;を(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;見(VERB)&#39;</span><span class="p">,</span> <span class="s1">&#39;た(AUX)&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="wikipedia">
+<h4><span class="section-number">10.1.2.2. </span>プログラム例（Wikipediaページタイトルの用語追加）<a class="headerlink" href="#wikipedia" title="Link to this heading">#</a></h4>
+<p><strong>辞書ファイル</strong></p>
+<ul class="simple">
+<li><p><a href="http://ogawa.isslab.org/nlp/data/wiki_20261014_top_1000.json" download>wiki_20261014_top_1000.json</a></p></li>
+<li><p><a href="http://ogawa.isslab.org/nlp/data/wiki_20261014_top_10000.json" download>wiki_20261014_top_10000.json</a></p></li>
+<li><p><a href="http://ogawa.isslab.org/nlp/data/wiki_20261014_top_30000.json" download>wiki_20261014_top_30000.json</a></p></li>
+</ul>
+<p>上記のファイルをダウンロードして、Google Colab に保存しておく</p>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spacy.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">EntityRuler</span>
+
+<span class="c1"># ==== ２つの形態素解析器を用意 ====</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>      <span class="c1"># 通常の形態素解析器</span>
+<span class="n">nlp_dic</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>  <span class="c1"># 辞書用の形態素解析器</span>
+
+<span class="c1"># ==== 辞書に用語を追加 ====</span>
+<span class="n">dic</span> <span class="o">=</span> <span class="s2">&quot;wiki_20261014_top_1000.json&quot;</span>
+<span class="c1"># dic = &quot;wiki_20261014_top_10000.json&quot;</span>
+<span class="c1"># dic = &quot;wiki_20261014_top_30000.json&quot;</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dic</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">patterns</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># entity_ruler をパイプラインの先頭に追加する</span>
+<span class="c1"># （先頭に置くと、用語の登録時に分かち書きだけが実行されるので速くなる）</span>
+<span class="n">ruler</span> <span class="o">=</span> <span class="n">nlp_dic</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="s2">&quot;entity_ruler&quot;</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ruler</span><span class="o">.</span><span class="n">add_patterns</span><span class="p">(</span><span class="n">patterns</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+<span class="s2">&quot;カップヌードルを食べて鬼滅の刃を見た&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># == 通常の形態素解析 ==</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+  <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+  <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+      <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+      <span class="c1"># tokens.append(token.text)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1"># ==== 辞書を使った形態素解析 ====</span>
+<span class="c1"># 辞書に用語を追加 </span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+
+  <span class="c1"># 形態素解析器の結果に固有名詞として登録</span>
+  <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp_dic</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+  <span class="k">with</span> <span class="n">doc</span><span class="o">.</span><span class="n">retokenize</span><span class="p">()</span> <span class="k">as</span> <span class="n">retokenizer</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">ents</span><span class="p">:</span>
+          <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;POS&quot;</span><span class="p">:</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">}</span>
+          <span class="n">retokenizer</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">ent</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+
+  <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+      <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+      <span class="c1"># tokens.append(token.text)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;カップ(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;ヌードル(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;を(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;食べ(VERB)&#39;</span><span class="p">,</span> <span class="s1">&#39;て(SCONJ)&#39;</span><span class="p">,</span> <span class="s1">&#39;鬼(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;滅(PRON)&#39;</span><span class="p">,</span> <span class="s1">&#39;の(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;刃(NOUN)&#39;</span><span class="p">,</span> <span class="s1">&#39;を(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;見(VERB)&#39;</span><span class="p">,</span> <span class="s1">&#39;た(AUX)&#39;</span><span class="p">]</span>
+
+<span class="p">[</span><span class="s1">&#39;カップヌードル(PROPN)&#39;</span><span class="p">,</span> <span class="s1">&#39;を(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;食べ(VERB)&#39;</span><span class="p">,</span> <span class="s1">&#39;て(SCONJ)&#39;</span><span class="p">,</span> <span class="s1">&#39;鬼滅の刃(PROPN)&#39;</span><span class="p">,</span> <span class="s1">&#39;を(ADP)&#39;</span><span class="p">,</span> <span class="s1">&#39;見(VERB)&#39;</span><span class="p">,</span> <span class="s1">&#39;た(AUX)&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h3><span class="section-number">10.1.3. </span>参考プログラム（演習用）<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<section id="wikipedia-csv">
+<h4><span class="section-number">10.1.3.1. </span>Wikipediaのページ（概要）を取得してCSVで保存<a class="headerlink" href="#wikipedia-csv" title="Link to this heading">#</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">keyword</span></code> に調べたいWikipediaのページ名を指定する。<br />
+「概要」（または「概観」「概説」）の節があればその節を、なければ冒頭の導入文を取得し、<code class="docutils literal notranslate"><span class="pre">キーワード.csv</span></code>（列名は <code class="docutils literal notranslate"><span class="pre">text</span></code>）で保存する。</p>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bs4</span><span class="w"> </span><span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="c1"># ==== 調べたいキーワード（Wikipediaのページ名） ====</span>
+<span class="n">keyword</span> <span class="o">=</span> <span class="s2">&quot;鬼滅の刃&quot;</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://ja.wikipedia.org/wiki/&quot;</span> <span class="o">+</span> <span class="n">keyword</span>
+
+<span class="c1"># 「概要」として扱う見出し名</span>
+<span class="n">SUMMARY_HEADINGS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;概要&quot;</span><span class="p">,</span> <span class="s2">&quot;概観&quot;</span><span class="p">,</span> <span class="s2">&quot;概説&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">is_heading</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    見出しかどうかを判定する（level=2 なら h2 の大見出しだけを見出しとみなす）</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;h2&quot;</span><span class="p">]</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mw-heading2&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;h2&quot;</span><span class="p">,</span> <span class="s2">&quot;h3&quot;</span><span class="p">,</span> <span class="s2">&quot;h4&quot;</span><span class="p">,</span> <span class="s2">&quot;h5&quot;</span><span class="p">,</span> <span class="s2">&quot;h6&quot;</span><span class="p">]</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mw-heading&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="c1"># 新しい Wikipedia の HTML では見出しが &lt;div class=&quot;mw-heading ...&quot;&gt; で囲まれている</span>
+    <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;div&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">el</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_section_text</span><span class="p">(</span><span class="n">soup</span><span class="p">,</span> <span class="n">heading_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    指定した見出しの節の段落を取得する（見出しがなければ空文字）</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">heading</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">heading_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">heading</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">heading</span><span class="o">.</span><span class="n">find_parent</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;mw-heading&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">heading</span>
+    <span class="n">texts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">start</span><span class="o">.</span><span class="n">find_next_siblings</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">is_heading</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>    <span class="c1"># 次の大見出しで終了</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;p&quot;</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">t</span><span class="p">:</span>
+                <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_lead_text</span><span class="p">(</span><span class="n">soup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    最初の見出しより前にある段落（導入文）を取得する</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 最初の見出しを探す</span>
+    <span class="n">first_heading</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">([</span><span class="s2">&quot;h2&quot;</span><span class="p">,</span> <span class="s2">&quot;div&quot;</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">is_heading</span><span class="p">(</span><span class="n">el</span><span class="p">):</span>
+            <span class="n">first_heading</span> <span class="o">=</span> <span class="n">el</span>
+            <span class="k">break</span>
+
+    <span class="k">if</span> <span class="n">first_heading</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">paragraphs</span> <span class="o">=</span> <span class="n">first_heading</span><span class="o">.</span><span class="n">find_all_previous</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">)</span>
+        <span class="n">paragraphs</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>           <span class="c1"># find_all_previous は逆順なので並べ直す</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">paragraphs</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">)</span>
+
+    <span class="n">texts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paragraphs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">find_parent</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>   <span class="c1"># 情報ボックス（表）の中は除く</span>
+            <span class="k">continue</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">t</span><span class="p">:</span>
+            <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_wikipedia_summary</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    WikipediaページURLから「概要」部分のテキストを取得</span>
+<span class="sd">    （概要の節があればその節、なければ冒頭の導入文）</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># renderモードを付加</span>
+    <span class="k">if</span> <span class="s2">&quot;action=render&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">url</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;?&quot;</span> <span class="ow">in</span> <span class="n">url</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="s2">&quot;&amp;action=render&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="s2">&quot;?action=render&quot;</span>
+
+    <span class="c1"># User-Agent設定</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) &quot;</span>
+                      <span class="s2">&quot;AppleWebKit/537.36 (KHTML, like Gecko) &quot;</span>
+                      <span class="s2">&quot;Chrome/120.0.0.0 Safari/537.36&quot;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># ページ取得</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">apparent_encoding</span>
+
+    <span class="c1"># BeautifulSoupで解析</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 脚注の番号（[1] など）を削除</span>
+    <span class="k">for</span> <span class="n">sup</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;sup&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;reference&quot;</span><span class="p">):</span>
+        <span class="n">sup</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
+
+    <span class="c1"># 1) 概要の節（概要・概観・概説）を探す</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">SUMMARY_HEADINGS</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">get_section_text</span><span class="p">(</span><span class="n">soup</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">text</span>
+
+    <span class="c1"># 2) なければ冒頭の導入文</span>
+    <span class="k">return</span> <span class="n">get_lead_text</span><span class="p">(</span><span class="n">soup</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">split_sentences</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    文章を1文ずつに分割する（「。」「！」「？」で区切る。かっこの中では区切らない）</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sentences</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">buf</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="mi">0</span>                      <span class="c1"># かっこの深さ</span>
+    <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+        <span class="n">buf</span> <span class="o">+=</span> <span class="n">ch</span>
+        <span class="k">if</span> <span class="n">ch</span> <span class="ow">in</span> <span class="s2">&quot;「『（(&quot;</span><span class="p">:</span>
+            <span class="n">depth</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">ch</span> <span class="ow">in</span> <span class="s2">&quot;」』）)&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">depth</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">depth</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">ch</span> <span class="ow">in</span> <span class="s2">&quot;。！？!?&quot;</span> <span class="ow">and</span> <span class="n">depth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+            <span class="n">buf</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="n">ch</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>           <span class="c1"># 段落の切れ目でも区切る</span>
+            <span class="n">sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+            <span class="n">buf</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">depth</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+
+    <span class="c1"># 空の文や、句読点だけの文（「。」など）を除く</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;。、！？!?&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="c1"># ==== 実行 ====</span>
+<span class="n">text</span> <span class="o">=</span> <span class="n">get_wikipedia_summary</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+    <span class="n">sentences</span> <span class="o">=</span> <span class="n">split_sentences</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="c1"># 1文1行の表にして保存</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">sentences</span><span class="p">})</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">keyword</span> <span class="o">+</span> <span class="s2">&quot;.csv&quot;</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">),</span> <span class="s2">&quot;文を&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;に保存しました&quot;</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;概要が取得できませんでした。&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong>（<code class="docutils literal notranslate"><span class="pre">keyword</span> <span class="pre">=</span> <span class="pre">&quot;鬼滅の刃&quot;</span></code> の場合）</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>13 文を 鬼滅の刃.csv に保存しました
+</pre></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>text</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>大正時代の日本を舞台に、主人公・竈門 炭治郎が鬼と化した妹・竈門 禰󠄀豆子を人間に戻すために鬼たちと戦う姿を描く、和風の剣戟奇譚。</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>単行本の累計発行部数は、2025年7月時点で全世界で2億2000万部を突破しており、そのうち5600万部は海外での発行部数である。</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>第23巻の初週売上は、限定版を含めて国内出版史上最高記録となる343.1万部を記録。</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>2020年オリコン年間コミックランキング作品別の期間内売上で8,234.5万部を記録し、作品別歴代年間最高売上を獲得した。</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>また、連載開始から4年と22巻での1億部到達は、それまで『ONE PIECE』が保持していた7年と36巻を大幅に塗り替える「史上最速の1億部突破」である。</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>2019年にはufotable制作でテレビアニメ化され、物語の序章を描く第一期『竈門炭治郎 立志編』が放送された。</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>2020年には物語の中盤を描く劇場アニメ『無限列車編』が公開された。</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>同作品の日本国内での興行収入は404.3億円に達し、それまで『千と千尋の神隠し』が保持していた316億8,000万円を塗り替え、日本歴代興行収入第1位となった。</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>全世界の興行収入は517億円に上り、全世界で観客4135万人を動員し、「世界最高の興行収入の日本アニメ映画」としてギネス世界記録に認定されている。</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>2021年10月から2022年2月まで、テレビアニメ第二期として『無限列車編』の再編集版とその続編となる『遊郭編』が、2023年4月から6月まで、テレビアニメ第三期として『刀鍛冶の里編』が放送された。</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>2024年5月から6月まで、テレビアニメ第四期となる『柱稽古編』が放送された。</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>その続編となる劇場アニメ『劇場版「鬼滅の刃」無限城編』が三部作で制作されることが決定し、『第一章 猗窩座襲来』が2025年7月に公開された。</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>その他、舞台化やゲーム化、玩具化、企業やテーマパークとのコラボレーションなど、メディアミックスが多様に展開されており、本作の経済規模は1兆円を超えている。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./html"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="30_llm.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">9. </span>大規模言語モデル（LLM）</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">10.1. 固有名詞の拡充</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ginza">10.1.1. 確認： GiNZAによる形態素解析</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">10.1.2. 固有名詞の拡充の方法</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">10.1.2.1. プログラム例（自前で用語を追加する）</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#wikipedia">10.1.2.2. プログラム例（Wikipediaページタイトルの用語追加）</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">10.1.3. 参考プログラム（演習用）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#wikipedia-csv">10.1.3.1. Wikipediaのページ（概要）を取得してCSVで保存</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuki Ogawa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

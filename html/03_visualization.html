@@ -1,0 +1,1199 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4. 可視化 &#8212; 自然言語処理</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'html/03_visualization';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. 感情分析" href="04_analysis.html" />
+    <link rel="prev" title="3. 前処理・形態素解析・特徴抽出" href="03_basic_analysis.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_top.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">自然言語処理</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">導入</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_intro.html">1. テキストマイニングとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_deploy.html">2. 環境構築</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎的な解析</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_basic_analysis.html">3. 前処理・形態素解析・特徴抽出</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">4. 可視化</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">分析手法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_analysis.html">5. 感情分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_clustering.html">6. 文書分類</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">応用編</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_sightseeing.html">7. 観光データの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_youtube.html">8. ソーシャルメディアデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_llm.html">9. 大規模言語モデル（LLM）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">その他</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="99_dictionary.html">10. 辞書の拡張</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/html/03_visualization.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>可視化</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">4.1. 頻出単語の棒グラフ</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4.1.1. プログラム例（頻出単語の棒グラフ）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4.2. ワードクラウド</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">4.2.1. プログラム例（ワードクラウド）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">4.2.2. 見た目を調整する主なパラメータ</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4.3. 共起ネットワーク</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">4.3.1. 共起ネットワークの特徴</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">4.3.2. プログラム例（共起ペアの計算）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">4.3.3. 共起ネットワークの可視化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">4.3.4. 共起ネットワークの分析の視点</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4.3.4.1. 読み取りのポイント</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">4.3.5. 可視化手法の使い分けのイメージ</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">4. </span>可視化<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">今回のゴール</p>
+<ul class="simple">
+<li><p>単語頻度の棒グラフを作成する</p></li>
+<li><p>ワードクラウドを作成する</p></li>
+<li><p>共起ネットワークの作成と、その他の可視化の用途を知る</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<section id="id2">
+<h2><span class="section-number">4.1. </span>頻出単語の棒グラフ<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>テキストデータを解析した後は、<strong>頻出する単語を棒グラフで可視化</strong>することで直感的に理解できる。<br />
+数値だけでなく、どの単語が多いのかをグラフで示すと一目で把握できる。</p>
+<section id="id3">
+<h3><span class="section-number">4.1.1. </span>プログラム例（頻出単語の棒グラフ）<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p><strong>ライブラリをインストール（必要に応じて）</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">spacy</span> <span class="n">ginza</span> <span class="n">ja</span><span class="o">-</span><span class="n">ginza</span>
+</pre></div>
+</div>
+<p><strong>グラフの日本語表示のライブラリをインストール</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">japanize_matplotlib</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 対象文書</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">昨日の夜は東京の有名なラーメン店に行きました。</span>
+<span class="s2">そのラーメン店はスープが濃厚で、ラーメンの麺はとても美味しかったです。</span>
+<span class="s2">私はラーメンと餃子を注文し、友達はラーメンとチャーハンを注文しました。</span>
+<span class="s2">店内は観光客でにぎわっていて、東京でも人気のラーメン店だと感じました。</span>
+<span class="s2">最後にアイスを食べましたが、やはりラーメンが一番印象的でした。</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># 名詞・固有名詞・形容詞</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+
+<span class="c1"># ストップワード</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="c1"># 単語リストを作成</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">all_terms</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+        <span class="n">all_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+<span class="c1"># 頻度を集計</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">all_terms</span><span class="p">)</span>
+<span class="n">common</span> <span class="o">=</span> <span class="n">counter</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># データをプロット用に分解</span>
+<span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">common</span><span class="p">):</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">common</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="c1"># 棒グラフ表示</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;頻出単語の上位10語&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;単語&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;出現回数&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-basic_analysis-bar.png" src="../_images/out-basic_analysis-bar.png" />
+</section>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h2><span class="section-number">4.2. </span>ワードクラウド<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p><strong>ワードクラウド</strong>は、単語の出現頻度に応じて文字の大きさを変えて表示する手法。<br />
+単語の重要度を直感的に把握するのに適している。</p>
+<section id="id5">
+<h3><span class="section-number">4.2.1. </span>プログラム例（ワードクラウド）<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p><strong>Google Colab（Linux環境）上で日本語フォントをインストール</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">fonts</span><span class="o">-</span><span class="n">ipaexfont</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">wordcloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">WordCloud</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">font_manager</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 対象文書</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">昨日の夜は東京の有名なラーメン店に行きました。</span>
+<span class="s2">そのラーメン店はスープが濃厚で、ラーメンの麺はとても美味しかったです。</span>
+<span class="s2">私はラーメンと餃子を注文し、友達はラーメンとチャーハンを注文しました。</span>
+<span class="s2">店内は観光客でにぎわっていて、東京でも人気のラーメン店だと感じました。</span>
+<span class="s2">最後にアイスを食べましたが、やはりラーメンが一番印象的でした。</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># 名詞・固有名詞・形容詞</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+
+<span class="c1"># ストップワード</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="c1"># 改行文字（&quot;\n&quot;,&quot;\r\n&quot;等）を一括で除去。ワードクラウドでは改行文字はエラーとなるため</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+
+<span class="c1"># 単語リストを作成</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">all_terms</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+        <span class="n">all_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+<span class="c1"># 頻度を集計</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">all_terms</span><span class="p">)</span>
+
+<span class="n">freq_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">term</span><span class="p">,</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">counter</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">freq_dict</span><span class="p">[</span><span class="n">term</span><span class="p">]</span> <span class="o">=</span> <span class="n">cnt</span>
+
+<span class="n">jp_font_path</span> <span class="o">=</span> <span class="s2">&quot;/usr/share/fonts/opentype/ipaexfont-gothic/ipaexg.ttf&quot;</span>
+
+<span class="c1"># WordCloud の生成</span>
+<span class="n">wc</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">background_color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">font_path</span><span class="o">=</span><span class="n">jp_font_path</span><span class="p">,</span>
+    <span class="c1"># max_words=100,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">wc</span> <span class="o">=</span> <span class="n">wc</span><span class="o">.</span><span class="n">generate_from_frequencies</span><span class="p">(</span><span class="n">freq_dict</span><span class="p">)</span>
+
+<span class="c1"># 表示</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wc</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;bilinear&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-basic_analysis-wc.png" src="../_images/out-basic_analysis-wc.png" />
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h3><span class="section-number">4.2.2. </span>見た目を調整する主なパラメータ<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>パラメータ名</p></th>
+<th class="head"><p>例</p></th>
+<th class="head"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">width</span></code>, <code class="docutils literal notranslate"><span class="pre">height</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">width=800,</span> <span class="pre">height=400</span></code></p></td>
+<td><p>出力画像のサイズ。横長や縦長を調整。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">background_color</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;white&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;black&quot;</span></code></p></td>
+<td><p>背景色を変更。 <code class="docutils literal notranslate"><span class="pre">&quot;white&quot;</span></code> が見やすい。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">colormap</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;viridis&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;plasma&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tab10&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;rainbow&quot;</span></code></p></td>
+<td><p>単語のカラーマップを変更。matplotlibのカラーマップ名を指定。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_words</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">max_words=100</span></code></p></td>
+<td><p>表示する単語の最大数。多すぎると読みづらい。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min_font_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">min_font_size=10</span></code></p></td>
+<td><p>小さい文字の最小サイズを設定。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_font_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">max_font_size=100</span></code></p></td>
+<td><p>最大フォントサイズを明示的に指定可能。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">font_path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;ipaexg.ttf&quot;</span></code></p></td>
+<td><p>日本語フォントのパス（必須）。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">relative_scaling</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.5</span></code></p></td>
+<td><p>頻度と文字サイズの比例度。<code class="docutils literal notranslate"><span class="pre">0</span></code>で均一、<code class="docutils literal notranslate"><span class="pre">1</span></code>で完全比例。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">scale</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p>高解像度出力。2倍にすると滑らかに。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">margin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p>単語間の余白。小さすぎると重なりやすい。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">prefer_horizontal</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.9</span></code></p></td>
+<td><p>横書き単語の割合。<code class="docutils literal notranslate"><span class="pre">0</span></code>に近いと縦文字が増える。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">collocations</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>「ラーメン 店」のような複合語を結合するかどうか。日本語では <code class="docutils literal notranslate"><span class="pre">False</span></code> 推奨。</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">random_state</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">42</span></code></p></td>
+<td><p>配置の再現性を確保。</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">contour_width</span></code>, <code class="docutils literal notranslate"><span class="pre">contour_color</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">contour_width=2,</span> <span class="pre">contour_color='steelblue'</span></code></p></td>
+<td><p>単語の輪郭線を追加。立体感を出すときに有効。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id7">
+<h2><span class="section-number">4.3. </span>共起ネットワーク<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>共起</strong> とは、「同じ文や段落など、一定の範囲内で一緒に出現する単語」のこと。</p></li>
+<li><p>例えば、「東京」「ラーメン」が同じ文に現れるとき、「東京」と「ラーメン」には共起関係があるといえる。</p></li>
+<li><p><strong>共起ネットワーク</strong>は、単語をノード、共起関係をエッジ（線）で表したグラフ構造。</p></li>
+</ul>
+<hr class="docutils" />
+<section id="id8">
+<h3><span class="section-number">4.3.1. </span>共起ネットワークの特徴<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>観点</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>目的</strong></p></td>
+<td><p>単語間の関係構造を可視化し、文脈的なまとまりを発見する</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>入力</strong></p></td>
+<td><p>テキスト中の単語と、それらの共起回数</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>出力</strong></p></td>
+<td><p>ノード（単語）とエッジ（共起関係）から成るネットワーク図</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>分析効果</strong></p></td>
+<td><p>どの単語が中心的か（中心性）、どんな語群が結びついているか（クラスタ構造）</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<p><strong>共起行列の作成手順</strong></p>
+<ol class="arabic simple">
+<li><p>テキストを文単位に分割する</p></li>
+<li><p>各文中に出現する単語の組み合わせを抽出する</p></li>
+<li><p>単語ペアごとに共起回数をカウントする</p></li>
+<li><p>共起行列（共起頻度表）を作る</p></li>
+</ol>
+<p><strong>例</strong></p>
+<blockquote>
+<div><p>文1：<u>東京</u>の<u>ラーメン</u>は<u>美味しい</u>。<br />
+文2：<u>大阪</u>の<u>ラーメン</u>も<u>人気</u>がある。</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>文1に含まれる単語：<code class="docutils literal notranslate"><span class="pre">[東京,</span> <span class="pre">ラーメン,</span> <span class="pre">美味しい]</span></code>  → 共起ペア：(東京, ラーメン)、(東京, 美味しい)、(ラーメン, 美味しい)</p></li>
+<li><p>文2に含まれる単語：<code class="docutils literal notranslate"><span class="pre">[大阪,</span> <span class="pre">ラーメン,</span> <span class="pre">人気]</span></code>  → 共起ペア：(大阪, ラーメン)、(大阪, 人気)、(ラーメン, 人気)</p></li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>単語1</p></th>
+<th class="head"><p>単語2</p></th>
+<th class="head"><p>共起回数</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>東京</p></td>
+<td><p>ラーメン</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>東京</p></td>
+<td><p>美味しい</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>ラーメン</p></td>
+<td><p>美味しい</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>大阪</p></td>
+<td><p>ラーメン</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>大阪</p></td>
+<td><p>人気</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>ラーメン</p></td>
+<td><p>人気</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>この表が「共起行列」の一部に相当し、これを使ってネットワークを作ると、
+「東京」「大阪」といった地域語を中心に「ラーメン」「人気」「美味しい」といった関連語がつながる構造が得られる。</p>
+<img alt="../_images/out-conetwork.png" src="../_images/out-conetwork.png" />
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h3><span class="section-number">4.3.2. </span>プログラム例（共起ペアの計算）<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p><strong>ライブラリインストール（必要に応じて）</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">spacy</span> <span class="n">ginza</span> <span class="n">ja</span><span class="o">-</span><span class="n">ginza</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;昨日の夜は東京のラーメン店に行きました。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;そのラーメン店はスープが濃厚で、とても美味しかったです。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;友達もラーメンが好きで、よく東京で食べます。&quot;</span>
+<span class="p">]</span>
+
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="c1"># 共起ペア</span>
+<span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># 共起語ペアの抽出とカウント</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">words</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">([</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">])))</span>
+
+<span class="n">co</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
+
+<span class="c1"># 共起回数をカウント</span>
+<span class="n">co</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
+
+<span class="c1"># DataFrame（単語ペア・共起回数）</span>
+<span class="n">df_co</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;単語ペア&quot;</span><span class="p">,</span> <span class="s2">&quot;共起回数&quot;</span><span class="p">])</span>
+<span class="n">df_co</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>単語ペア</p></th>
+<th class="head"><p>共起回数</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>ラーメン,夜</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>ラーメン,東京</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>ラーメン,店</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>ラーメン,昨日</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>夜,東京</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>夜,店</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>夜,昨日</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>店,東京</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>昨日,東京</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>店,昨日</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>スープ,ラーメン</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>ラーメン,濃厚</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>ラーメン,美味しい</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>スープ,店</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>スープ,濃厚</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>スープ,美味しい</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>店,濃厚</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>店,美味しい</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>濃厚,美味しい</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>友達,東京</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>20</p></td>
+<td><p>好き,東京</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>21</p></td>
+<td><p>ラーメン,友達</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>22</p></td>
+<td><p>友達,好き</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>23</p></td>
+<td><p>ラーメン,好き</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h3><span class="section-number">4.3.3. </span>共起ネットワークの可視化<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p><strong>ネットワーク可視化ライブラリをインストール</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">pyvis</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyvis.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">google.colab</span><span class="w"> </span><span class="kn">import</span> <span class="n">files</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;昨日の夜は東京のラーメン店に行きました。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;そのラーメン店はスープが濃厚で、とても美味しかったです。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;友達もラーメンが好きで、よく東京で食べます。&quot;</span>
+<span class="p">]</span>
+
+
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="c1"># 共起ペア抽出</span>
+<span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">node_freq</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+    <span class="n">node_freq</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">words</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">([</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">])))</span>
+
+<span class="c1"># 共起回数をカウント</span>
+<span class="n">co</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
+
+<span class="c1"># DataFrame（単語ペア・共起回数）</span>
+<span class="n">df_co</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;単語ペア&quot;</span><span class="p">,</span> <span class="s2">&quot;共起回数&quot;</span><span class="p">])</span>
+<span class="c1"># print(df_co)</span>
+
+<span class="c1"># ノードの配置を計算（seed を固定すると毎回同じ配置になる）</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_freq</span><span class="p">:</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">co</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">freq</span><span class="p">)</span>
+
+<span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>   <span class="c1"># k を大きくするとノードの間隔が広がる</span>
+
+<span class="c1"># 共起ネットワーク構築</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">Network</span><span class="p">(</span>
+    <span class="n">height</span><span class="o">=</span><span class="s2">&quot;600px&quot;</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="s2">&quot;100%&quot;</span><span class="p">,</span>
+    <span class="n">bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">font_color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">cdn_resources</span><span class="o">=</span><span class="s2">&quot;in_line&quot;</span>   <span class="c1"># Colabでの表示の場合</span>
+<span class="p">)</span>
+
+<span class="c1"># ノード追加（出現頻度に応じてサイズ変更、位置は計算した座標）</span>
+<span class="c1"># scale：配置の広がり。ノードが多くて重なる場合は 1000 などに大きくする</span>
+<span class="n">scale</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">node_freq</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">node</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span> <span class="o">+</span> <span class="n">freq</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#89CFF0&quot;</span><span class="p">,</span>
+                 <span class="n">x</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+
+<span class="c1"># エッジ追加（共起頻度で太さと濃さを調整）</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">co</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+    <span class="c1"># 出現頻度が1回以上</span>
+    <span class="k">if</span> <span class="n">freq</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;rgba(0,0,255,</span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="mf">0.3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.2</span><span class="o">*</span><span class="n">freq</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="n">net</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;共起数: </span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+<span class="c1"># 物理シミュレーションを止める（ネットワークが静止する）</span>
+<span class="n">net</span><span class="o">.</span><span class="n">toggle_physics</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># HTMLファイルを保存したい場合</span>
+<span class="c1"># net.write_html(&quot;co_network.html&quot;)</span>
+<span class="c1"># files.download(&quot;co_network.html&quot;)</span>
+
+<span class="c1"># Colabで可視化</span>
+<span class="n">net</span><span class="o">.</span><span class="n">prep_notebook</span><span class="p">()</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">generate_html</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">html</span><span class="p">))</span>
+
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-conetwork2.png" src="../_images/out-conetwork2.png" />
+</section>
+<hr class="docutils" />
+<section id="id11">
+<h3><span class="section-number">4.3.4. </span>共起ネットワークの分析の視点<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>共起ネットワークを作成したあとは、<strong>グラフの形そのものを読み解く分析</strong>が重要になる。<br />
+ノードの配置やエッジのつながりから、どんな語が中心的な意味を持つのか、どのような話題のまとまりが存在するのかを解釈する。</p>
+<!-- 
+| 観点 | 説明 |
+|------|------|
+| **中心語の抽出** | ノードの「次数（接続数）」や「中心性」などを計算し、他の語と多く結びついている中心的な語を特定します。例：ラーメンを中心に「東京」「店」などが広がる。 |
+| **クラスタ構造の発見** | ネットワークの中で密につながる語群を探すことで、文脈的に関連するトピックや話題のまとまりを見つける。|
+| **関係の方向性と強さ** | エッジの太さ（共起頻度）を比較し、どの関係が強いかを判断する。強い線は共通して登場する語の組み合わせを示す。 |
+| **文脈の解釈** | 近接して配置されているノードほど意味的・文脈的に関連性が高いと考えられる。ノード間の距離から、語同士の関連の強弱を推測できる。 |
+| **変化の比較** | 時期別・カテゴリ別に共起ネットワークを作ると、話題の変化や注目語の移り変わりを視覚的に追跡できる。 | -->
+<section id="id12">
+<h4><span class="section-number">4.3.4.1. </span>読み取りのポイント<a class="headerlink" href="#id12" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>中心語を見る</strong>：ネットワークの中央に位置する語は、そのテーマの「ハブ」になっている。</p></li>
+<li><p><strong>グループ（クラスタ）を探す</strong>：近い位置に固まる単語群は、同じ文脈や話題を共有している。</p></li>
+<li><p><strong>線の太さに注目</strong>：共起回数が多い語ほど、強い関係性を持つ。</p></li>
+<li><p><strong>孤立語も重要</strong>：あまり共起しない語は、特定の文脈でのみ登場する特徴的な語である場合がある。</p></li>
+</ul>
+<p>共起ネットワークは単なる単語の関係図ではなく、話題構造や意味的関連を読み解く道具として活用できる。</p>
+<hr class="docutils" />
+<!-- 
+### ワードクラウド・共起ネットワーク・クラスタリングの比較
+
+これら3つの手法は、いずれもテキストデータを「見える化」する方法ですが、焦点の当て方と得られる知見が異なる。
+
+| 手法 | 分析の単位 | 主な目的 | 表現形式 | 得られる情報 | 適した用途 |
+|------|-------------|-----------|------------|----------------|--------------|
+| **ワードクラウド** | 単語 | 頻出単語を視覚的に把握 | 文字の大きさ | 出現頻度が高い単語 | 話題の概要を直感的に示したい場合（例：レビュー全体の印象） |
+| **共起ネットワーク** | 単語間のペア | 単語同士の関係構造を理解 | ノードと線（ネットワーク） | 文脈的な関連語・語群 | 話題の構造や関連テーマを分析したい場合（例：SNS上の話題関係） |
+| **クラスタリング** | 文書 | 文書群のグループ構造を発見 | グループ化・デンドログラム | 内容が似た文書のまとまり | テキスト集合を分類したい場合（例：レビューや記事の自動分類） |
+
+--- -->
+<!-- 
+#### ワードクラウド（Word Cloud）
+- **目的**：どんな単語が多く出現しているかを一目で把握する。  
+- **特徴**：単語の出現頻度が大きさで表現され、直感的・印象的に伝わる。  
+- **長所**：可視化が簡単で、授業・報告資料・ダッシュボード向け。  
+- **短所**：文脈や関係性がわからない。  
+- **使用例**：
+  - 商品レビューで「顧客がよく使う言葉」を示す。
+  - SNS投稿の中で注目されているキーワードを可視化。
+
+---
+
+#### 共起ネットワーク（Co-occurrence Network）
+- **目的**：単語同士の関係（共起）を分析し、語のつながりを構造として捉える。  
+- **特徴**：ノードが単語、エッジが共起関係を表すネットワーク構造。  
+- **長所**：文脈的なつながりや話題のまとまりを理解できる。  
+- **短所**：データ量が多いと見づらくなりやすい。  
+- **使用例**：
+  - 「どの単語が中心的なテーマと関連しているか」を可視化。
+  - SNSやニュース記事で「話題の関係構造」や「言葉のネットワーク」を分析。
+
+---
+
+#### クラスタリング（Clustering）
+- **目的**：複数の文書を内容の類似性に基づいて自動的にグループ化する。  
+- **特徴**：各文書がベクトル化（TF-IDFなど）され、類似度に基づいて分類される。  
+- **長所**：大量の文書から潜在的なトピックやテーマを発見できる。  
+- **短所**：結果の解釈に時間がかかる（どんなトピックかを確認する必要あり）。  
+- **使用例**：
+  - レビューを「味に関する意見」「価格に関する意見」などに分類。  
+  - ニュース記事を「政治」「経済」「スポーツ」などに自動的に分ける。  
+
+--- -->
+</section>
+</section>
+<section id="id13">
+<h3><span class="section-number">4.3.5. </span>可視化手法の使い分けのイメージ<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>分析の目的</p></th>
+<th class="head"><p>適した手法</p></th>
+<th class="head"><p>補足</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>文章の中でどんな単語が多いかを見たい</p></td>
+<td><p>ワードクラウド</p></td>
+<td><p>テキスト全体の印象を素早くつかむ</p></td>
+</tr>
+<tr class="row-odd"><td><p>単語がどのようにつながっているかを知りたい</p></td>
+<td><p>共起ネットワーク</p></td>
+<td><p>テーマ間の関係性や共通語を把握</p></td>
+</tr>
+<tr class="row-even"><td><p>文書を自動的にグループ分けしたい</p></td>
+<td><p>クラスタリング</p></td>
+<td><p>潜在的なトピック構造を発見する</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<!-- 
+## まとめ
+
+- **ワードクラウド**：テキスト全体の**概要を俯瞰**する。  
+- **共起ネットワーク**：単語間の**関係構造を理解**する。  
+- **クラスタリング**：文書全体の**グループ構造を抽出**する。  
+
+これらを組み合わせることで、  
+「頻出語（ワードクラウド）→関連語（共起ネットワーク）→文書のまとまり（クラスタリング）」  
+という段階的なテキストマイニング分析が可能になる。
+ -->
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./html"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_basic_analysis.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>前処理・形態素解析・特徴抽出</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04_analysis.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>感情分析</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">4.1. 頻出単語の棒グラフ</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4.1.1. プログラム例（頻出単語の棒グラフ）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4.2. ワードクラウド</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">4.2.1. プログラム例（ワードクラウド）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">4.2.2. 見た目を調整する主なパラメータ</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4.3. 共起ネットワーク</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">4.3.1. 共起ネットワークの特徴</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">4.3.2. プログラム例（共起ペアの計算）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">4.3.3. 共起ネットワークの可視化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">4.3.4. 共起ネットワークの分析の視点</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4.3.4.1. 読み取りのポイント</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">4.3.5. 可視化手法の使い分けのイメージ</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuki Ogawa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

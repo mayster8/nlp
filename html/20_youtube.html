@@ -1,0 +1,1527 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>8. ソーシャルメディアデータの分析 &#8212; 自然言語処理</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'html/20_youtube';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="9. 大規模言語モデル（LLM）" href="30_llm.html" />
+    <link rel="prev" title="7. 観光データの分析" href="10_sightseeing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_top.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">自然言語処理</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">導入</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_intro.html">1. テキストマイニングとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_deploy.html">2. 環境構築</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎的な解析</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_basic_analysis.html">3. 前処理・形態素解析・特徴抽出</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_visualization.html">4. 可視化</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">分析手法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_analysis.html">5. 感情分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_clustering.html">6. 文書分類</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">応用編</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_sightseeing.html">7. 観光データの分析</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">8. ソーシャルメディアデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_llm.html">9. 大規模言語モデル（LLM）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">その他</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="99_dictionary.html">10. 辞書の拡張</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/html/20_youtube.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>ソーシャルメディアデータの分析</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">8.1. データの確認</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">8.1.1. データの中身を確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">8.1.2. データの傾向を確認： コメント件数・文字数の分布</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">8.1.3. データの傾向を確認： コメント文字数の分布</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">8.2. チャットの内容分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">8.2.1. 全コメントでの語の出現頻度（集計）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">8.2.2. 全コメントでのワードクラウド</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">8.2.3. 特定語（候補者名）の出現頻度</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">8.2.3.1. ⚠ 単純なキーワード指定を用いた一致による問題点</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">8.2.3.2. 改善方法：正規表現を用いた判定</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">8.2.4. 特定語（候補者名）の出現頻度（改良版）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">8.2.5. 特定語（候補者名）を含んだ投稿のワードクラウド</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">8.3. ユーザ分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">8.3.1. 一人あたりの投稿件数の分析</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">8.3.2. 投稿数の偏り</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">8.3.3. 語彙多様性の低いユーザの発見</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">8.4. 時系列分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">8.4.1. コメント数の推移（区間集計）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">8.4.2. コメント数の推移（移動平均）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">8.4.3. 盛り上がったシーン（特定語：候補者名）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">8.4.4. 投稿コメントのポジネガ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">8.4.5. 投稿コメントのポジネガ（候補者ごと）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">8.4.6. ポジネガ推移</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">8.4.7. 投稿コメントの感情</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">8.4.8. 投稿コメントの感情（時系列推移）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#youtube">8.5. YouTubeライブチャットデータの取得</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">8. </span>ソーシャルメディアデータの分析<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">今回のゴール</p>
+<ul class="simple">
+<li><p>ソーシャルメディアデータの特徴と分析の意義を理解する</p></li>
+<li><p>YouTubeのライブチャットのデータを分析し、人々の意見・感情の動きを観察する</p></li>
+<li><p>演習での実データ分析を通して、時系列分析の理解・応用力、結果を考察する力を身につける</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<section id="id2">
+<h2><span class="section-number">8.1. </span>データの確認<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>データはWebClassを参照</p>
+<section id="id3">
+<h3><span class="section-number">8.1.1. </span>データの中身を確認<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">youtube_livechat-bVvBEltNXSY.csv</span></code> を Google Colab に配置</p></li>
+<li><p>データ読み込み</p></li>
+</ul>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3><span class="section-number">8.1.2. </span>データの傾向を確認： コメント件数・文字数の分布<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;コメント文字数&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span>
+
+<span class="c1"># 統計量を個々に表示</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;コメント件数：</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> 件&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;コメント文字数（平均値）：</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;コメント文字数&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">}</span><span class="s2"> 文字&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;コメント文字数（中央値）：</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;コメント文字数&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">}</span><span class="s2"> 文字&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;コメント文字数（最小値）：</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;コメント文字数&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2"> 文字&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;コメント文字数（最大値）：</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;コメント文字数&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2"> 文字&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># 統計量をまとめて取得</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;コメント文字数&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>コメント件数：30680 件
+コメント文字数（平均値）：22.39049019607843 文字
+コメント文字数（中央値）：11.0 文字
+コメント文字数（最小値）：1.0 文字
+コメント文字数（最大値）：1050.0 文字
+
+count    30600.000000
+mean        22.390490
+std         54.855716
+min          1.000000
+25%          7.000000
+50%         11.000000
+75%         19.000000
+max       1050.000000
+Name: コメント文字数, dtype: float64
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h3><span class="section-number">8.1.3. </span>データの傾向を確認： コメント文字数の分布<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">japanize_matplotlib</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;コメント文字数&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
+<span class="c1"># df[&quot;コメント文字数&quot;].hist(bins=[0, 5, 10, 15, 20, 25, 30, 35, 40])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;コメントの文字数の分布&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;文字数&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;頻度&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-youtube-comment-hist.png" src="../_images/out-youtube-comment-hist.png" />
+<hr class="docutils" />
+</section>
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h2><span class="section-number">8.2. </span>チャットの内容分析<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<section id="id7">
+<h3><span class="section-number">8.2.1. </span>全コメントでの語の出現頻度（集計）<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">spacy</span> <span class="n">ginza</span> <span class="n">ja</span><span class="o">-</span><span class="n">ginza</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;ja_ginza&#39;</span><span class="p">)</span>
+
+<span class="c1"># コメントデータの読み込み</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;youtube_livechat-bVvBEltNXSY.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">])</span>
+
+<span class="c1"># サンプリングしたい場合</span>
+<span class="c1"># df = df.sample(n=1000, random_state=42)   # 1000件</span>
+<span class="c1"># df = df.sample(frac=0.1, random_state=42) # 全体の10%</span>
+
+
+<span class="c1"># 名詞・固有名詞・形容詞</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+
+<span class="c1"># ストップワード</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
+
+<span class="c1"># 単語リストを作成</span>
+<span class="n">all_terms</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]):</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+      <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+          <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+              <span class="n">all_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+      <span class="k">continue</span>
+
+<span class="c1"># 頻度を集計</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">all_terms</span><span class="p">)</span>
+<span class="n">top_words</span> <span class="o">=</span> <span class="n">counter</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">top_words</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[(&#39;高市(PROPN)&#39;, 11089),
+ (&#39;さん(NOUN)&#39;, 5503),
+ (&#39;小泉(PROPN)&#39;, 3916),
+ (&#39;hands(NOUN)&#39;, 1884),
+ (&#39;択(NOUN)&#39;, 1804),
+ (&#39;clapping(PROPN)&#39;, 1750),
+ (&#39;自民党(PROPN)&#39;, 1607),
+ (&#39;総理(NOUN)&#39;, 1537),
+ (&#39;早苗(PROPN)&#39;, 1460),
+ (&#39;ら(NOUN)&#39;, 1441),
+ (&#39;日本(PROPN)&#39;, 1433),
+ (&#39;日本人(NOUN)&#39;, 1356),
+ (&#39;FACE(NOUN)&#39;, 1262),
+ (&#39;進次郎(PROPN)&#39;, 1244),
+ (&#39;総裁(NOUN)&#39;, 1234),
+ (&#39;万歳(NOUN)&#39;, 1075),
+ (&#39;ステマ(NOUN)&#39;, 1062),
+ (&#39;-(NOUN)&#39;, 909),
+ (&#39;民意(NOUN)&#39;, 904),
+ (&#39;票(NOUN)&#39;, 823)]
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id8">
+<h3><span class="section-number">8.2.2. </span>全コメントでのワードクラウド<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">fonts</span><span class="o">-</span><span class="n">ipaexfont</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">spacy</span> <span class="n">ginza</span> <span class="n">ja</span><span class="o">-</span><span class="n">ginza</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ワードクラウド</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">wordcloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">WordCloud</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">font_manager</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;youtube_livechat-bVvBEltNXSY.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">])</span>
+
+<span class="c1"># サンプリングしたい場合</span>
+<span class="c1"># df = df.sample(n=1000, random_state=42)   # 1000件</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span> <span class="c1"># 全体の10%</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+<span class="c1"># 名詞・固有名詞・形容詞</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+
+<span class="c1"># ストップワード</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
+
+<span class="c1"># 単語リストを作成</span>
+<span class="n">all_terms</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
+
+  <span class="k">try</span><span class="p">:</span>
+    <span class="c1"># 改行文字（&quot;\n&quot;,&quot;\r\n&quot;等）を一括で除去。ワードクラウドでは改行文字はエラーとなるため</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">all_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+  <span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="c1"># 頻度を集計</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">all_terms</span><span class="p">)</span>
+
+<span class="n">freq_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">term</span><span class="p">,</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">counter</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">freq_dict</span><span class="p">[</span><span class="n">term</span><span class="p">]</span> <span class="o">=</span> <span class="n">cnt</span>
+
+<span class="n">jp_font_path</span> <span class="o">=</span> <span class="s2">&quot;/usr/share/fonts/opentype/ipaexfont-gothic/ipaexg.ttf&quot;</span>
+
+<span class="c1"># WordCloud の生成</span>
+<span class="n">wc</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">background_color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">font_path</span><span class="o">=</span><span class="n">jp_font_path</span><span class="p">,</span>
+    <span class="c1"># max_words=100,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">wc</span> <span class="o">=</span> <span class="n">wc</span><span class="o">.</span><span class="n">generate_from_frequencies</span><span class="p">(</span><span class="n">freq_dict</span><span class="p">)</span>
+
+<span class="c1"># 表示</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wc</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;bilinear&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-youtube-wordcloud.png" src="../_images/out-youtube-wordcloud.png" />
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h3><span class="section-number">8.2.3. </span>特定語（候補者名）の出現頻度<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+
+<span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;高市&quot;</span><span class="p">,</span> <span class="s2">&quot;小泉&quot;</span><span class="p">,</span> <span class="s2">&quot;茂木&quot;</span><span class="p">,</span> <span class="s2">&quot;小林&quot;</span><span class="p">,</span> <span class="s2">&quot;林&quot;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keywords</span><span class="p">:</span>
+  <span class="n">df_kw</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">na</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;「</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">」を含むコメント数： </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_kw</span><span class="p">)</span><span class="si">}</span><span class="s2"> 件&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>「高市」を含むコメント数： 6242 件
+「小泉」を含むコメント数： 2395 件
+「茂木」を含むコメント数： 126 件
+「小林」を含むコメント数： 123 件
+「林」を含むコメント数： 464 件
+</pre></div>
+</div>
+<hr class="docutils" />
+<section id="id10">
+<h4><span class="section-number">8.2.3.1. </span>⚠ 単純なキーワード指定を用いた一致による問題点<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
+<p>「林」を含んだ投稿の抽出<br />
+<strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_kw</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;林&quot;</span><span class="p">,</span> <span class="n">na</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span>
+<span class="n">df_kw</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id11">
+<h4><span class="section-number">8.2.3.2. </span>改善方法：正規表現を用いた判定<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_kw</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?&lt;!小)林&quot;</span><span class="p">,</span> <span class="n">na</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span>
+<span class="n">df_kw</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id12">
+<h3><span class="section-number">8.2.4. </span>特定語（候補者名）の出現頻度（改良版）<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+
+<span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;高市&quot;</span><span class="p">,</span> <span class="s2">&quot;小泉&quot;</span><span class="p">,</span> <span class="s2">&quot;茂木&quot;</span><span class="p">,</span> <span class="s2">&quot;小林&quot;</span><span class="p">,</span> <span class="s2">&quot;林&quot;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keywords</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;林&quot;</span><span class="p">:</span>
+        <span class="c1"># 「小」が直前にない「林」を抽出</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?&lt;!小)林&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">key</span>
+
+    <span class="n">df_kw</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">na</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;「</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">」を含むコメント数： </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_kw</span><span class="p">)</span><span class="si">}</span><span class="s2"> 件&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id13">
+<h3><span class="section-number">8.2.5. </span>特定語（候補者名）を含んだ投稿のワードクラウド<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">fonts</span><span class="o">-</span><span class="n">ipaexfont</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">spacy</span> <span class="n">ginza</span> <span class="n">ja</span><span class="o">-</span><span class="n">ginza</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ワードクラウド</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">wordcloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">WordCloud</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">font_manager</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;youtube_livechat-bVvBEltNXSY.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">])</span>
+
+<span class="n">keyword</span> <span class="o">=</span> <span class="s2">&quot;高市&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">keyword</span><span class="p">,</span> <span class="n">na</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span>
+
+<span class="c1"># サンプリングしたい場合</span>
+<span class="c1"># df = df.sample(n=1000, random_state=42)   # 1000件</span>
+<span class="c1"># df = df.sample(frac=0.1, random_state=42) # 全体の10%</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+<span class="c1"># 名詞・固有名詞・形容詞</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+
+<span class="c1"># ストップワード</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">keyword</span><span class="p">]</span>
+
+<span class="c1"># 単語リストを作成</span>
+<span class="n">all_terms</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
+
+  <span class="k">try</span><span class="p">:</span>
+    <span class="c1"># 改行文字（&quot;\n&quot;,&quot;\r\n&quot;等）を一括で除去。ワードクラウドでは改行文字はエラーとなるため</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">all_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+  <span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="c1"># 頻度を集計</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">all_terms</span><span class="p">)</span>
+
+<span class="n">freq_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">term</span><span class="p">,</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">counter</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">freq_dict</span><span class="p">[</span><span class="n">term</span><span class="p">]</span> <span class="o">=</span> <span class="n">cnt</span>
+
+<span class="n">jp_font_path</span> <span class="o">=</span> <span class="s2">&quot;/usr/share/fonts/opentype/ipaexfont-gothic/ipaexg.ttf&quot;</span>
+
+<span class="c1"># WordCloud の生成</span>
+<span class="n">wc</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">background_color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">font_path</span><span class="o">=</span><span class="n">jp_font_path</span><span class="p">,</span>
+    <span class="c1"># max_words=100,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">wc</span> <span class="o">=</span> <span class="n">wc</span><span class="o">.</span><span class="n">generate_from_frequencies</span><span class="p">(</span><span class="n">freq_dict</span><span class="p">)</span>
+
+<span class="c1"># 表示</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wc</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;bilinear&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id14">
+<h2><span class="section-number">8.3. </span>ユーザ分析<a class="headerlink" href="#id14" title="Link to this heading">#</a></h2>
+<section id="id15">
+<h3><span class="section-number">8.3.1. </span>一人あたりの投稿件数の分析<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+
+<span class="c1"># 各ユーザの投稿数をカウント</span>
+<span class="n">author_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+
+<span class="c1"># 上位10人を表示</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">author_counts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># 分布</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">author_counts</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;ユーザごとの投稿数分布&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;投稿数（1人あたり）&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;ユーザ数&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>author
+60     263
+303    223
+863    212
+113    210
+282    203
+10     203
+12     183
+694    178
+6      175
+496    160
+</pre></div>
+</div>
+<img alt="../_images/out-youtube-user-hist.png" src="../_images/out-youtube-user-hist.png" />
+</section>
+<hr class="docutils" />
+<section id="id16">
+<h3><span class="section-number">8.3.2. </span>投稿数の偏り<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 投稿数を降順に並べ替え</span>
+<span class="n">counts_sorted</span> <span class="o">=</span> <span class="n">author_counts</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># 累積投稿数と割合</span>
+<span class="n">cum_posts</span> <span class="o">=</span> <span class="n">counts_sorted</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+<span class="n">cum_ratio</span> <span class="o">=</span> <span class="n">cum_posts</span> <span class="o">/</span> <span class="n">cum_posts</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>  <span class="c1"># 全投稿に対する割合（%）</span>
+
+<span class="c1"># プロット</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cum_ratio</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">cum_ratio</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;投稿集中度の分析（累積投稿割合）&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;上位ユーザ順位&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;累積投稿割合（%）&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-youtube-user-dist.png" src="../_images/out-youtube-user-dist.png" />
+</section>
+<hr class="docutils" />
+<section id="id17">
+<h3><span class="section-number">8.3.3. </span>語彙多様性の低いユーザの発見<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="c1"># 形態素解析モデル</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># コメントデータの読み込み</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+
+<span class="c1"># サンプリングしたい場合</span>
+<span class="c1"># df = df.sample(frac=0.1, random_state=42) # 全体の10%</span>
+
+<span class="c1"># ユーザごとの語彙多様性を計算</span>
+<span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">author</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">)):</span>
+    <span class="n">all_text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">all_text</span><span class="p">)</span>
+
+      <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+          <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+      <span class="n">token数</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+      <span class="n">type数</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">tokens</span><span class="p">))</span>
+
+      <span class="k">if</span> <span class="n">token数</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="n">ttr</span> <span class="o">=</span> <span class="mi">0</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="n">ttr</span> <span class="o">=</span> <span class="n">type数</span> <span class="o">/</span> <span class="n">token数</span>
+
+      <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+          <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="n">author</span><span class="p">,</span>
+          <span class="s2">&quot;コメント数&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">),</span>
+          <span class="s2">&quot;総単語数&quot;</span><span class="p">:</span> <span class="n">token数</span><span class="p">,</span>
+          <span class="s2">&quot;異なり語数&quot;</span><span class="p">:</span> <span class="n">type数</span><span class="p">,</span>
+          <span class="s2">&quot;TTR&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">ttr</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+      <span class="p">})</span>
+    <span class="k">except</span><span class="p">:</span>
+      <span class="k">continue</span>
+
+<span class="c1"># 結果をDataFrameにまとめる</span>
+<span class="n">df_ttr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="n">df_ttr</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY-TTR.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+<span class="n">df_ttr</span>
+</pre></div>
+</div>
+<p>コメント数が多く、かつTTRが低い（語彙多様性が低い）ユーザの投稿を確認</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY-TTR.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+<span class="c1"># TTRの昇順に並び替え</span>
+<span class="n">df_ttr</span> <span class="o">=</span> <span class="n">df_ttr</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;TTR&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># コメント数10件以上に限定し、上位10件を表示</span>
+<span class="n">df_ttr</span><span class="p">[</span><span class="n">df_ttr</span><span class="p">[</span><span class="s2">&quot;コメント数&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>指定したユーザ（author）のコメントを表示</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">123</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id18">
+<h2><span class="section-number">8.4. </span>時系列分析<a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
+<section id="id19">
+<h3><span class="section-number">8.4.1. </span>コメント数の推移（区間集計）<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+
+<span class="c1"># コメントデータの読み込み</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+
+<span class="c1"># elapsedTime を分に変換</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_minutes</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">):</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>      <span class="c1"># 時:分:秒</span>
+            <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>    <span class="c1"># 分:秒</span>
+            <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;elapsedTime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">to_minutes</span><span class="p">)</span>
+
+<span class="c1"># 経過時間（分）ごとに集計</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">)</span>
+
+<span class="c1"># グラフ描画</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">],</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;steelblue&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;コメント数の推移&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;経過時間（分）&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;コメント数&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-youtube-comment-time01.png" src="../_images/out-youtube-comment-time01.png" />
+</section>
+<hr class="docutils" />
+<section id="id20">
+<h3><span class="section-number">8.4.2. </span>コメント数の推移（移動平均）<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+
+<span class="c1"># データ読み込み</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+<span class="c1"># elapsedTime を分に変換</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_minutes</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">):</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>      <span class="c1"># 時:分:秒</span>
+            <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>    <span class="c1"># 分:秒</span>
+            <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;elapsedTime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">to_minutes</span><span class="p">)</span>
+
+<span class="c1"># 経過時間（分）ごとにコメント数を集計</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">)</span>
+
+<span class="c1"># 移動平均（5分）</span>
+<span class="n">counts</span><span class="p">[</span><span class="s2">&quot;smooth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># プロット</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">],</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;1分ごとのコメント数&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">],</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;smooth&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;移動平均（5分）&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;コメント数の推移&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;経過時間（分）&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;コメント数&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-youtube-comment-time02.png" src="../_images/out-youtube-comment-time02.png" />
+</section>
+<hr class="docutils" />
+<section id="id21">
+<h3><span class="section-number">8.4.3. </span>盛り上がったシーン（特定語：候補者名）<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+<span class="c1"># データ読み込み</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+<span class="c1"># elapsedTime を分に変換</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_minutes</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">):</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>      <span class="c1"># 時:分:秒</span>
+            <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>    <span class="c1"># 分:秒</span>
+            <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;elapsedTime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">to_minutes</span><span class="p">)</span>
+
+<span class="c1"># キーワード</span>
+<span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;高市&quot;</span><span class="p">,</span> <span class="s2">&quot;小泉&quot;</span><span class="p">,</span> <span class="s2">&quot;茂木&quot;</span><span class="p">,</span> <span class="s2">&quot;小林&quot;</span><span class="p">,</span> <span class="s2">&quot;林&quot;</span><span class="p">]</span>
+
+<span class="c1"># プロット設定</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keywords</span><span class="p">:</span>
+    <span class="c1"># 「林」は「小林」を除外（正規表現：否定の後読み）</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;林&quot;</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?&lt;!小)林&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="c1"># キーワードを含むコメント抽出</span>
+    <span class="n">df_kw</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+
+    <span class="c1"># 経過時間（分）ごとに集計</span>
+    <span class="n">counts_kw</span> <span class="o">=</span> <span class="n">df_kw</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 移動平均（5分ウィンドウ）</span>
+    <span class="n">counts_kw</span><span class="p">[</span><span class="s2">&quot;smooth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts_kw</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="c1"># プロット</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">counts_kw</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">],</span> <span class="n">counts_kw</span><span class="p">[</span><span class="s2">&quot;smooth&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+
+<span class="c1"># 全体のコメント数を背景に追加</span>
+<span class="n">counts_all</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">)</span>
+<span class="n">counts_all</span><span class="p">[</span><span class="s2">&quot;smooth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts_all</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">counts_all</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">],</span> <span class="n">counts_all</span><span class="p">[</span><span class="s2">&quot;smooth&quot;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;全体&quot;</span><span class="p">)</span>
+
+<span class="c1"># グラフ設定</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;特定語を含むコメント数の推移&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;経過時間（分）&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;コメント数&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-youtube-comment-time03.png" src="../_images/out-youtube-comment-time03.png" />
+</section>
+<hr class="docutils" />
+<section id="id22">
+<h3><span class="section-number">8.4.4. </span>投稿コメントのポジネガ<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="n">transformers</span> <span class="n">sentencepiece</span> <span class="o">-</span><span class="n">U</span> <span class="n">torch</span> <span class="n">torchvision</span> <span class="n">torchaudio</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForSequenceClassification</span><span class="p">,</span> <span class="n">TextClassificationPipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.notebook</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="c1"># モデルの読み込み</span>
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;cardiffnlp/twitter-xlm-roberta-base-sentiment&quot;</span>
+<span class="n">tok</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+<span class="n">mdl</span> <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+
+<span class="c1"># パイプライン作成</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">TextClassificationPipeline</span><span class="p">(</span>
+    <span class="n">task</span><span class="o">=</span><span class="s2">&quot;sentiment-analysis&quot;</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tok</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">mdl</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span>
+<span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+<span class="c1"># df = df.sample(n=1000, random_state=42)   # 1000件のサンプリング</span>
+<span class="c1"># df = df.sample(frac=0.1, random_state=42) # 全体の10%のサンプリング</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))):</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;message&quot;</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">message</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="c1"># 感情スコアを追加</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+            <span class="n">record</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">])</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+<span class="c1"># DataFrame化、CSV出力</span>
+<span class="n">df_pn</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="n">df_pn</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY-pn.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">df_pn</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY-pn.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;positive: </span><span class="si">{</span><span class="n">df_pn</span><span class="p">[</span><span class="s2">&quot;positive&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;negative: </span><span class="si">{</span><span class="n">df_pn</span><span class="p">[</span><span class="s2">&quot;negative&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>positive: 0.264
+negative: 0.387
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id23">
+<h3><span class="section-number">8.4.5. </span>投稿コメントのポジネガ（候補者ごと）<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY-pn.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+
+<span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;高市&quot;</span><span class="p">,</span> <span class="s2">&quot;小泉&quot;</span><span class="p">,</span> <span class="s2">&quot;茂木&quot;</span><span class="p">,</span> <span class="s2">&quot;小林&quot;</span><span class="p">,</span> <span class="s2">&quot;林&quot;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keywords</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;林&quot;</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?&lt;!小)林&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">key</span>
+
+    <span class="n">df_pn</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;「</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">」投稿のポジティブ｜ネガティブ： </span><span class="si">{</span><span class="n">df_pn</span><span class="p">[</span><span class="s2">&quot;positive&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">｜</span><span class="si">{</span><span class="n">df_pn</span><span class="p">[</span><span class="s2">&quot;negative&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> (投稿 </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_pn</span><span class="p">)</span><span class="si">}</span><span class="s2"> 件)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>「高市」投稿のポジティブ｜ネガティブ： 0.331｜0.272 (投稿 6242 件)
+「小泉」投稿のポジティブ｜ネガティブ： 0.203｜0.492 (投稿 2395 件)
+「茂木」投稿のポジティブ｜ネガティブ： 0.322｜0.265 (投稿 126 件)
+「小林」投稿のポジティブ｜ネガティブ： 0.372｜0.253 (投稿 123 件)
+「林」投稿のポジティブ｜ネガティブ： 0.231｜0.365 (投稿 357 件)
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id24">
+<h3><span class="section-number">8.4.6. </span>ポジネガ推移<a class="headerlink" href="#id24" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+
+<span class="c1"># データ読み込み</span>
+<span class="n">df_pn</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY-pn.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+
+<span class="c1"># elapsedTime を分に変換</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_minutes</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">):</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>      <span class="c1"># 時:分:秒</span>
+            <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>    <span class="c1"># 分:秒</span>
+            <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+<span class="n">df_pn</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_pn</span><span class="p">[</span><span class="s2">&quot;elapsedTime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">to_minutes</span><span class="p">)</span>
+
+<span class="c1"># 時間ごとに平均スコアを集計</span>
+<span class="n">df_time</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df_pn</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">)[[</span><span class="s2">&quot;positive&quot;</span><span class="p">,</span> <span class="s2">&quot;negative&quot;</span><span class="p">]]</span>
+    <span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># 移動平均で平滑化（5分ウィンドウ）</span>
+<span class="n">df_time</span><span class="p">[</span><span class="s2">&quot;pos_smooth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_time</span><span class="p">[</span><span class="s2">&quot;positive&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">df_time</span><span class="p">[</span><span class="s2">&quot;neg_smooth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_time</span><span class="p">[</span><span class="s2">&quot;negative&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># グラフ描画</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_time</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">],</span> <span class="n">df_time</span><span class="p">[</span><span class="s2">&quot;pos_smooth&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ポジティブ（移動平均）&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_time</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">],</span> <span class="n">df_time</span><span class="p">[</span><span class="s2">&quot;neg_smooth&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ネガティブ（移動平均）&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;投稿のポジティブ・ネガティブスコア推移&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;経過時間（分）&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;スコア（平均値）&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-youtube-comment-pn.png" src="../_images/out-youtube-comment-pn.png" />
+<hr class="docutils" />
+</section>
+<hr class="docutils" />
+<section id="id25">
+<h3><span class="section-number">8.4.7. </span>投稿コメントの感情<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">torch</span><span class="o">==</span><span class="mf">2.8.0</span> <span class="n">torchvision</span><span class="o">==</span><span class="mf">0.23.0</span> <span class="n">torchaudio</span><span class="o">==</span><span class="mf">2.8.0</span> <span class="o">--</span><span class="n">quiet</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">transformers</span> <span class="n">sentencepiece</span> <span class="n">fugashi</span> <span class="n">unidic</span><span class="o">-</span><span class="n">lite</span> <span class="n">pandas</span><span class="o">==</span><span class="mf">2.2.2</span> <span class="o">--</span><span class="n">quiet</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># データ読み込み</span>
+<span class="n">df_emo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY-emo.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+
+<span class="c1"># 感情ラベル</span>
+<span class="n">emo_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;喜び&quot;</span><span class="p">,</span> <span class="s2">&quot;悲しみ&quot;</span><span class="p">,</span> <span class="s2">&quot;期待&quot;</span><span class="p">,</span> <span class="s2">&quot;驚き&quot;</span><span class="p">,</span> <span class="s2">&quot;怒り&quot;</span><span class="p">,</span> <span class="s2">&quot;恐れ&quot;</span><span class="p">,</span> <span class="s2">&quot;嫌悪&quot;</span><span class="p">,</span> <span class="s2">&quot;信頼&quot;</span><span class="p">]</span>
+
+<span class="c1"># 結果表示</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;感情スコア平均値（全コメント）&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">emo</span> <span class="ow">in</span> <span class="n">emo_labels</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">emo</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">df_emo</span><span class="p">[</span><span class="n">emo</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>感情スコア平均値（全コメント）
+喜び: 0.204
+悲しみ: 0.106
+期待: 0.245
+驚き: 0.151
+怒り: 0.064
+恐れ: 0.058
+嫌悪: 0.097
+信頼: 0.064
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id26">
+<h3><span class="section-number">8.4.8. </span>投稿コメントの感情（時系列推移）<a class="headerlink" href="#id26" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+
+<span class="n">df_emo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;youtube_livechat-bVvBEltNXSY-emo.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+
+<span class="c1"># 感情ラベル</span>
+<span class="c1"># emo_labels = [&quot;喜び&quot;, &quot;悲しみ&quot;, &quot;期待&quot;, &quot;驚き&quot;, &quot;怒り&quot;, &quot;恐れ&quot;, &quot;嫌悪&quot;, &quot;信頼&quot;]</span>
+<span class="n">emo_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;喜び&quot;</span><span class="p">,</span> <span class="s2">&quot;悲しみ&quot;</span><span class="p">,</span> <span class="s2">&quot;期待&quot;</span><span class="p">,</span> <span class="s2">&quot;驚き&quot;</span><span class="p">]</span>
+
+<span class="c1"># elapsedTime を分に変換</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_minutes</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">):</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>      <span class="c1"># 時:分:秒</span>
+            <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>    <span class="c1"># 分:秒</span>
+            <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+<span class="n">df_emo</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_emo</span><span class="p">[</span><span class="s2">&quot;elapsedTime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">to_minutes</span><span class="p">)</span>
+
+<span class="c1"># 5分ごとの平均スコアを算出</span>
+<span class="n">df_grouped</span><span class="p">[</span><span class="n">emo_labels</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_grouped</span><span class="p">[</span><span class="n">emo_labels</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># グラフ描画</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">emo</span> <span class="ow">in</span> <span class="n">emo_labels</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_grouped</span><span class="p">[</span><span class="s2">&quot;elapsed_min&quot;</span><span class="p">],</span> <span class="n">df_grouped</span><span class="p">[</span><span class="n">emo</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">emo</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;感情スコアの時系列推移（全コメント）&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;経過時間（分）&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;感情スコア（平均）&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-youtube-comment-emo.png" src="../_images/out-youtube-comment-emo.png" />
+</section>
+</section>
+<section id="youtube">
+<h2><span class="section-number">8.5. </span>YouTubeライブチャットデータの取得<a class="headerlink" href="#youtube" title="Link to this heading">#</a></h2>
+<p>ライブラリのインストール</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">pytchat</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pytchat</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.notebook</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>  <span class="c1"># Google Colab ではこちらを使う</span>
+<span class="c1"># from tqdm import tqdm # ローカル環境ではこちらを使う</span>
+
+<span class="c1"># 設定</span>
+<span class="n">VIDEO_ID</span> <span class="o">=</span> <span class="s2">&quot;bVvBEltNXSY&quot;</span>  <span class="c1"># https://www.youtube.com/watch?v=bVvBEltNXSY</span>
+<span class="n">SAVE_FILE</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;youtube_livechat-</span><span class="si">{</span><span class="n">VIDEO_ID</span><span class="si">}</span><span class="s2">.csv&quot;</span>
+
+<span class="n">MAX_COMMENTS</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># 取得上限</span>
+<span class="c1"># MAX_COMMENTS = 1000000  # 取得上限</span>
+
+<span class="n">chat</span> <span class="o">=</span> <span class="n">pytchat</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">video_id</span><span class="o">=</span><span class="n">VIDEO_ID</span><span class="p">,</span> <span class="n">interruptable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">chat</span><span class="o">.</span><span class="n">tick_speed</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">desc</span><span class="o">=</span><span class="s2">&quot;チャット取得中&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;件&quot;</span><span class="p">)</span>
+
+<span class="c1"># チャット取得</span>
+<span class="k">while</span> <span class="n">chat</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">chat</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">sync_items</span><span class="p">():</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;datetime&quot;</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>       <span class="c1"># 投稿日時</span>
+            <span class="s2">&quot;elapsedTime&quot;</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">elapsedTime</span><span class="p">,</span> <span class="c1"># 経過時間  </span>
+            <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>      <span class="c1"># 投稿者名</span>
+            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">message</span><span class="p">,</span>         <span class="c1"># コメント</span>
+            <span class="s2">&quot;amountString&quot;</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">amountString</span><span class="p">,</span> <span class="c1"># スーパーチャット（あれば）</span>
+        <span class="p">})</span>
+        <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">MAX_COMMENTS</span><span class="p">:</span>
+            <span class="n">chat</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+            <span class="k">break</span>
+
+<span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># CSV保存</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">factorize</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># 投稿者名のマスク（ID化）</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">SAVE_FILE</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./html"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="10_sightseeing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>観光データの分析</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="30_llm.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">9. </span>大規模言語モデル（LLM）</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">8.1. データの確認</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">8.1.1. データの中身を確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">8.1.2. データの傾向を確認： コメント件数・文字数の分布</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">8.1.3. データの傾向を確認： コメント文字数の分布</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">8.2. チャットの内容分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">8.2.1. 全コメントでの語の出現頻度（集計）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">8.2.2. 全コメントでのワードクラウド</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">8.2.3. 特定語（候補者名）の出現頻度</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">8.2.3.1. ⚠ 単純なキーワード指定を用いた一致による問題点</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">8.2.3.2. 改善方法：正規表現を用いた判定</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">8.2.4. 特定語（候補者名）の出現頻度（改良版）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">8.2.5. 特定語（候補者名）を含んだ投稿のワードクラウド</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">8.3. ユーザ分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">8.3.1. 一人あたりの投稿件数の分析</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">8.3.2. 投稿数の偏り</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">8.3.3. 語彙多様性の低いユーザの発見</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">8.4. 時系列分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">8.4.1. コメント数の推移（区間集計）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">8.4.2. コメント数の推移（移動平均）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">8.4.3. 盛り上がったシーン（特定語：候補者名）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">8.4.4. 投稿コメントのポジネガ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">8.4.5. 投稿コメントのポジネガ（候補者ごと）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">8.4.6. ポジネガ推移</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">8.4.7. 投稿コメントの感情</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">8.4.8. 投稿コメントの感情（時系列推移）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#youtube">8.5. YouTubeライブチャットデータの取得</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuki Ogawa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

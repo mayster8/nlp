@@ -1,0 +1,1729 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6. 文書分類 &#8212; 自然言語処理</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'html/05_clustering';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7. 観光データの分析" href="10_sightseeing.html" />
+    <link rel="prev" title="5. 感情分析" href="04_analysis.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_top.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">自然言語処理</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">導入</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_intro.html">1. テキストマイニングとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_deploy.html">2. 環境構築</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎的な解析</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_basic_analysis.html">3. 前処理・形態素解析・特徴抽出</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_visualization.html">4. 可視化</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">分析手法</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_analysis.html">5. 感情分析</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. 文書分類</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">応用編</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_sightseeing.html">7. 観光データの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_youtube.html">8. ソーシャルメディアデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_llm.html">9. 大規模言語モデル（LLM）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">その他</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="99_dictionary.html">10. 辞書の拡張</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/html/05_clustering.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>文書分類</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">6.1. 文書分類とは</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">6.1.1. 文書分類の2つのアプローチ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">6.1.2. 文書分類の応用例</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">6.1.3. 文書クラスタリングの考え方</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">6.1.3.1. 主な手法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means">6.2. K-meansクラスタリング</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">6.2.1. K-meansクラスタリングの流れ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">6.2.2. プログラム例（K-meansクラスタリング）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">6.2.3. 演習用データ（食・スポーツ・映画の18文書）で試す</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">6.3. 階層的クラスタリング</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">6.3.1. 階層的クラスタリングとは</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">6.3.2. クラスタリングの流れ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">6.3.3. 代表的な方法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">6.3.4. 文書の類似度の測り方</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">6.3.5. プログラム例（階層的クラスタリング）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">6.3.6. デンドログラムの読み方</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">6.3.7. 18文書で試す（演習5と同じデータ）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">6.3.8. K-meansとの違い</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lda-latent-dirichlet-allocation">6.4. トピックモデル（LDA：Latent Dirichlet Allocation）</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">6.4.1. トピックモデルとは？</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">6.4.1.1. 特徴</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">6.4.1.2. イメージ</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lda">6.4.2. プログラム例（LDAによるトピックモデル）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">6.5. クラスタリングとトピックモデルの違い</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">6. </span>文書分類<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">今回のゴール</p>
+<ul class="simple">
+<li><p>文書をラベルなしで自動的に分類する「クラスタリング」の考え方を理解する</p></li>
+<li><p>TF-IDFなどのベクトル表現を用いた文書の類似度計算を復習する</p></li>
+<li><p>K-meansクラスタリングおよびLDA（トピックモデル）の基本的な仕組みと実装を学ぶ</p></li>
+</ul>
+</div>
+<section id="id2">
+<h2><span class="section-number">6.1. </span>文書分類とは<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>文書分類（document classification）とは、<strong>複数の文章や記事を内容に応じてグループ化・分類する手法</strong>。<br />
+大量のテキストデータから意味のあるパターンを見つけることを目的としている。</p>
+<section id="id3">
+<h3><span class="section-number">6.1.1. </span>文書分類の2つのアプローチ<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>種類</p></th>
+<th class="head"><p>概要</p></th>
+<th class="head"><p>代表的な手法</p></th>
+<th class="head"><p>例</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>教師あり学習</strong></p></td>
+<td><p>あらかじめラベル（カテゴリ）付きのデータで学習し、新しい文書を自動分類する。</p></td>
+<td><p>ロジスティック回帰、SVM、BERTなど</p></td>
+<td><p>「ニュース記事を政治・経済・スポーツに分類」</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>教師なし学習</strong></p></td>
+<td><p>ラベルのない文書を自動的にグループ化し、内容の傾向を発見する。</p></td>
+<td><p>K-means、階層的クラスタリング、LDAなど</p></td>
+<td><p>「SNS投稿を話題ごとにまとめる」</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>今回の講義では、後者の <strong>教師なし学習（unsupervised learning）</strong> の手法を中心に扱う。<br />
+特に、<strong>K-meansクラスタリング</strong> と <strong>LDA（トピックモデル）</strong> に焦点を当て、<br />
+「似た内容の文書が自動的に集まる」仕組みを理解する。</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">6.1.2. </span>文書分類の応用例<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>ニュース記事やSNS投稿の自動グループ化</p></li>
+<li><p>顧客のレビューを話題ごとに整理</p></li>
+<li><p>論文・レポートのテーマ分析</p></li>
+<li><p>大規模なテキストデータからの知識発見</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h3><span class="section-number">6.1.3. </span>文書クラスタリングの考え方<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>クラスタリングでは、ラベルのない文書を「類似度」に基づいて自動的に分類する。<br />
+目的は、文書群の中に存在する<strong>潜在的なトピック構造</strong>を発見すること。</p>
+<section id="id6">
+<h4><span class="section-number">6.1.3.1. </span>主な手法<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>K-meansクラスタリング</strong>：文書をK個のグループに分ける（中心との距離で分類）</p></li>
+<li><p><strong>階層的クラスタリング</strong>：似た文書から順にまとめていく</p></li>
+<li><p><strong>LDA（Latent Dirichlet Allocation）</strong>：トピックモデルの代表例</p></li>
+</ul>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="k-means">
+<h2><span class="section-number">6.2. </span>K-meansクラスタリング<a class="headerlink" href="#k-means" title="Link to this heading">#</a></h2>
+<section id="id7">
+<h3><span class="section-number">6.2.1. </span>K-meansクラスタリングの流れ<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>文書をTF-IDFベクトルに変換</p></li>
+<li><p>K個のクラスタ中心を初期化</p></li>
+<li><p>各文書を最も近い中心に割り当て</p></li>
+<li><p>各クラスタの平均ベクトルを再計算</p></li>
+<li><p>割り当てが安定するまで繰り返す</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="id8">
+<h3><span class="section-number">6.2.2. </span>プログラム例（K-meansクラスタリング）<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p><strong>ライブラリインストール（必要に応じて）</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">spacy</span> <span class="n">ginza</span> <span class="n">ja</span><span class="o">-</span><span class="n">ginza</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># GiNZAの日本語モデルをロード</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 対象文書</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;昨日の夜はラーメンを食べた。ラーメンは本当に美味しい。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;東京のラーメン店は人気がある。私はラーメンが大好きだ。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;野球の試合を見た。選手たちのプレーが素晴らしかった。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;サッカーの試合を観戦した。スタジアムの雰囲気が最高だった。&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># 形態素解析：名詞・固有名詞・形容詞・動詞を抽出</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">,</span> <span class="s2">&quot;VERB&quot;</span><span class="p">)</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="n">processed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+    <span class="n">processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">terms</span><span class="p">))</span>
+
+<span class="c1"># TF-IDFを計算</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">split_by_space</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>   <span class="c1"># 空白で分割してリストにする</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">split_by_space</span><span class="p">,</span> <span class="n">token_pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">processed</span><span class="p">)</span>
+
+<span class="c1"># TF-IDFをDataFrame化</span>
+<span class="n">df_tfidf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">doc_ids</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)):</span>
+    <span class="n">doc_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;D</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">df_tfidf</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">doc_ids</span>
+
+<span class="c1"># TF-IDFの値</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;＜TF-IDF＞&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_tfidf</span><span class="p">)</span>
+
+<span class="c1"># K-meansクラスタリング</span>
+<span class="n">K</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># 文書ごとのクラスタを表示（DataFrameで保存）</span>
+<span class="n">df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;文書ID&quot;</span><span class="p">:</span> <span class="n">doc_ids</span><span class="p">,</span>
+    <span class="s2">&quot;文書&quot;</span><span class="p">:</span> <span class="n">texts</span><span class="p">,</span>
+    <span class="s2">&quot;クラスタ&quot;</span><span class="p">:</span> <span class="n">labels</span>
+<span class="p">})</span>
+
+<span class="c1"># クラスタリング結果</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">＜クラスタリング結果＞&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_result</span><span class="p">)</span>
+
+<span class="c1"># 補足：各クラスタの代表語を表示</span>
+<span class="n">terms</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+<span class="n">order_centroids</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">top_words</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+    <span class="n">top_terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">order_centroids</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]:</span>
+        <span class="n">top_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">terms</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
+    <span class="n">top_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">top_terms</span><span class="p">))</span>
+
+<span class="n">df_top</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;クラスタ&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">),</span> <span class="s2">&quot;上位語&quot;</span><span class="p">:</span> <span class="n">top_words</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">＜各クラスタの上位語＞&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_top</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p><strong>出力</strong><br />
+＜TF-IDF＞</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>ある</p></th>
+<th class="head"><p>たち</p></th>
+<th class="head"><p>サッカー</p></th>
+<th class="head"><p>スタジアム</p></th>
+<th class="head"><p>プレー</p></th>
+<th class="head"><p>ラーメン</p></th>
+<th class="head"><p>人気</p></th>
+<th class="head"><p>夜</p></th>
+<th class="head"><p>大好き</p></th>
+<th class="head"><p>店</p></th>
+<th class="head"><p>昨日</p></th>
+<th class="head"><p>最高</p></th>
+<th class="head"><p>本当</p></th>
+<th class="head"><p>東京</p></th>
+<th class="head"><p>素晴らしい</p></th>
+<th class="head"><p>美味しい</p></th>
+<th class="head"><p>見る</p></th>
+<th class="head"><p>観戦</p></th>
+<th class="head"><p>試合</p></th>
+<th class="head"><p>選手</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>D1</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.5762982154690183</p></td>
+<td><p>0.0</p></td>
+<td><p>0.3654806060100111</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.3654806060100111</p></td>
+<td><p>0.0</p></td>
+<td><p>0.3654806060100111</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.3654806060100111</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>D2</p></td>
+<td><p>0.3654806060100111</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.5762982154690183</p></td>
+<td><p>0.3654806060100111</p></td>
+<td><p>0.0</p></td>
+<td><p>0.3654806060100111</p></td>
+<td><p>0.3654806060100111</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.3654806060100111</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>D3</p></td>
+<td><p>0.0</p></td>
+<td><p>0.388614292631317</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.388614292631317</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.388614292631317</p></td>
+<td><p>0.0</p></td>
+<td><p>0.388614292631317</p></td>
+<td><p>0.0</p></td>
+<td><p>0.3063879719831814</p></td>
+<td><p>0.388614292631317</p></td>
+</tr>
+<tr class="row-odd"><td><p>D4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4217647821447532</p></td>
+<td><p>0.4217647821447532</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4217647821447532</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4217647821447532</p></td>
+<td><p>0.3325241986862672</p></td>
+<td><p>0.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>＜クラスタリング結果＞</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>文書ID</p></th>
+<th class="head text-left"><p>文書</p></th>
+<th class="head text-center"><p>クラスタ</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>D1</p></td>
+<td class="text-left"><p>昨日の夜はラーメンを食べた。ラーメンは本当に美味しい。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D2</p></td>
+<td class="text-left"><p>東京のラーメン店は人気がある。私はラーメンが大好きだ。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D3</p></td>
+<td class="text-left"><p>野球の試合を見た。選手たちのプレーが素晴らしかった。</p></td>
+<td class="text-center"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D4</p></td>
+<td class="text-left"><p>サッカーの試合を観戦した。スタジアムの雰囲気が最高だった。</p></td>
+<td class="text-center"><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>＜各クラスタの上位語＞</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p></p></th>
+<th class="head text-left"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>0</p></td>
+<td class="text-left"><p>試合, 観戦, 雰囲気, サッカー, スタジアム</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>1</p></td>
+<td class="text-left"><p>ラーメン, 店, 食べる, 東京, 本当</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>→ 「食べ物系」と「スポーツ系」に自然に分かれている。</strong></p>
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h3><span class="section-number">6.2.3. </span>演習用データ（食・スポーツ・映画の18文書）で試す<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>先ほどの4文書は「ラーメン」「試合」のように話題がはっきり分かれる例だった。ここでは、演習4・5とLDAで共通に使う <strong>18文書（食・スポーツ・映画 各6文書）</strong> で試す。</p>
+<p><strong>この例文のつくり方（クラスタリングがうまくいくポイント）</strong></p>
+<ul class="simple">
+<li><p>同じ話題の文書が、<strong>共通の単語</strong>を何度も使っている（例：食→「料理・味・店・メニュー」、スポーツ→「試合・選手・チーム・応援」、映画→「映画・俳優・演技・ストーリー」）</p></li>
+<li><p>話題をまたいで出てくる単語（「人気」「友人」「週末」など）を避けている</p></li>
+<li><p>文書の数をある程度（18件）確保している</p></li>
+</ul>
+<p><strong>データ</strong>：<a class="reference external" href="http://ogawa.isslab.org/nlp/data/data-kmeans.csv">data-kmeans.csv</a>（列：<code class="docutils literal notranslate"><span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">text</span></code>）。下のプログラムは、このURLから直接読み込む。手元のファイルを使う場合は、Google Colab に配置して <code class="docutils literal notranslate"><span class="pre">pd.read_csv(&quot;data-kmeans.csv&quot;,</span> <span class="pre">encoding=&quot;utf-8-sig&quot;)</span></code> のようにファイル名を指定する。なお、このcsvは文字コードが UTF-8（BOM付き）なので、<code class="docutils literal notranslate"><span class="pre">encoding=&quot;utf-8-sig&quot;</span></code> を指定している（Excelで開いても文字化けしない）。</p>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># CSVから文書を読み込む（URLから直接読み込める）</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://ogawa.isslab.org/nlp/data/data-kmeans.csv&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+<span class="c1"># 形態素解析：名詞・固有名詞・形容詞・動詞を抽出</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">,</span> <span class="s2">&quot;VERB&quot;</span><span class="p">)</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="n">processed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+    <span class="n">processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">terms</span><span class="p">))</span>
+
+<span class="c1"># TF-IDF</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">split_by_space</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>   <span class="c1"># 空白で分割してリストにする</span>
+
+<span class="c1"># min_df=2：1つの文書にしか出ない語は除く</span>
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">split_by_space</span><span class="p">,</span> <span class="n">token_pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">min_df</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">processed</span><span class="p">)</span>
+
+<span class="c1"># K-means（初期値による結果のぶれを減らすため n_init=10）</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">doc_ids</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)):</span>
+    <span class="n">doc_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;D</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;文書ID&quot;</span><span class="p">:</span> <span class="n">doc_ids</span><span class="p">,</span>
+                          <span class="s2">&quot;文書&quot;</span><span class="p">:</span> <span class="n">texts</span><span class="p">,</span> <span class="s2">&quot;クラスタ&quot;</span><span class="p">:</span> <span class="n">labels</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;＜クラスタリング結果＞&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_result</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;クラスタ&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+<span class="c1"># 各クラスタの上位語</span>
+<span class="n">terms</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+<span class="n">order_centroids</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">top_words</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+    <span class="n">top_terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">order_centroids</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]:</span>
+        <span class="n">top_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">terms</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
+    <span class="n">top_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">top_terms</span><span class="p">))</span>
+
+<span class="n">df_top</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;クラスタ&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">),</span> <span class="s2">&quot;上位語&quot;</span><span class="p">:</span> <span class="n">top_words</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">＜各クラスタの上位語＞&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_top</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong>（クラスタ番号は実行ごとに入れ替わることがある）</p>
+<p>＜クラスタリング結果＞</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>文書ID</p></th>
+<th class="head text-left"><p>文書</p></th>
+<th class="head text-center"><p>クラスタ</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>D1</p></td>
+<td class="text-left"><p>ドラマの最終回を観ました。俳優の演技とストーリーに感動し、主人公の姿に涙が出ました。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D2</p></td>
+<td class="text-left"><p>駅前のレストランで食事をしました。メニューの種類が多く、料理の味も満足でした。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D3</p></td>
+<td class="text-left"><p>このカフェはランチのメニューが豊富です。料理もデザートも味が良く、店の雰囲気も素敵です。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D4</p></td>
+<td class="text-left"><p>話題の映画を観ました。ストーリーが面白く、監督の演出が印象的な作品でした。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D5</p></td>
+<td class="text-left"><p>定食屋のランチは、味も量も大満足です。毎日メニューが変わり、料理の種類も豊富です。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D6</p></td>
+<td class="text-left"><p>ラグビーの試合は迫力満点でした。両チームの選手がぶつかり合い、最後の得点で勝敗が決まりました。</p></td>
+<td class="text-center"><p>0</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D7</p></td>
+<td class="text-left"><p>新作の映画を映画館で観ました。映像が美しく、俳優の演技も素晴らしい作品でした。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D8</p></td>
+<td class="text-left"><p>イタリアンの店でパスタを食べました。ソースの味とデザートの種類に満足し、また食事に来たいです。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D9</p></td>
+<td class="text-left"><p>駅前のラーメン店でランチを食べました。スープの味が濃厚で、料理の量もたっぷりでした。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D10</p></td>
+<td class="text-left"><p>サッカーの試合をスタジアムで観戦しました。チームが勝利し、選手の得点に応援も盛り上がりました。</p></td>
+<td class="text-center"><p>0</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D11</p></td>
+<td class="text-left"><p>テニスの大会で選手が優勝しました。試合の応援に行き、勝利の瞬間を見ることができました。</p></td>
+<td class="text-center"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D12</p></td>
+<td class="text-left"><p>今日の試合は接戦でした。応援しているチームの選手が最後に得点して勝利しました。</p></td>
+<td class="text-center"><p>0</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D13</p></td>
+<td class="text-left"><p>配信サービスで話題の作品を観ました。俳優の演技が見事で、映画のようなストーリーでした。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D14</p></td>
+<td class="text-left"><p>寿司店で夕食を楽しみました。新鮮な料理と丁寧な味付けで、店の評判にも納得しました。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D15</p></td>
+<td class="text-left"><p>アニメ映画を観ました。映像の迫力と主題歌の音楽が素晴らしく、ストーリーも感動的な作品でした。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D16</p></td>
+<td class="text-left"><p>この作品は映像と音楽が魅力の映画です。主人公のストーリーに引き込まれ、俳優の演技にも感動しました。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D17</p></td>
+<td class="text-left"><p>野球の試合をテレビで応援しました。選手の活躍でチームが勝利し、最高の試合でした。</p></td>
+<td class="text-center"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D18</p></td>
+<td class="text-left"><p>バスケットボールの試合で選手が大活躍しました。チームの勝利に観客の応援も大きくなりました。</p></td>
+<td class="text-center"><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>＜各クラスタの上位語＞</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>クラスタ</p></th>
+<th class="head text-left"><p>上位語</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>0</p></td>
+<td class="text-left"><p>試合, 選手, 勝利, 応援, チーム</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>1</p></td>
+<td class="text-left"><p>観る, ストーリー, 作品, 映画, 演技</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>2</p></td>
+<td class="text-left"><p>料理, 店, 味, メニュー, ランチ</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>→ 「スポーツ」「映画」「食」の3つに、すべての文書が正しく分かれている。</strong></p>
+<blockquote>
+<div><p><strong>補足：<code class="docutils literal notranslate"><span class="pre">min_df=2</span></code> について</strong><br />
+<code class="docutils literal notranslate"><span class="pre">min_df=2</span></code> は「2つ以上の文書に出てくる語だけを使う」という指定。1つの文書にしか出ない語は、他の文書との類似度の手がかりにならないので除く。この18文書では結果はほとんど変わらないが、アンケートの回答のような短い文では、語が散らばってクラスタが分かれにくくなるため、効果が大きくなる。</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>補足：<code class="docutils literal notranslate"><span class="pre">n_init=10</span></code> について</strong><br />
+K-means は最初のクラスタ中心を乱数で決めるため、<code class="docutils literal notranslate"><span class="pre">n_init=1</span></code> だと実行のたびに結果が変わることがある。<code class="docutils literal notranslate"><span class="pre">n_init=10</span></code> とすると、初期値を10回変えて最も良い結果を採用するので、結果が安定する。</p>
+</div></blockquote>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h2><span class="section-number">6.3. </span>階層的クラスタリング<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<section id="id11">
+<h3><span class="section-number">6.3.1. </span>階層的クラスタリングとは<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>文書同士の「似ている関係」を順にまとめていくことで、<strong>文書の関係構造をツリー（木）として表す</strong>手法<br />
+K-means のように「クラスタ数K」を先に決めなくても、後から<strong>どの高さで区切るか</strong>を選べるのが特徴</p>
+</section>
+<hr class="docutils" />
+<section id="id12">
+<h3><span class="section-number">6.3.2. </span>クラスタリングの流れ<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>最初は、すべての文書を1つずつ別のグループにする。</p></li>
+<li><p>最も似ている2つのグループを1つにまとめる。</p></li>
+<li><p>それを繰り返していくと、「どの文書がどの順でまとめられたか」がわかる木（デンドログラム）ができる。</p></li>
+<li><p>木の高さで区切ることで、クラスタ数を変えることができる。</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="id13">
+<h3><span class="section-number">6.3.3. </span>代表的な方法<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>階層的クラスタリングには2つの方法があるが、ここでは一般的な<strong>凝集型</strong>を扱う。</p>
+<ul class="simple">
+<li><p><strong>凝集型</strong>：小さいグループを少しずつ結合していく（下から上に作る）</p></li>
+<li><p><strong>分割型</strong>：全体から順に分けていく（上から下）</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id14">
+<h3><span class="section-number">6.3.4. </span>文書の類似度の測り方<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>文書を数値ベクトル（TF-IDF）に変換して、**コサイン距離（1 − コサイン類似度）**を使って比較する。<br />
+これは「使っている単語の方向がどれくらい似ているか」を表すもので、文章の長さにあまり影響を受けない。</p>
+</section>
+<hr class="docutils" />
+<section id="id15">
+<h3><span class="section-number">6.3.5. </span>プログラム例（階層的クラスタリング）<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p><strong>ライブラリのインストール（図における日本語文字化け対応）</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">japanize</span><span class="o">-</span><span class="n">matplotlib</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics.pairwise</span><span class="w"> </span><span class="kn">import</span> <span class="n">cosine_distances</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="kn">import</span> <span class="n">linkage</span><span class="p">,</span> <span class="n">dendrogram</span><span class="p">,</span> <span class="n">fcluster</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">squareform</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 対象文書</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;昨日の夜はラーメンを食べた。ラーメンは本当に美味しい。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;東京のラーメン店は人気がある。私はラーメンが大好きだ。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;野球の試合を見た。選手たちのプレーが素晴らしかった。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;サッカーの試合を観戦した。スタジアムの雰囲気が最高だった。&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># 形態素解析：名詞・固有名詞・形容詞・動詞を抽出</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">,</span> <span class="s2">&quot;VERB&quot;</span><span class="p">)</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="n">processed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+    <span class="n">processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">terms</span><span class="p">))</span>
+
+<span class="c1"># TF-IDFベクトルを作成</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">split_by_space</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>   <span class="c1"># 空白で分割してリストにする</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">split_by_space</span><span class="p">,</span> <span class="n">token_pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">processed</span><span class="p">)</span>
+
+<span class="c1"># コサイン距離を計算して階層的クラスタリング</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">cosine_distances</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">linkage</span><span class="p">(</span><span class="n">squareform</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">checks</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">)</span>
+
+<span class="c1"># デンドログラムを描画</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">doc_ids</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)):</span>
+    <span class="n">doc_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;D</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">dendrogram</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">doc_ids</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;階層的クラスタリング&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># == クラスタリング結果の抽出 ==</span>
+<span class="c1"># クラスタ数で指定したい場合</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">fcluster</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;maxclust&quot;</span><span class="p">)</span>
+<span class="c1"># 距離のしきい値で指定したい場合</span>
+<span class="c1"># fcluster(Z, t=0.5, criterion=&quot;distance&quot;)</span>
+
+<span class="c1"># 結果をDataFrameで表示</span>
+<span class="n">df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;文書ID&quot;</span><span class="p">:</span> <span class="n">doc_ids</span><span class="p">,</span>
+    <span class="s2">&quot;文書&quot;</span><span class="p">:</span> <span class="n">texts</span><span class="p">,</span>
+    <span class="s2">&quot;クラスタ&quot;</span><span class="p">:</span> <span class="n">labels</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;＜クラスタリング結果＞&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_result</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-clustering.png" src="../_images/out-clustering.png" />
+<p>＜クラスタリング結果＞</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>文書ID</p></th>
+<th class="head text-left"><p>文書</p></th>
+<th class="head text-center"><p>クラスタ</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>D1</p></td>
+<td class="text-left"><p>昨日の夜はラーメンを食べた。ラーメンは本当に美味しい。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D2</p></td>
+<td class="text-left"><p>東京のラーメン店は人気がある。私はラーメンが大好きだ。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D3</p></td>
+<td class="text-left"><p>野球の試合を見た。選手たちのプレーが素晴らしかった。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D4</p></td>
+<td class="text-left"><p>サッカーの試合を観戦した。スタジアムの雰囲気が最高だった。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id16">
+<h3><span class="section-number">6.3.6. </span>デンドログラムの読み方<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>葉（下のラベル）＝各文書</p></li>
+<li><p>枝の高さ＝その文書どうし（またはクラスタ）がどれくらい似ているか（距離）</p></li>
+<li><p>高さの低い部分で結合しているほど似ている</p></li>
+<li><p><strong>切る高さ</strong>を変えることでクラスタ数を調整できる</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id17">
+<h3><span class="section-number">6.3.7. </span>18文書で試す（演習5と同じデータ）<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>K-meansと同じ <a class="reference external" href="http://ogawa.isslab.org/nlp/data/data-kmeans.csv">data-kmeans.csv</a>（18文書）を使い、階層的クラスタリングで樹形図を作る。</p>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics.pairwise</span><span class="w"> </span><span class="kn">import</span> <span class="n">cosine_distances</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="kn">import</span> <span class="n">linkage</span><span class="p">,</span> <span class="n">dendrogram</span><span class="p">,</span> <span class="n">fcluster</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">squareform</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+<span class="c1"># CSVから文書を読み込む（URLから直接読み込める）</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://ogawa.isslab.org/nlp/data/data-kmeans.csv&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">,</span> <span class="s2">&quot;VERB&quot;</span><span class="p">)</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+<span class="n">processed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+    <span class="n">processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">terms</span><span class="p">))</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">split_by_space</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>   <span class="c1"># 空白で分割してリストにする</span>
+
+<span class="c1"># min_df=2：2つ以上の文書に出てくる語だけを使う（1つの文書にしか出ない語は除く）</span>
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">split_by_space</span><span class="p">,</span> <span class="n">token_pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">min_df</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">processed</span><span class="p">)</span>
+
+<span class="c1"># コサイン距離で階層的クラスタリング</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">cosine_distances</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">linkage</span><span class="p">(</span><span class="n">squareform</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">checks</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">doc_ids</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)):</span>
+    <span class="n">doc_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;D</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">dendrogram</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">doc_ids</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;階層的クラスタリング&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">labels</span> <span class="o">=</span> <span class="n">fcluster</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;maxclust&quot;</span><span class="p">)</span>
+<span class="n">df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;文書ID&quot;</span><span class="p">:</span> <span class="n">doc_ids</span><span class="p">,</span>
+                          <span class="s2">&quot;文書&quot;</span><span class="p">:</span> <span class="n">texts</span><span class="p">,</span> <span class="s2">&quot;クラスタ&quot;</span><span class="p">:</span> <span class="n">labels</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;＜クラスタリング結果＞&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_result</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;クラスタ&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-clustering-18.png" src="../_images/out-clustering-18.png" />
+<p>＜クラスタリング結果（3クラスタ）＞</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>文書ID</p></th>
+<th class="head text-left"><p>文書</p></th>
+<th class="head text-center"><p>クラスタ</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>D1</p></td>
+<td class="text-left"><p>ドラマの最終回を観ました。俳優の演技とストーリーに感動し、主人公の姿に涙が出ました。</p></td>
+<td class="text-center"><p>3</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D2</p></td>
+<td class="text-left"><p>駅前のレストランで食事をしました。メニューの種類が多く、料理の味も満足でした。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D3</p></td>
+<td class="text-left"><p>このカフェはランチのメニューが豊富です。料理もデザートも味が良く、店の雰囲気も素敵です。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D4</p></td>
+<td class="text-left"><p>話題の映画を観ました。ストーリーが面白く、監督の演出が印象的な作品でした。</p></td>
+<td class="text-center"><p>3</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D5</p></td>
+<td class="text-left"><p>定食屋のランチは、味も量も大満足です。毎日メニューが変わり、料理の種類も豊富です。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D6</p></td>
+<td class="text-left"><p>ラグビーの試合は迫力満点でした。両チームの選手がぶつかり合い、最後の得点で勝敗が決まりました。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D7</p></td>
+<td class="text-left"><p>新作の映画を映画館で観ました。映像が美しく、俳優の演技も素晴らしい作品でした。</p></td>
+<td class="text-center"><p>3</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D8</p></td>
+<td class="text-left"><p>イタリアンの店でパスタを食べました。ソースの味とデザートの種類に満足し、また食事に来たいです。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D9</p></td>
+<td class="text-left"><p>駅前のラーメン店でランチを食べました。スープの味が濃厚で、料理の量もたっぷりでした。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D10</p></td>
+<td class="text-left"><p>サッカーの試合をスタジアムで観戦しました。チームが勝利し、選手の得点に応援も盛り上がりました。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D11</p></td>
+<td class="text-left"><p>テニスの大会で選手が優勝しました。試合の応援に行き、勝利の瞬間を見ることができました。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D12</p></td>
+<td class="text-left"><p>今日の試合は接戦でした。応援しているチームの選手が最後に得点して勝利しました。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D13</p></td>
+<td class="text-left"><p>配信サービスで話題の作品を観ました。俳優の演技が見事で、映画のようなストーリーでした。</p></td>
+<td class="text-center"><p>3</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D14</p></td>
+<td class="text-left"><p>寿司店で夕食を楽しみました。新鮮な料理と丁寧な味付けで、店の評判にも納得しました。</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D15</p></td>
+<td class="text-left"><p>アニメ映画を観ました。映像の迫力と主題歌の音楽が素晴らしく、ストーリーも感動的な作品でした。</p></td>
+<td class="text-center"><p>3</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D16</p></td>
+<td class="text-left"><p>この作品は映像と音楽が魅力の映画です。主人公のストーリーに引き込まれ、俳優の演技にも感動しました。</p></td>
+<td class="text-center"><p>3</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D17</p></td>
+<td class="text-left"><p>野球の試合をテレビで応援しました。選手の活躍でチームが勝利し、最高の試合でした。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D18</p></td>
+<td class="text-left"><p>バスケットボールの試合で選手が大活躍しました。チームの勝利に観客の応援も大きくなりました。</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>→ 樹形図でも、「食」「スポーツ」「映画」の3つのまとまりが大きな枝として分かれている。</strong></p>
+</section>
+<hr class="docutils" />
+<section id="id18">
+<h3><span class="section-number">6.3.8. </span>K-meansとの違い<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>比較項目</p></th>
+<th class="head"><p>K-means</p></th>
+<th class="head"><p>階層的クラスタリング</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>クラスタ数</p></td>
+<td><p>あらかじめ指定する</p></td>
+<td><p>デンドログラムを見て後から決める</p></td>
+</tr>
+<tr class="row-odd"><td><p>結果の形</p></td>
+<td><p>中心（重心）で分ける</p></td>
+<td><p>木構造で関係を表現</p></td>
+</tr>
+<tr class="row-even"><td><p>向いている規模</p></td>
+<td><p>大量データ</p></td>
+<td><p>文書数が少ない場合（〜数百件）</p></td>
+</tr>
+<tr class="row-odd"><td><p>可視化</p></td>
+<td><p>クラスタ番号のみ</p></td>
+<td><p>デンドログラムで関係がわかる</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+<hr class="docutils" />
+<section id="lda-latent-dirichlet-allocation">
+<h2><span class="section-number">6.4. </span>トピックモデル（LDA：Latent Dirichlet Allocation）<a class="headerlink" href="#lda-latent-dirichlet-allocation" title="Link to this heading">#</a></h2>
+<section id="id19">
+<h3><span class="section-number">6.4.1. </span>トピックモデルとは？<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p>クラスタリングでは「どの文書がどのクラスタに属するか」を求めるが、<br />
+<strong>LDA（潜在的ディリクレ配分法）</strong> では「各文書がどのトピックをどの割合で含むか」を推定する。</p>
+<section id="id20">
+<h4><span class="section-number">6.4.1.1. </span>特徴<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>各文書は複数のトピックを<strong>混合している</strong>と仮定。</p></li>
+<li><p>各トピックは特定の単語分布によって表される。</p></li>
+<li><p>トピック構造を確率的に推定する。</p></li>
+</ul>
+</section>
+<section id="id21">
+<h4><span class="section-number">6.4.1.2. </span>イメージ<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>文書</p></th>
+<th class="head"><p>トピック1（料理）</p></th>
+<th class="head"><p>トピック2（スポーツ）</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>D1: 「お寿司を食べた」</p></td>
+<td><p>0.9</p></td>
+<td><p>0.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>D2: 「野球の試合を見た」</p></td>
+<td><p>0.2</p></td>
+<td><p>0.8</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="lda">
+<h3><span class="section-number">6.4.2. </span>プログラム例（LDAによるトピックモデル）<a class="headerlink" href="#lda" title="Link to this heading">#</a></h3>
+<p>K-means・階層的クラスタリングと同じ <a class="reference external" href="http://ogawa.isslab.org/nlp/data/data-kmeans.csv">data-kmeans.csv</a>（18文書）を使う。LDAは文書数・語数が少ないと結果が不安定になりやすいので、<strong>1つの文書にしか出ない単語を除く</strong>（<code class="docutils literal notranslate"><span class="pre">min_df=2</span></code>）など、いくつか設定を工夫している。</p>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">LatentDirichletAllocation</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+<span class="c1"># CSVから文書を読み込む（URLから直接読み込める）</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://ogawa.isslab.org/nlp/data/data-kmeans.csv&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+<span class="c1"># 形態素解析：名詞・固有名詞を抽出（原形）</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">)</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
+
+<span class="n">processed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tokenize</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+
+<span class="c1"># Bag of Words（min_df=2：1つの文書にしか出ない語は除く）</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">split_by_space</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>   <span class="c1"># 空白で分割してリストにする</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">split_by_space</span><span class="p">,</span> <span class="n">token_pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">min_df</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">processed</span><span class="p">)</span>
+
+<span class="c1"># LDAモデル</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">lda</span> <span class="o">=</span> <span class="n">LatentDirichletAllocation</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">learning_method</span><span class="o">=</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span>
+                                <span class="n">doc_topic_prior</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">topic_word_prior</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">lda</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># 文書ごとのトピック分布（DataFrameで表示）</span>
+<span class="n">topic_cols</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+    <span class="n">topic_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;トピック</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">df_topics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">lda</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">topic_cols</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">doc_ids</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)):</span>
+    <span class="n">doc_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;D</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">df_topics</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;文書ID&quot;</span><span class="p">,</span> <span class="n">doc_ids</span><span class="p">)</span>
+<span class="n">doc_heads</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc_heads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">[:</span><span class="mi">18</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;…&quot;</span><span class="p">)</span>
+<span class="n">df_topics</span><span class="p">[</span><span class="s2">&quot;文書&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc_heads</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;＜文書ごとのトピック分布＞&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_topics</span><span class="p">)</span>
+
+<span class="c1"># 各トピックの上位語（DataFrameで表示）</span>
+<span class="n">words</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+<span class="n">top_words</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">lda</span><span class="o">.</span><span class="n">components_</span><span class="p">:</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">topic</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">6</span><span class="p">]:</span>
+        <span class="n">top</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+    <span class="n">top_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">top</span><span class="p">))</span>
+<span class="n">df_words</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;トピック&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">),</span>
+    <span class="s2">&quot;上位語&quot;</span><span class="p">:</span> <span class="n">top_words</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;＜各トピックの上位語＞&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_words</span><span class="p">)</span>
+
+<span class="c1"># 発展：2つの話題が混ざった新しい文書のトピック分布（DataFrameで表示）</span>
+<span class="n">new_text</span> <span class="o">=</span> <span class="s2">&quot;試合を観戦したあと、チームの選手と一緒に店で食事をしました。&quot;</span>
+<span class="n">x_new</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">([</span><span class="n">tokenize</span><span class="p">(</span><span class="n">new_text</span><span class="p">)])</span>
+<span class="n">df_new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">lda</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x_new</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">topic_cols</span><span class="p">)</span>
+<span class="n">df_new</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;文書&quot;</span><span class="p">,</span> <span class="n">new_text</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;＜新しい文書のトピック分布＞&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_new</span><span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p><strong>補足：LDAを安定させる設定</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">min_df=2</span></code>：1つの文書にしか出てこない単語は、トピックの手がかりにならないので除く</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">doc_topic_prior=0.1</span></code>：「1つの文書は少数のトピックに偏る」ことを仮定する（小さいほど偏る）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">topic_word_prior=1.0</span></code>：「各トピックはある程度いろいろな単語を使う」ことを仮定する</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_iter=200</span></code>, <code class="docutils literal notranslate"><span class="pre">learning_method=&quot;batch&quot;</span></code>：繰り返し回数を十分にとり、結果を安定させる</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">random_state=0</span></code>：乱数を固定する（LDAは初期値によって結果が変わることがある）</p></li>
+</ul>
+</div></blockquote>
+<hr class="docutils" />
+<p><strong>出力</strong></p>
+<p>＜文書ごとのトピック分布＞</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>文書ID</p></th>
+<th class="head text-center"><p>トピック0</p></th>
+<th class="head text-center"><p>トピック1</p></th>
+<th class="head text-center"><p>トピック2</p></th>
+<th class="head text-left"><p>文書（先頭）</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>D1</p></td>
+<td class="text-center"><p>0.95</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-left"><p>ドラマの最終回を観ました。俳優の演技…</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D2</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.97</p></td>
+<td class="text-left"><p>駅前のレストランで食事をしました。メ…</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D3</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.97</p></td>
+<td class="text-left"><p>このカフェはランチのメニューが豊富で…</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D4</p></td>
+<td class="text-center"><p>0.95</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-left"><p>話題の映画を観ました。ストーリーが面…</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D5</p></td>
+<td class="text-center"><p>0.01</p></td>
+<td class="text-center"><p>0.01</p></td>
+<td class="text-center"><p>0.97</p></td>
+<td class="text-left"><p>定食屋のランチは、味も量も大満足です…</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D6</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.97</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-left"><p>ラグビーの試合は迫力満点でした。両チ…</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D7</p></td>
+<td class="text-center"><p>0.96</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-left"><p>新作の映画を映画館で観ました。映像が…</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D8</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.96</p></td>
+<td class="text-left"><p>イタリアンの店でパスタを食べました。…</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D9</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.97</p></td>
+<td class="text-left"><p>駅前のラーメン店でランチを食べました…</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D10</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.96</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-left"><p>サッカーの試合をスタジアムで観戦しま…</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D11</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.95</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-left"><p>テニスの大会で選手が優勝しました。試…</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D12</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.95</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-left"><p>今日の試合は接戦でした。応援している…</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D13</p></td>
+<td class="text-center"><p>0.97</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-left"><p>配信サービスで話題の作品を観ました。…</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D14</p></td>
+<td class="text-center"><p>0.04</p></td>
+<td class="text-center"><p>0.04</p></td>
+<td class="text-center"><p>0.91</p></td>
+<td class="text-left"><p>寿司店で夕食を楽しみました。新鮮な料…</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D15</p></td>
+<td class="text-center"><p>0.97</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-left"><p>アニメ映画を観ました。映像の迫力と主…</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D16</p></td>
+<td class="text-center"><p>0.98</p></td>
+<td class="text-center"><p>0.01</p></td>
+<td class="text-center"><p>0.01</p></td>
+<td class="text-left"><p>この作品は映像と音楽が魅力の映画です…</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D17</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.95</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-left"><p>野球の試合をテレビで応援しました。選…</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D18</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.97</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-left"><p>バスケットボールの試合で選手が大活躍…</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>＜各トピックの上位語＞</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>トピック</p></th>
+<th class="head text-left"><p>上位語</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>0</p></td>
+<td class="text-left"><p>映画, 作品, ストーリー, 演技, 俳優, 映像</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>1</p></td>
+<td class="text-left"><p>試合, 選手, チーム, 応援, 得点, 最後</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>2</p></td>
+<td class="text-left"><p>味, 料理, 店, メニュー, ランチ, 種類</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>→ トピック0が「映画」、トピック1が「スポーツ」、トピック2が「食」と解釈できる。</strong><br />
+（トピックの番号は実行ごとに入れ替わることがある。上位語を見て意味を解釈するのは人間の役割）</p>
+<p>＜新しい文書のトピック分布（発展）＞</p>
+<p>学習済みのモデルに、<strong>2つの話題が混ざった文書</strong>を入力してみる。</p>
+<blockquote>
+<div><p>「試合を観戦したあと、チームの選手と一緒に店で食事をしました。」</p>
+</div></blockquote>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>文書</p></th>
+<th class="head text-center"><p>トピック0</p></th>
+<th class="head text-center"><p>トピック1</p></th>
+<th class="head text-center"><p>トピック2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>試合を観戦したあと、チームの選手と一緒に店で食事をしました。</p></td>
+<td class="text-center"><p>0.02</p></td>
+<td class="text-center"><p>0.72</p></td>
+<td class="text-center"><p>0.27</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>→ K-meansでは「スポーツ」か「食」のどちらか1つに割り当てられるが、LDAでは「スポーツ約7割・食約3割」のように、<strong>複数のトピックの混合</strong>として表せる。</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id22">
+<h2><span class="section-number">6.5. </span>クラスタリングとトピックモデルの違い<a class="headerlink" href="#id22" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>観点</p></th>
+<th class="head"><p>K-means（クラスタリング）</p></th>
+<th class="head"><p>LDA（トピックモデル）</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>文書の所属</p></td>
+<td><p>1つのクラスタに属する</p></td>
+<td><p>複数トピックを混合</p></td>
+</tr>
+<tr class="row-odd"><td><p>手法の性質</p></td>
+<td><p>幾何的（距離ベース）</p></td>
+<td><p>確率的（分布ベース）</p></td>
+</tr>
+<tr class="row-even"><td><p>出力</p></td>
+<td><p>クラスタごとの文書集合</p></td>
+<td><p>トピックごとの単語分布</p></td>
+</tr>
+<tr class="row-odd"><td><p>解釈</p></td>
+<td><p>グループ分類</p></td>
+<td><p>話題の構造推定</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./html"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04_analysis.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>感情分析</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="10_sightseeing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>観光データの分析</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">6.1. 文書分類とは</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">6.1.1. 文書分類の2つのアプローチ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">6.1.2. 文書分類の応用例</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">6.1.3. 文書クラスタリングの考え方</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">6.1.3.1. 主な手法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means">6.2. K-meansクラスタリング</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">6.2.1. K-meansクラスタリングの流れ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">6.2.2. プログラム例（K-meansクラスタリング）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">6.2.3. 演習用データ（食・スポーツ・映画の18文書）で試す</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">6.3. 階層的クラスタリング</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">6.3.1. 階層的クラスタリングとは</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">6.3.2. クラスタリングの流れ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">6.3.3. 代表的な方法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">6.3.4. 文書の類似度の測り方</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">6.3.5. プログラム例（階層的クラスタリング）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">6.3.6. デンドログラムの読み方</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">6.3.7. 18文書で試す（演習5と同じデータ）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">6.3.8. K-meansとの違い</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lda-latent-dirichlet-allocation">6.4. トピックモデル（LDA：Latent Dirichlet Allocation）</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">6.4.1. トピックモデルとは？</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">6.4.1.1. 特徴</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">6.4.1.2. イメージ</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lda">6.4.2. プログラム例（LDAによるトピックモデル）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">6.5. クラスタリングとトピックモデルの違い</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuki Ogawa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

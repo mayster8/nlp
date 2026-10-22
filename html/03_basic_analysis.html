@@ -1,0 +1,1369 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3. 前処理・形態素解析・特徴抽出 &#8212; 自然言語処理</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'html/03_basic_analysis';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. 可視化" href="03_visualization.html" />
+    <link rel="prev" title="2. 環境構築" href="02_deploy.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_top.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">自然言語処理</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">導入</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_intro.html">1. テキストマイニングとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_deploy.html">2. 環境構築</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎的な解析</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. 前処理・形態素解析・特徴抽出</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_visualization.html">4. 可視化</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">分析手法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_analysis.html">5. 感情分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_clustering.html">6. 文書分類</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">応用編</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_sightseeing.html">7. 観光データの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_youtube.html">8. ソーシャルメディアデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_llm.html">9. 大規模言語モデル（LLM）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">その他</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="99_dictionary.html">10. 辞書の拡張</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/html/03_basic_analysis.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>前処理・形態素解析・特徴抽出</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.1. テキスト前処理の重要性</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.1.1. なぜ前処理が必要か？</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.1.2. 主な前処理の例</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ginza">3.2. 形態素解析（GiNZA）</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.2.1. プログラム例（形態素の抽出）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.2.2. プログラム例（形態素の詳細表示）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3.2.3. プログラム例（改行を含む長文）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">3.2.4. プログラム例（特定の品詞、ストップワード対応）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">3.2.5. プログラム例（複数文、特定の品詞、ストップワード対応）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bow-tf-idf">3.3. 特徴抽出（BoW と TF-IDF）</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bag-of-words-bow">3.3.1. Bag-of-Words（BoW）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">3.3.1.1. プログラム例（用語の頻度を計算）</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#counter">3.3.1.1.1. 補足：Counter の使い方</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#data-frame">3.3.1.2. プログラム例（用語の頻度を計算し、Data Frame に保存）</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tf-idf">3.3.2. TF-IDF</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">3.3.2.1. 計算式</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">3.3.2.2. プログラム例（TF-IDF の計算）</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tfidfvectorizer">3.3.2.2.1. TfidfVectorizer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">3.4. 演習課題</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3.4.1. 演習1_1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3.4.2. 演習1_2</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">3. </span>前処理・形態素解析・特徴抽出<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">今回のゴール</p>
+<ul class="simple">
+<li><p>テキスト前処理の必要性を理解する</p></li>
+<li><p>形態素解析（spaCy + GiNZA）を体験する</p></li>
+<li><p>Bag-of-Words（BoW）と TF-IDF の仕組みを理解する</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<section id="id2">
+<h2><span class="section-number">3.1. </span>テキスト前処理の重要性<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3><span class="section-number">3.1.1. </span>なぜ前処理が必要か？<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>生のテキストはそのままでは分析しにくい。</p></li>
+<li><p>句読点・記号・助詞などのノイズが多い。</p></li>
+<li><p>表記ゆれ（例：スマホ／スマートフォン）が存在する。</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3><span class="section-number">3.1.2. </span>主な前処理の例<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>正規化（全角・半角の統一、かな種の統一 など）</p></li>
+<li><p>ストップワード除去（「する」「ある」「こと」など意味が薄い語）</p></li>
+<li><p>表記ゆれ処理（「出来る」⇔「できる」、「東京都市大学」⇔「都市大」）</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="ginza">
+<h2><span class="section-number">3.2. </span>形態素解析（GiNZA）<a class="headerlink" href="#ginza" title="Link to this heading">#</a></h2>
+<p><strong>ライブラリインストール（必要に応じて）</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">spacy</span> <span class="n">ginza</span> <span class="n">ja</span><span class="o">-</span><span class="n">ginza</span>
+</pre></div>
+</div>
+<section id="id5">
+<h3><span class="section-number">3.2.1. </span>プログラム例（形態素の抽出）<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s2">&quot;私は昨日、東京で美味しいラーメンを食べた。&quot;</span><span class="p">)</span>
+
+<span class="c1"># 形態素（原形）を抽出してリストに追加</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+    <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[&#39;私&#39;, &#39;は&#39;, &#39;昨日&#39;, &#39;、&#39;, &#39;東京&#39;, &#39;で&#39;, &#39;美味しい&#39;, &#39;ラーメン&#39;, &#39;を&#39;, &#39;食べる&#39;, &#39;た&#39;, &#39;。&#39;]
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h3><span class="section-number">3.2.2. </span>プログラム例（形態素の詳細表示）<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s2">&quot;私は昨日、東京で美味しいラーメンを食べた。&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;表層形: </span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="se">\t</span><span class="s2">原形: </span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="si">}</span><span class="se">\t</span><span class="s2">UPOS: </span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span><span class="si">}</span><span class="se">\t</span><span class="s2">詳細品詞: </span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">tag_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">表層形</span><span class="p">:</span> <span class="n">私</span>      <span class="n">原形</span><span class="p">:</span> <span class="n">私</span>      <span class="n">UPOS</span><span class="p">:</span> <span class="n">PRON</span>   <span class="n">詳細品詞</span><span class="p">:</span> <span class="n">名詞</span><span class="o">-</span><span class="n">代名詞</span><span class="o">-</span><span class="n">一般</span>
+<span class="n">表層形</span><span class="p">:</span> <span class="n">昨日</span>    <span class="n">原形</span><span class="p">:</span> <span class="n">昨日</span>    <span class="n">UPOS</span><span class="p">:</span> <span class="n">ADV</span>    <span class="n">詳細品詞</span><span class="p">:</span> <span class="n">名詞</span><span class="o">-</span><span class="n">副詞的</span><span class="o">-</span><span class="n">一般</span>
+<span class="n">表層形</span><span class="p">:</span> <span class="n">東京</span>    <span class="n">原形</span><span class="p">:</span> <span class="n">東京</span>    <span class="n">UPOS</span><span class="p">:</span> <span class="n">PROPN</span>  <span class="n">詳細品詞</span><span class="p">:</span> <span class="n">名詞</span><span class="o">-</span><span class="n">固有名詞</span><span class="o">-</span><span class="n">地名</span><span class="o">-</span><span class="n">一般</span>
+<span class="n">表層形</span><span class="p">:</span> <span class="n">ラーメン</span> <span class="n">原形</span><span class="p">:</span> <span class="n">ラーメン</span> <span class="n">UPOS</span><span class="p">:</span> <span class="n">NOUN</span>  <span class="n">詳細品詞</span><span class="p">:</span> <span class="n">名詞</span><span class="o">-</span><span class="n">普通名詞</span><span class="o">-</span><span class="n">一般</span>
+<span class="n">表層形</span><span class="p">:</span> <span class="n">食べ</span>    <span class="n">原形</span><span class="p">:</span> <span class="n">食べる</span>  <span class="n">UPOS</span><span class="p">:</span> <span class="n">VERB</span>   <span class="n">詳細品詞</span><span class="p">:</span> <span class="n">動詞</span><span class="o">-</span><span class="n">一般</span>
+</pre></div>
+</div>
+<p><strong>補足</strong>：f文字列を使った書き方</p>
+<p>Python 3.6 以降で使える <strong>フォーマット済み文字列</strong> の書き方。
+文字列の前に <strong><code class="docutils literal notranslate"><span class="pre">f</span></code></strong> を付け、<code class="docutils literal notranslate"><span class="pre">{}</span></code> の中に変数や式を直接書くことができる。</p>
+<p>＜例＞</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;田中&quot;</span>
+<span class="n">age</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;名前は </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">、年齢は </span><span class="si">{</span><span class="n">age</span><span class="si">}</span><span class="s2"> 歳です。&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id7">
+<h3><span class="section-number">3.2.3. </span>プログラム例（改行を含む長文）<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">自然言語処理の基本概念や主要な分析手法について理解して、説明できる。</span>
+<span class="s2">Pythonを用いて自然言語処理の基本的なプログラムを実装して、実データを分析できる。</span>
+<span class="s2">自然言語処理の技術が応用される分野や課題について考察して、将来の応用可能性を議論できる。</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="c1"># 形態素（原形）を抽出してリストに追加</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+    <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[&#39;\n&#39;, &#39;自然言語処理&#39;, &#39;の&#39;, &#39;基本&#39;, &#39;概念&#39;, &#39;や&#39;, &#39;主要&#39;, &#39;だ&#39;, &#39;分析&#39;, &#39;手法&#39;, &#39;に&#39;, &#39;つく&#39;, &#39;て&#39;, &#39;理解&#39;, &#39;する&#39;, &#39;て&#39;, &#39;、&#39;, &#39;説明&#39;, &#39;できる&#39;, &#39;。&#39;, &#39;\n&#39;, &#39;python&#39;, &#39;を&#39;, &#39;用いる&#39;, &#39;て&#39;, &#39;自然言語処理&#39;, &#39;の&#39;, &#39;基本的&#39;, &#39;だ&#39;, &#39;プログラム&#39;, &#39;を&#39;, &#39;実装&#39;, &#39;する&#39;, &#39;て&#39;, &#39;、&#39;, &#39;実&#39;, &#39;データ&#39;, &#39;を&#39;, &#39;分析&#39;, &#39;できる&#39;, &#39;。&#39;, &#39;\n&#39;, &#39;自然言語処理&#39;, &#39;の&#39;, &#39;技術&#39;, &#39;が&#39;, &#39;応用&#39;, &#39;する&#39;, &#39;れる&#39;, &#39;分野&#39;, &#39;や&#39;, &#39;課題&#39;, &#39;に&#39;, &#39;つく&#39;, &#39;て&#39;, &#39;考察&#39;, &#39;する&#39;, &#39;て&#39;, &#39;、&#39;, &#39;将来&#39;, &#39;の&#39;, &#39;応用&#39;, &#39;可能性&#39;, &#39;を&#39;, &#39;議論&#39;, &#39;できる&#39;, &#39;。&#39;, &#39;\n&#39;]
+</pre></div>
+</div>
+<p>上記のプログラムだと、テキストに改行文字<code class="docutils literal notranslate"><span class="pre">\n</span></code>が含まれてしまう。
+そのため、品詞の種類やストップワードで抽出する用語を選定する。</p>
+</section>
+<section id="id8">
+<h3><span class="section-number">3.2.4. </span>プログラム例（特定の品詞、ストップワード対応）<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>＜例＞</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">自然言語処理の基本概念や主要な分析手法について理解して、説明できる。</span>
+<span class="s2">Pythonを用いて自然言語処理の基本的なプログラムを実装して、実データを分析できる。</span>
+<span class="s2">自然言語処理の技術が応用される分野や課題について考察して、将来の応用可能性を議論できる。</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;。&quot;</span><span class="p">,</span> <span class="s2">&quot;、&quot;</span><span class="p">]</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="c1"># 形態素（原形）を抽出してリストに追加</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+
+    <span class="c1"># ストップワードに含まれていなければ追加</span>
+    <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+        <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[&#39;自然言語処理&#39;, &#39;の&#39;, &#39;基本&#39;, &#39;概念&#39;, &#39;や&#39;, &#39;主要&#39;, &#39;だ&#39;, &#39;分析&#39;, &#39;手法&#39;, &#39;に&#39;, &#39;つく&#39;, &#39;て&#39;, &#39;理解&#39;, &#39;する&#39;, &#39;て&#39;, &#39;説明&#39;, &#39;できる&#39;, &#39;python&#39;, &#39;を&#39;, &#39;用いる&#39;, &#39;て&#39;, &#39;自然言語処理&#39;, &#39;の&#39;, &#39;基本的&#39;, &#39;だ&#39;, &#39;プログラム&#39;, &#39;を&#39;, &#39;実装&#39;, &#39;する&#39;, &#39;て&#39;, &#39;実&#39;, &#39;データ&#39;, &#39;を&#39;, &#39;分析&#39;, &#39;できる&#39;, &#39;自然言語処理&#39;, &#39;の&#39;, &#39;技術&#39;, &#39;が&#39;, &#39;応用&#39;, &#39;する&#39;, &#39;れる&#39;, &#39;分野&#39;, &#39;や&#39;, &#39;課題&#39;, &#39;に&#39;, &#39;つく&#39;, &#39;て&#39;, &#39;考察&#39;, &#39;する&#39;, &#39;て&#39;, &#39;将来&#39;, &#39;の&#39;, &#39;応用&#39;, &#39;可能性&#39;, &#39;を&#39;, &#39;議論&#39;, &#39;できる&#39;]
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3><span class="section-number">3.2.5. </span>プログラム例（複数文、特定の品詞、ストップワード対応）<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 解析対象の文書リスト</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;昨日は台風が東京を直撃しました&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;東京のラーメン 店が新商品を発表&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># 対象の品詞（名詞、固有名詞、形容詞）</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+
+<span class="c1"># ストップワード</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="c1"># 各文書を処理</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+
+        <span class="c1"># 対象品詞かつ、ストップワードは除外</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">):</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;昨日&#39;</span><span class="p">,</span> <span class="s1">&#39;台風&#39;</span><span class="p">,</span> <span class="s1">&#39;東京&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;東京&#39;</span><span class="p">,</span> <span class="s1">&#39;ラーメン&#39;</span><span class="p">,</span> <span class="s1">&#39;店&#39;</span><span class="p">,</span> <span class="s1">&#39;新商品&#39;</span><span class="p">,</span> <span class="s1">&#39;発表&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="bow-tf-idf">
+<h2><span class="section-number">3.3. </span>特徴抽出（BoW と TF-IDF）<a class="headerlink" href="#bow-tf-idf" title="Link to this heading">#</a></h2>
+<p>テキストはそのままでは扱えないため、数値ベクトルに変換する。<br />
+代表的な方法は <strong>Bag-of-Words（BoW）</strong> と <strong>TF-IDF</strong>。</p>
+<section id="bag-of-words-bow">
+<h3><span class="section-number">3.3.1. </span>Bag-of-Words（BoW）<a class="headerlink" href="#bag-of-words-bow" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>単語の出現回数を数える。</p></li>
+<li><p>単語の順序は無視される。</p></li>
+</ul>
+<section id="id10">
+<h4><span class="section-number">3.3.1.1. </span>プログラム例（用語の頻度を計算）<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="c1"># モデル読み込み</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 対象文書</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;昨日の夜はラーメンを食べた。ラーメンは本当に美味しい。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;東京のラーメン店は人気がある。私はラーメンが大好きだ。&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># 対象の品詞（名詞、固有名詞、形容詞）</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+
+<span class="c1"># ストップワード</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="c1"># 各文書を処理</span>
+<span class="n">doc_index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc_index</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="c1"># 単語リストを作成</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+
+        <span class="c1"># 対象の品詞かつ、ストップワードは除外</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">):</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+    <span class="c1"># 出現回数をカウント</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Counter({&#39;ラーメン&#39;: 1, &#39;美味しい&#39;: 1})
+Counter({&#39;ラーメン&#39;: 1, &#39;高い&#39;: 1})
+</pre></div>
+</div>
+<section id="counter">
+<h5><span class="section-number">3.3.1.1.1. </span>補足：Counter の使い方<a class="headerlink" href="#counter" title="Link to this heading">#</a></h5>
+<p>Python の標準ライブラリ <strong>collections</strong> に含まれる <code class="docutils literal notranslate"><span class="pre">Counter</span></code> は、<br />
+リストやタプルの要素の出現回数を簡単に数えることができるクラス。</p>
+<hr class="docutils" />
+<p>＜基本の使い方＞</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ラーメン&quot;</span><span class="p">,</span> <span class="s2">&quot;美味しい&quot;</span><span class="p">,</span> <span class="s2">&quot;ラーメン&quot;</span><span class="p">]</span>
+<span class="n">tf</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>出力</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Counter</span><span class="p">({</span><span class="s1">&#39;ラーメン&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;美味しい&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>＜項目ごとのアクセス＞</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tf</span><span class="p">[</span><span class="s2">&quot;ラーメン&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tf</span><span class="p">[</span><span class="s2">&quot;美味しい&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>出力</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span>
+<span class="mi">1</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>＜for文で回す＞</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">term</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">tf</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>出力</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ラーメン</span> <span class="mi">2</span>
+<span class="n">美味しい</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Counter</span></code> を使うと <strong>単語の出現回数（Term Frequency, TF）</strong> を簡単に数えられる</p></li>
+<li><p>Bag-of-Words の実装でよく使われる</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="data-frame">
+<h4><span class="section-number">3.3.1.2. </span>プログラム例（用語の頻度を計算し、Data Frame に保存）<a class="headerlink" href="#data-frame" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 対象文書</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;昨日の夜はラーメンを食べた。ラーメンは本当に美味しい。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;東京のラーメン店は人気がある。私はラーメンが大好きだ。&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># 対象の品詞（名詞、固有名詞、形容詞）</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+
+<span class="c1"># ストップワード</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="c1"># 文書ごとの頻度辞書を保存</span>
+<span class="n">doc_counters</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">doc_index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc_index</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="c1"># 単語リストを作成</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">):</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+    <span class="c1"># 出現回数をカウント</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
+    <span class="n">doc_counters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
+
+<span class="c1"># DataFrame に変換（行＝文書、列＝単語、セル＝頻度）</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">doc_counters</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>   <span class="c1"># 出現しない単語は 0 に</span>
+
+<span class="n">df</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p></p></th>
+<th class="head text-right"><p>昨日</p></th>
+<th class="head text-right"><p>夜</p></th>
+<th class="head text-right"><p>ラーメン</p></th>
+<th class="head text-right"><p>本当</p></th>
+<th class="head text-right"><p>美味しい</p></th>
+<th class="head text-right"><p>東京</p></th>
+<th class="head text-right"><p>店</p></th>
+<th class="head text-right"><p>人気</p></th>
+<th class="head text-right"><p>大好き</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>0</p></td>
+<td class="text-right"><p>1</p></td>
+<td class="text-right"><p>1</p></td>
+<td class="text-right"><p>2</p></td>
+<td class="text-right"><p>1</p></td>
+<td class="text-right"><p>1</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>2</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>1</p></td>
+<td class="text-right"><p>1</p></td>
+<td class="text-right"><p>1</p></td>
+<td class="text-right"><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="tf-idf">
+<h3><span class="section-number">3.3.2. </span>TF-IDF<a class="headerlink" href="#tf-idf" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>TF（Term Frequency）</strong>：文書内での単語の出現頻度</p></li>
+<li><p><strong>IDF（Inverse Document Frequency）</strong>：多くの文書に現れる一般的な単語の重みを下げる指標</p></li>
+<li><p><strong>TF-IDF</strong>：TF × IDF により、その文書に特徴的な単語を強調できる手法</p></li>
+</ul>
+<p>＜例＞</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;昨日の夜はラーメンを食べた。ラーメンは本当に美味しい。&quot;
+&quot;東京のラーメン店は人気がある。私はラーメンが大好きだ。&quot;
+</pre></div>
+</div>
+<p>例えば「ラーメン」という単語が複数の文書に出てきた場合、単純な TF では重要に見えるが、<br />
+TF-IDF では全体に広く出ている単語の重みを下げ、より特徴的な単語（例：美味しい、大好き など）が強調される</p>
+<section id="id11">
+<h4><span class="section-number">3.3.2.1. </span>計算式<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<p>TF-IDF = TF × IDF</p>
+<ul class="simple">
+<li><p><strong>TF</strong>（文書内頻度）<br />
+\( TF(t, d) = \frac{単語 t の出現回数}{文書 d 内の総単語数} \)</p></li>
+<li><p><strong>IDF</strong>（逆文書頻度）<br />
+\( IDF(t) = \log\frac{総文書数}{単語 t を含む文書数 + 1} \)</p></li>
+</ul>
+<p>つまり：</p>
+<ul class="simple">
+<li><p>よく出てくる単語 → TFが大きい</p></li>
+<li><p>どの文書にも出てくる単語 → IDFが小さい</p></li>
+<li><p>特定の文書にだけ多く出る単語 → TF-IDFが大きい（＝特徴語）</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id12">
+<h4><span class="section-number">3.3.2.2. </span>プログラム例（TF-IDF の計算）<a class="headerlink" href="#id12" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 対象文書</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;昨日の夜はラーメンを食べた。ラーメンは本当に美味しい。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;東京のラーメン店は人気がある。私はラーメンが大好きだ。&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># 前処理：形態素解析で名詞・固有名詞・形容詞を抽出（原形）</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="n">processed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+    <span class="n">processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">terms</span><span class="p">))</span>
+
+<span class="c1"># TF-IDF を計算</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">split_by_space</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>   <span class="c1"># 空白で分割してリストにする</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">split_by_space</span><span class="p">,</span> <span class="n">token_pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">processed</span><span class="p">)</span>
+
+<span class="c1"># DataFrameに変換</span>
+<span class="n">df_tfidf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">df_tfidf</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p></p></th>
+<th class="head text-right"><p>ラーメン</p></th>
+<th class="head text-right"><p>人気</p></th>
+<th class="head text-right"><p>夜</p></th>
+<th class="head text-right"><p>大好き</p></th>
+<th class="head text-right"><p>店</p></th>
+<th class="head text-right"><p>昨日</p></th>
+<th class="head text-right"><p>本当</p></th>
+<th class="head text-right"><p>東京</p></th>
+<th class="head text-right"><p>美味しい</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.579739</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.407401</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.407401</p></td>
+<td class="text-right"><p>0.407401</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.407401</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p>0.579739</p></td>
+<td class="text-right"><p>0.407401</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.407401</p></td>
+<td class="text-right"><p>0.407401</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.407401</p></td>
+<td class="text-right"><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="tfidfvectorizer">
+<h5><span class="section-number">3.3.2.2.1. </span>TfidfVectorizer<a class="headerlink" href="#tfidfvectorizer" title="Link to this heading">#</a></h5>
+<p><code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code> はテキストデータを <strong>TF-IDF ベクトル</strong> に変換するためのクラスで、
+<code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>（<code class="docutils literal notranslate"><span class="pre">sklearn.feature_extraction.text</span></code>）に含まれている。</p>
+<p>機械学習モデルは文字列を直接扱えないため、
+文章を「単語の重み」で数値化して特徴ベクトル化するために使う。</p>
+<p><strong>日本語テキストでの注意点</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code> はもともと英語向けに設計されており、
+デフォルトでは次のような正規表現で単語を抽出する。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">token_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?u)\b\w\w+\b&quot;</span>
+</pre></div>
+</div>
+<p>この設定では、<strong>2文字以上の単語のみ</strong> を対象にするため、
+日本語の1文字の単語（例：「夜」「私」など）は除外されてしまう。</p>
+<hr class="docutils" />
+<p>GiNZAなどで形態素解析を行い、空白区切りで単語を並べた文字列を入力したい場合は、以下のように
+<code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code> の内部トークン化を無効化する。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">split_by_space</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>   <span class="c1"># 空白で分割してリストにする</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">split_by_space</span><span class="p">,</span>          <span class="c1"># 空白で分割する関数</span>
+    <span class="n">token_pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>                <span class="c1"># デフォルトの英語用正規表現を無効化</span>
+    <span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span>                    <span class="c1"># 日本語の小文字化を防ぐ</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+<section id="id13">
+<h2><span class="section-number">3.4. </span>演習課題<a class="headerlink" href="#id13" title="Link to this heading">#</a></h2>
+<section id="id14">
+<h3><span class="section-number">3.4.1. </span>演習1_1<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>以下の文書Aについて、 出現頻度上位3つの用語を示してください。
+なお、抽出する用語は、<strong>代名詞・名詞・固有名詞・形容詞・動詞</strong> とする。</p>
+<p>文書A</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>私は、昨日の午後に大学の図書館に行きました。
+図書館には多くの学生が集まり、図書館のカフェでは友人と話す人の姿も見られました。  
+私は、まず図書館の新刊コーナーで本を探し、その後で図書館の静かな閲覧室で勉強をしました。  
+図書館は勉強や研究にとても役立つ場所だと、私は改めて感じました。  
+</pre></div>
+</div>
+<details>
+<summary>解答例</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 対象文書</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">私は、昨日の午後に大学の図書館に行きました。</span>
+<span class="s2">図書館には多くの学生が集まり、図書館のカフェでは友人と話す人の姿も見られました。  </span>
+<span class="s2">私は、まず図書館の新刊コーナーで本を探し、その後で図書館の静かな閲覧室で勉強をしました。  </span>
+<span class="s2">図書館は勉強や研究にとても役立つ場所だと、私は改めて感じました。</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># 対象の品詞（代名詞、名詞、固有名詞、形容詞、動詞）</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;PRON&quot;</span><span class="p">,</span> <span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">,</span> <span class="s2">&quot;VERB&quot;</span><span class="p">)</span>
+
+<span class="c1"># ストップワード</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="c1"># 文書ごとの頻度辞書を保存</span>
+<span class="n">doc_counters</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">doc_index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc_index</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="c1"># 単語リストを作成</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">):</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+    <span class="c1"># 出現回数をカウント</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
+    <span class="n">doc_counters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
+
+<span class="c1"># 文書ごとに出現頻度TOP3を表示</span>
+<span class="k">for</span> <span class="n">tf</span> <span class="ow">in</span> <span class="n">doc_counters</span><span class="p">:</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>出力</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[(&#39;図書館&#39;, 6), (&#39;私&#39;, 3), (&#39;勉強&#39;, 2)]
+</pre></div>
+</div>
+</details>
+</section>
+<hr class="docutils" />
+<section id="id15">
+<h3><span class="section-number">3.4.2. </span>演習1_2<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>以下の3つの文書A~Cについて <strong>TF-IDF 上位の用語1つ</strong> を示してください。<br />
+なお、抽出する品詞は<strong>名詞・固有名詞</strong>とする。</p>
+<p>文書A</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>朝、駅前のカフェで友人と待ち合わせた後、大学の図書館へ向かった。  
+図書館の閲覧室は静かで、閲覧室では学生が本を読む姿が多く見られた。  
+</pre></div>
+</div>
+<p>文書B</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>夕方、駅に近い図書館で本を確認してから、カフェに移動した。  
+カフェでは焙煎した豆やバリスタの説明があり、カフェの店内は混雑していた。  
+</pre></div>
+</div>
+<p>文書C</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>朝の駅は快速の案内で人が流れ、駅のホームでは乗換の表示が目立った。  
+改札の前でも駅の混雑が続き、友人と合流するのが大変だった。  
+</pre></div>
+</div>
+<details>
+<summary>解答例</summary>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 対象文書</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">朝、駅前のカフェで友人と待ち合わせた後、大学の図書館へ向かった。  </span>
+<span class="sd">図書館の閲覧室は静かで、閲覧室では学生が本を読む姿が多く見られた。</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">夕方、駅に近い図書館で本を確認してから、カフェに移動した。  </span>
+<span class="sd">カフェでは焙煎した豆やバリスタの説明があり、カフェの店内は混雑していた。  </span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">朝の駅は快速の案内で人が流れ、駅のホームでは乗換の表示が目立った。  </span>
+<span class="sd">改札の前でも駅の混雑が続き、友人と合流するのが大変だった。  </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># 対象の品詞</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;　&quot;</span><span class="p">]</span>
+
+<span class="c1"># 形態素解析＋空白区切り化</span>
+<span class="n">processed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+    <span class="n">processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">terms</span><span class="p">))</span>
+
+<span class="c1"># TF-IDF 計算</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">split_by_space</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>   <span class="c1"># 空白で分割してリストにする</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">split_by_space</span><span class="p">,</span> <span class="n">token_pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">processed</span><span class="p">)</span>
+
+<span class="c1"># DataFrameに変換</span>
+<span class="n">df_tfidf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+
+<span class="c1"># 各文書ごとに TF-IDF 上位1語を取得</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_tfidf</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">top_term</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span>      <span class="c1"># TF-IDFが最も大きい単語</span>
+    <span class="n">top_value</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>        <span class="c1"># その値</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;文書</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> の上位1語：</span><span class="si">{</span><span class="n">top_term</span><span class="si">}</span><span class="s2">（TF-IDF=</span><span class="si">{</span><span class="n">top_value</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">）&quot;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>出力</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>文書A の上位1：室（TF-IDF=0.458）
+文書B の上位1：カフェ（TF-IDF=0.660）
+文書C の上位1：駅（TF-IDF=0.557）
+</pre></div>
+</div>
+<p><strong>補足</strong>
+Google Colab では、DataFrame の表示はデフォルトで20列まで。
+一時的に、すべての列を表示したい場合は、以下を実行する。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># すべての列を表示</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>上記をもとに、df_tfidf の中身を確認してみる。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="n">df_tfidf</span>
+</pre></div>
+</div>
+<p>出力</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p></p></th>
+<th class="head text-right"><p>カフェ</p></th>
+<th class="head text-right"><p>バリスタ</p></th>
+<th class="head text-right"><p>ホーム</p></th>
+<th class="head text-right"><p>乗換</p></th>
+<th class="head text-right"><p>人</p></th>
+<th class="head text-right"><p>前</p></th>
+<th class="head text-right"><p>友人</p></th>
+<th class="head text-right"><p>図書館</p></th>
+<th class="head text-right"><p>多い</p></th>
+<th class="head text-right"><p>大変</p></th>
+<th class="head text-right"><p>大学</p></th>
+<th class="head text-right"><p>姿</p></th>
+<th class="head text-right"><p>学生</p></th>
+<th class="head text-right"><p>室</p></th>
+<th class="head text-right"><p>店内</p></th>
+<th class="head text-right"><p>後</p></th>
+<th class="head text-right"><p>快速</p></th>
+<th class="head text-right"><p>改札</p></th>
+<th class="head text-right"><p>朝</p></th>
+<th class="head text-right"><p>本</p></th>
+<th class="head text-right"><p>案内</p></th>
+<th class="head text-right"><p>混雑</p></th>
+<th class="head text-right"><p>表示</p></th>
+<th class="head text-right"><p>説明</p></th>
+<th class="head text-right"><p>豆</p></th>
+<th class="head text-right"><p>近い</p></th>
+<th class="head text-right"><p>閲覧</p></th>
+<th class="head text-right"><p>静か</p></th>
+<th class="head text-right"><p>駅</p></th>
+<th class="head text-right"><p>駅前</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.174253</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.174253</p></td>
+<td class="text-right"><p>0.348506</p></td>
+<td class="text-right"><p>0.229122</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.229122</p></td>
+<td class="text-right"><p>0.229122</p></td>
+<td class="text-right"><p>0.229122</p></td>
+<td class="text-right"><p>0.458243</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.229122</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.174253</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.458243</p></td>
+<td class="text-right"><p>0.229122</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.229122</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p>0.660265</p></td>
+<td class="text-right"><p>0.28939</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.220088</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.28939</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.220088</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.28939</p></td>
+<td class="text-right"><p>0.28939</p></td>
+<td class="text-right"><p>0.28939</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.220088</p></td>
+<td class="text-right"><p>0</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>2</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.244091</p></td>
+<td class="text-right"><p>0.244091</p></td>
+<td class="text-right"><p>0.244091</p></td>
+<td class="text-right"><p>0.244091</p></td>
+<td class="text-right"><p>0.185638</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.244091</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.244091</p></td>
+<td class="text-right"><p>0.244091</p></td>
+<td class="text-right"><p>0.244091</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.244091</p></td>
+<td class="text-right"><p>0.244091</p></td>
+<td class="text-right"><p>0.244091</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0.556913</p></td>
+<td class="text-right"><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./html"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02_deploy.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>環境構築</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03_visualization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>可視化</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.1. テキスト前処理の重要性</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.1.1. なぜ前処理が必要か？</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.1.2. 主な前処理の例</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ginza">3.2. 形態素解析（GiNZA）</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.2.1. プログラム例（形態素の抽出）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.2.2. プログラム例（形態素の詳細表示）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3.2.3. プログラム例（改行を含む長文）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">3.2.4. プログラム例（特定の品詞、ストップワード対応）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">3.2.5. プログラム例（複数文、特定の品詞、ストップワード対応）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bow-tf-idf">3.3. 特徴抽出（BoW と TF-IDF）</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bag-of-words-bow">3.3.1. Bag-of-Words（BoW）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">3.3.1.1. プログラム例（用語の頻度を計算）</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#counter">3.3.1.1.1. 補足：Counter の使い方</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#data-frame">3.3.1.2. プログラム例（用語の頻度を計算し、Data Frame に保存）</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tf-idf">3.3.2. TF-IDF</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">3.3.2.1. 計算式</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">3.3.2.2. プログラム例（TF-IDF の計算）</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tfidfvectorizer">3.3.2.2.1. TfidfVectorizer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">3.4. 演習課題</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3.4.1. 演習1_1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3.4.2. 演習1_2</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuki Ogawa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

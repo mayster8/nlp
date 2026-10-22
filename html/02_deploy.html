@@ -1,0 +1,954 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2. 環境構築 &#8212; 自然言語処理</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'html/02_deploy';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. 前処理・形態素解析・特徴抽出" href="03_basic_analysis.html" />
+    <link rel="prev" title="1. テキストマイニングとは" href="01_intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_top.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">自然言語処理</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">導入</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_intro.html">1. テキストマイニングとは</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. 環境構築</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎的な解析</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_basic_analysis.html">3. 前処理・形態素解析・特徴抽出</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_visualization.html">4. 可視化</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">分析手法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_analysis.html">5. 感情分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_clustering.html">6. 文書分類</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">応用編</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_sightseeing.html">7. 観光データの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_youtube.html">8. ソーシャルメディアデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_llm.html">9. 大規模言語モデル（LLM）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">その他</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="99_dictionary.html">10. 辞書の拡張</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/html/02_deploy.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>環境構築</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#google-colab">2.1. Google Colab の使い方</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.1.1. ノートブックを作成</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.1.2. 基本操作</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.1.3. 便利な機能</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python">2.2. Python 基礎の復習</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.2.1. データ型と演算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.2.2. リストと辞書</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for">2.2.3. 条件分岐と for ループ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.2.4. 関数</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.2.5. リスト内包表記（発展）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spacy-ginza">2.3. spaCy / GiNZA の導入</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.3.1. spaCy / GiNZA とは？</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spacy">2.3.1.1. spaCy（スペイシー） とは</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ginza">2.3.1.2. GiNZA（ギンザ） とは</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.3.1.3. spaCy と GiNZA の関係</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2.3.2. インストール</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2.3.3. 日本語モデルをロード</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">2.3.4. 形態素解析の詳細表示</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">2.3.4.1. 各列の意味</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">2.3.4.2. 出力の解釈例</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">2.3.4.3. 名詞だけを抽出する</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">2.4. トラブルシューティング</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">2.5. まとめ</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">2.6. 演習課題</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">2.6.1. 課題1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">2.6.2. 課題2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">2.6.3. 課題3</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">2.6.4. 課題4</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">2. </span>環境構築<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">今回のゴール</p>
+<ul class="simple">
+<li><p>Gooble Colab ノートブックの基本操作を理解する</p></li>
+<li><p>Python 基礎を復習する（データ型、リスト・辞書、for/関数）</p></li>
+<li><p>spaCy / GiNZA を導入し、日本語文を解析できるようにする</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<section id="google-colab">
+<h2><span class="section-number">2.1. </span>Google Colab の使い方<a class="headerlink" href="#google-colab" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h3><span class="section-number">2.1.1. </span>ノートブックを作成<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Google Drive</strong> を開く</p></li>
+<li><p>「新規」→「その他」→「Google Colaboratory」 を選択</p>
+<ul class="simple">
+<li><p>無い場合は <a class="reference external" href="https://colab.research.google.com/">Colab</a> から「新しいノートブック」を作成</p></li>
+</ul>
+</li>
+<li><p>タイトルを変更（例：<code class="docutils literal notranslate"><span class="pre">自然言語処理_環境構築</span></code>）</p></li>
+</ol>
+</section>
+<section id="id3">
+<h3><span class="section-number">2.1.2. </span>基本操作<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>セル実行：<code class="docutils literal notranslate"><span class="pre">Shift</span> <span class="pre">+</span> <span class="pre">Enter</span></code></p></li>
+<li><p>セルの種類：コードセル / テキストセル</p></li>
+<li><p>保存：Driveに自動保存</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3><span class="section-number">2.1.3. </span>便利な機能<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>その場でライブラリをインストール可能</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w">  </span>!pip<span class="w"> </span>install<span class="w"> </span>パッケージ名
+</pre></div>
+</div>
+</section>
+</section>
+<section id="python">
+<h2><span class="section-number">2.2. </span>Python 基礎の復習<a class="headerlink" href="#python" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p>下のコードを Google Colab に貼って実行してみましょう。</p>
+</div></blockquote>
+<section id="id5">
+<h3><span class="section-number">2.2.1. </span>データ型と演算<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mf">3.14</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span>
+<span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">+</span><span class="s2">&quot;mining&quot;</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="ow">not</span><span class="p">(</span><span class="n">flag</span><span class="p">))</span>
+</pre></div>
+</div>
+<details>
+<summary>出力例を表示する</summary>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>10 3.14 text True
+15 6.28 textmining True False
+</pre></div>
+</div>
+</details>
+</section>
+<section id="id6">
+<h3><span class="section-number">2.2.2. </span>リストと辞書<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">]</span>   <span class="c1"># list</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;math&quot;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span> <span class="s2">&quot;english&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">}</span>     <span class="c1"># dict</span>
+
+<span class="n">fruits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;grape&quot;</span><span class="p">)</span>
+<span class="n">scores</span><span class="p">[</span><span class="s2">&quot;science&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">85</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;英語: </span><span class="si">{</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;english&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<details>
+<summary>出力例を表示する</summary>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[&#39;apple&#39;, &#39;banana&#39;, &#39;orange&#39;, &#39;grape&#39;]
+{&#39;math&#39;: 80, &#39;english&#39;: 90, &#39;science&#39;: 85}
+英語: 90
+</pre></div>
+</div>
+</details>
+</section>
+<section id="for">
+<h3><span class="section-number">2.2.3. </span>条件分岐と for ループ<a class="headerlink" href="#for" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot;は偶数&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot;は奇数&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<details>
+<summary>出力例を表示する</summary>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1 は奇数
+2 は偶数
+3 は奇数
+4 は偶数
+5 は奇数
+</pre></div>
+</div>
+</details>
+</section>
+<section id="id7">
+<h3><span class="section-number">2.2.4. </span>関数<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">add</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+</pre></div>
+</div>
+<details>
+<summary>出力例を表示する</summary>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>12
+</pre></div>
+</div>
+</details>
+</section>
+<section id="id8">
+<h3><span class="section-number">2.2.5. </span>リスト内包表記（発展）<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>リストを作るとき、for文を1行で書ける便利な方法です。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="c1"># 普通のfor文で2倍のリストを作る</span>
+<span class="n">doubled</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+    <span class="n">doubled</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># 内包表記を使うと1行で書ける</span>
+<span class="n">doubled_comp</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2倍:&quot;</span><span class="p">,</span> <span class="n">doubled</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2倍（内包表記）:&quot;</span><span class="p">,</span> <span class="n">doubled_comp</span><span class="p">)</span>
+</pre></div>
+</div>
+<details>
+<summary>出力例を表示する</summary>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>2倍: [2, 4, 6]
+2倍（内包表記）: [2, 4, 6]
+</pre></div>
+</div>
+</details>
+</section>
+</section>
+<hr class="docutils" />
+<section id="spacy-ginza">
+<h2><span class="section-number">2.3. </span>spaCy / GiNZA の導入<a class="headerlink" href="#spacy-ginza" title="Link to this heading">#</a></h2>
+<section id="id9">
+<h3><span class="section-number">2.3.1. </span>spaCy / GiNZA とは？<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<section id="spacy">
+<h4><span class="section-number">2.3.1.1. </span>spaCy（スペイシー） とは<a class="headerlink" href="#spacy" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>自然言語処理（NLP）のための Python ライブラリ</strong></p></li>
+<li><p>高速かつ実用的な処理が可能で、研究よりも「実務やアプリ開発」で広く使われている</p></li>
+<li><p>主な機能：</p>
+<ul>
+<li><p>トークン化（文を単語に分割）</p></li>
+<li><p>品詞タグ付け（名詞、動詞、形容詞など）</p></li>
+<li><p>依存構造解析（主語・述語・目的語の関係を解析）</p></li>
+<li><p>固有表現抽出（人名、地名、日付など）</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>英語を中心に多数の言語モデルが提供されており、簡単に導入できるのが強み</strong></p>
+</section>
+<hr class="docutils" />
+<section id="ginza">
+<h4><span class="section-number">2.3.1.2. </span>GiNZA（ギンザ） とは<a class="headerlink" href="#ginza" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>spaCy の日本語用ライブラリ／言語モデル</strong></p></li>
+<li><p>日本語は英語と異なり「単語の区切りが曖昧」なので、形態素解析が必要</p></li>
+<li><p>GiNZA は日本語文章を対象にした <strong>高精度の形態素解析・依存構造解析</strong> を実現</p></li>
+<li><p>主な特徴：</p>
+<ul>
+<li><p>名詞・動詞などの品詞情報を取得可能</p></li>
+<li><p>活用形を原形（lemma）に変換</p></li>
+<li><p>文の依存関係を解析して構造を明らかにする</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h4><span class="section-number">2.3.1.3. </span>spaCy と GiNZA の関係<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>spaCy</strong>：自然言語処理の「本体」（フレームワーク）</p></li>
+<li><p><strong>GiNZA</strong>：その中で使う「日本語用の言語モデル」</p></li>
+<li><p>イメージ：</p>
+<ul>
+<li><p>spaCy = 車の本体</p></li>
+<li><p>GiNZA = 日本語を走らせるための専用エンジン</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id11">
+<h3><span class="section-number">2.3.2. </span>インストール<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">spacy</span> <span class="n">ginza</span> <span class="n">ja</span><span class="o">-</span><span class="n">ginza</span>
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h3><span class="section-number">2.3.3. </span>日本語モデルをロード<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s2">&quot;私は昨日、東京で美味しいラーメンを食べた。&quot;</span><span class="p">)</span>
+
+<span class="c1"># 形態素を抽出してリストに追加</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+    <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>  <span class="c1"># トークン化の確認</span>
+</pre></div>
+</div>
+<p>出力例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;私&#39;</span><span class="p">,</span> <span class="s1">&#39;は&#39;</span><span class="p">,</span> <span class="s1">&#39;昨日&#39;</span><span class="p">,</span> <span class="s1">&#39;、&#39;</span><span class="p">,</span> <span class="s1">&#39;東京&#39;</span><span class="p">,</span> <span class="s1">&#39;で&#39;</span><span class="p">,</span> <span class="s1">&#39;美味しい&#39;</span><span class="p">,</span> <span class="s1">&#39;ラーメン&#39;</span><span class="p">,</span> <span class="s1">&#39;を&#39;</span><span class="p">,</span> <span class="s1">&#39;食べ&#39;</span><span class="p">,</span> <span class="s1">&#39;た&#39;</span><span class="p">,</span> <span class="s1">&#39;。&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h3><span class="section-number">2.3.4. </span>形態素解析の詳細表示<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">,</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span><span class="p">,</span> <span class="n">token</span><span class="o">.</span><span class="n">dep_</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>出力例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>私       私       PRON   nsubj
+昨日     昨日     NOUN   obl
+東京     東京     PROPN  obl
+美味しい 美味しい ADJ    amod
+ラーメン ラーメン NOUN   obj
+食べ     食べ     VERB   ROOT
+た       た       AUX    aux
+。       。       PUNCT  punct
+</pre></div>
+</div>
+<hr class="docutils" />
+<section id="id14">
+<h4><span class="section-number">2.3.4.1. </span>各列の意味<a class="headerlink" href="#id14" title="Link to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p><strong>token.text</strong><br />
+→ 文に現れた形（表層形）<br />
+例：「私」「昨日」「東京」</p></li>
+<li><p><strong>token.lemma_</strong><br />
+→ 原形（辞書形）<br />
+例：「食べた」→「食べ」、「美味しかった」→「美味しい」</p></li>
+<li><p><strong>token.pos_</strong><br />
+→ 品詞（大分類）</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PRON</span></code> = 代名詞</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NOUN</span></code> = 名詞</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PROPN</span></code> = 固有名詞</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ADJ</span></code> = 形容詞</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VERB</span></code> = 動詞</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AUX</span></code> = 助動詞</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PUNCT</span></code> = 記号</p></li>
+</ul>
+</li>
+<li><p><strong>token.dep_</strong><br />
+→ 文中での役割（係り受け関係）</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nsubj</span></code> = 主語</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">obl</span></code> = 修飾語（副詞的）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">amod</span></code> = 形容詞による修飾</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">obj</span></code> = 目的語</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ROOT</span></code> = 文の中心（述語）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aux</span></code> = 助動詞</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">punct</span></code> = 句読点</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="id15">
+<h4><span class="section-number">2.3.4.2. </span>出力の解釈例<a class="headerlink" href="#id15" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>私 (PRON, nsubj)</strong> → 主語（誰が？）</p></li>
+<li><p><strong>昨日 (NOUN, obl)</strong> → 修飾語（いつ？）</p></li>
+<li><p><strong>東京 (PROPN, obl)</strong> → 修飾語（どこで？）</p></li>
+<li><p><strong>美味しい (ADJ, amod)</strong> → 「ラーメン」を修飾する形容詞</p></li>
+<li><p><strong>ラーメン (NOUN, obj)</strong> → 目的語（何を？）</p></li>
+<li><p><strong>食べ (VERB, ROOT)</strong> → 文の中心（述語）</p></li>
+<li><p><strong>た (AUX, aux)</strong> → 助動詞（過去形を表す）</p></li>
+<li><p><strong>。 (PUNCT, punct)</strong> → 句点</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id16">
+<h4><span class="section-number">2.3.4.3. </span>名詞だけを抽出する<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;自然言語処理の授業で、PythonとGiNZAを学びます。&quot;</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="n">nouns</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 名詞を入れるリスト</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">pos_</span> <span class="o">==</span> <span class="s2">&quot;NOUN&quot;</span> <span class="ow">or</span> <span class="n">t</span><span class="o">.</span><span class="n">pos_</span> <span class="o">==</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">:</span>
+        <span class="n">nouns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">nouns</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id17">
+<h2><span class="section-number">2.4. </span>トラブルシューティング<a class="headerlink" href="#id17" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">OSError:</span> <span class="pre">[E050]</span> <span class="pre">Can't</span> <span class="pre">find</span> <span class="pre">model</span> <span class="pre">'ja_ginza'</span></code><br />
+→ インストールセルを実行後、<strong>ランタイムを再起動</strong>（ランタイム → 再起動）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'spacy'</span></code><br />
+→ <code class="docutils literal notranslate"><span class="pre">!pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">spacy</span></code> を実行してから再度 <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">spacy</span></code></p></li>
+<li><p>日本語が文字化け（ローカル環境で図を描く場合）<br />
+→ 日本語フォントを設定する（Colab では通常不要）</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id18">
+<h2><span class="section-number">2.5. </span>まとめ<a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Gooble Colab で簡単に Python を実行できる</p></li>
+<li><p>Python 基礎（変数・リスト・辞書・for・関数）を復習</p></li>
+<li><p>GiNZA を導入して日本語形態素解析が可能になった</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id19">
+<h2><span class="section-number">2.6. </span>演習課題<a class="headerlink" href="#id19" title="Link to this heading">#</a></h2>
+<section id="id20">
+<h3><span class="section-number">2.6.1. </span>課題1<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>次の文を GiNZA で解析し、単語ごとに分割して出力してみましょう</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s2">&quot;私は自然言語処理を学んでいます。&quot;</span><span class="p">)</span>
+<span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+    <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id21">
+<h3><span class="section-number">2.6.2. </span>課題2<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>品詞を表示してみましょう</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s2">&quot;私は自然言語処理を学んでいます。&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">,</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id22">
+<h3><span class="section-number">2.6.3. </span>課題3<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>以下の関数は「名詞」「固有名詞」だけをリストで取り出すプログラムです。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">extract_nouns</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">):</span>
+            <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">words</span>
+
+<span class="n">sentence</span> <span class="o">=</span> <span class="s2">&quot;自然言語処理の授業で、PythonとGiNZAを学びます。&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">extract_nouns</span><span class="p">(</span><span class="n">sentence</span><span class="p">))</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>上記を修正して、 <strong>「動詞」</strong> のみをリストで取り出してください</p></li>
+</ul>
+</section>
+<section id="id23">
+<h3><span class="section-number">2.6.4. </span>課題4<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>以下の文章を形態素解析すると、どのような単語と品詞に分割されるでしょうか。</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>すもももももももものうち
+うらにわにはにわにわとりがいる
+外国人参政権
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>２つの文章について、分割された単語と品詞を示してください。</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./html"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01_intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>テキストマイニングとは</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03_basic_analysis.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>前処理・形態素解析・特徴抽出</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#google-colab">2.1. Google Colab の使い方</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.1.1. ノートブックを作成</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.1.2. 基本操作</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.1.3. 便利な機能</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python">2.2. Python 基礎の復習</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.2.1. データ型と演算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.2.2. リストと辞書</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for">2.2.3. 条件分岐と for ループ</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.2.4. 関数</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.2.5. リスト内包表記（発展）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spacy-ginza">2.3. spaCy / GiNZA の導入</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.3.1. spaCy / GiNZA とは？</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spacy">2.3.1.1. spaCy（スペイシー） とは</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ginza">2.3.1.2. GiNZA（ギンザ） とは</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.3.1.3. spaCy と GiNZA の関係</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2.3.2. インストール</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2.3.3. 日本語モデルをロード</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">2.3.4. 形態素解析の詳細表示</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">2.3.4.1. 各列の意味</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">2.3.4.2. 出力の解釈例</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">2.3.4.3. 名詞だけを抽出する</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">2.4. トラブルシューティング</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">2.5. まとめ</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">2.6. 演習課題</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">2.6.1. 課題1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">2.6.2. 課題2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">2.6.3. 課題3</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">2.6.4. 課題4</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuki Ogawa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1356 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>7. 観光データの分析 &#8212; 自然言語処理</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'html/10_sightseeing';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. ソーシャルメディアデータの分析" href="20_youtube.html" />
+    <link rel="prev" title="6. 文書分類" href="05_clustering.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_top.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">自然言語処理</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">導入</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_intro.html">1. テキストマイニングとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_deploy.html">2. 環境構築</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎的な解析</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_basic_analysis.html">3. 前処理・形態素解析・特徴抽出</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_visualization.html">4. 可視化</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">分析手法</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_analysis.html">5. 感情分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_clustering.html">6. 文書分類</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">応用編</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. 観光データの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_youtube.html">8. ソーシャルメディアデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_llm.html">9. 大規模言語モデル（LLM）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">その他</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="99_dictionary.html">10. 辞書の拡張</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/html/10_sightseeing.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>観光データの分析</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">7.1. データの確認</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">7.1.1. データの中身を確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">7.1.2. 「データ数」「期間」の確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">7.1.3. 一つの投稿（口コミ）の文字数を確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">7.1.4. 「口コミの文字数」の分布を確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">7.1.5. カテゴリカルデータの種類の確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">7.1.6. カテゴリカルデータの内訳の確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">7.1.7. 欠損値の補完</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">7.2. 基礎的な解析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">7.2.1. 語の出現頻度（集計）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">7.2.2. 語の出現頻度（ワードクラウド）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">7.2.3. 共起ネットワーク（語の関係性・文脈）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">7.3. 発展的な分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">7.3.1. クラスタリング（分類・話題抽出）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">7.3.1.1. 指定したクラスタの口コミ</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">7.3.2. 感情分析（ポジネガ）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">7.3.2.1. ポジネガ平均</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">7.3.2.2. ポジティブ値が上位の投稿</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">7. </span>観光データの分析<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">今回のゴール</p>
+<ul class="simple">
+<li><p>実データを用いて、テキストマイニングの応用的な分析を体験する</p></li>
+<li><p>多様な分析視点からデータを読み解く力を身につける（「話題の発見」「関係性の把握」「感情から見る満足度」など）</p></li>
+<li><p>自らテーマを設定し考察を行う演習を通して、データから社会的意義を導く力を身につける</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<section id="id2">
+<h2><span class="section-number">7.1. </span>データの確認<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>宮島の口コミデータ<br />
+<a href="http://ogawa.isslab.org/nlp/data/miyajima_sample.csv">http://ogawa.isslab.org/nlp/data/miyajima_sample.csv</a></p>
+<section id="id3">
+<h3><span class="section-number">7.1.1. </span>データの中身を確認<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">miyajima_sample.csv</span></code> を Google Colab に配置</p></li>
+<li><p>データ読み込み</p></li>
+</ul>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># 口コミデータの読み込み</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;miyajima_sample.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;旅行の時期&#39;</span><span class="p">])</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>index</p></th>
+<th class="head"><p>居住地</p></th>
+<th class="head"><p>年代</p></th>
+<th class="head"><p>性別</p></th>
+<th class="head"><p>旅行の時期</p></th>
+<th class="head"><p>同行者</p></th>
+<th class="head"><p>評価</p></th>
+<th class="head"><p>タイトル</p></th>
+<th class="head"><p>口コミ</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>広島</p></td>
+<td><p>50代</p></td>
+<td><p>男性</p></td>
+<td><p>2021-10-01 00:00:00</p></td>
+<td><p>家族</p></td>
+<td><p>とても良い</p></td>
+<td><p>まあきてみんさい</p></td>
+<td><p>自然の景色　雅な社殿　ときめきいっぱいの商店街　海のにおい　いいよお</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>広島</p></td>
+<td><p>30代</p></td>
+<td><p>女性</p></td>
+<td><p>2021-10-01 00:00:00</p></td>
+<td><p>友達</p></td>
+<td><p>とても良い</p></td>
+<td><p>魅力満載のワンダーアイランドです！</p></td>
+<td><p>パワースポットでもある厳島神社を参拝したり、牡蠣やもみじ饅頭、穴子飯をはじめとしたグルメは有名で食べ歩きを楽しめます。また、カヤックや弥山登山などアクティビティも充実。おすすめは、商店街の裏路地を散策することです。商店街の賑やかさとはまた違う雰囲気で、落ち着いた雰囲気のカフェやレトロな文具店などがあり、ゆったりとした時間を過ごすことができます。和風旅館もあり、世界遺産の島に宿泊できる贅沢も味わえます。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.1.2. </span>「データ数」「期間」の確認<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;旅行の時期&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;旅行の時期&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">176</span>
+<span class="mi">2000</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>
+<span class="mi">2021</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3><span class="section-number">7.1.3. </span>一つの投稿（口コミ）の文字数を確認<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 「口コミ」の文字数を表す列「口コミの文字数」を追加</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミの文字数&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;平均文字数：</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミの文字数&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;平均文字数：</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミの文字数&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;平均文字数：</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミの文字数&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最大文字数：</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミの文字数&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">df</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>平均文字数：175.0909090909091
+平均文字数：158.0
+平均文字数：8
+最大文字数：872
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3><span class="section-number">7.1.4. </span>「口コミの文字数」の分布を確認<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">japanize_matplotlib</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミの文字数&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミの文字数&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミの文字数&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;口コミの文字数の分布&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;文字数&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;頻度&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong><br />
+<img alt="../_images/out-sightseeing_bar.png" src="../_images/out-sightseeing_bar.png" /></p>
+</section>
+<section id="id7">
+<h3><span class="section-number">7.1.5. </span>カテゴリカルデータの種類の確認<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># カテゴリの確認（重複除く）</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="s2">&quot;年代&quot;</span>
+<span class="n">val</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cat</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1"># ソートして表示</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cat</span><span class="si">}</span><span class="s2">： </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>年代： [&#39;10代&#39;, &#39;20代&#39;, &#39;30代&#39;, &#39;40代&#39;, &#39;50代&#39;, &#39;60代&#39;, &#39;選択しない&#39;]
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3><span class="section-number">7.1.6. </span>カテゴリカルデータの内訳の確認<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># カテゴリの確認（重複除く）</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="s2">&quot;年代&quot;</span>
+<span class="n">val</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cat</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">val</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cat</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> ： </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">cat</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">c</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>年代_10代 ： 30
+年代_20代 ： 84
+年代_30代 ： 20
+年代_40代 ： 16
+年代_50代 ： 17
+年代_60代 ： 7
+年代_選択しない ： 2
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3><span class="section-number">7.1.7. </span>欠損値の補完<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>「評価」カテゴリに欠損（nan）がある</p>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">=</span> <span class="s2">&quot;評価&quot;</span>
+<span class="n">val</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cat</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">val</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;とても良い&#39;</span><span class="p">,</span> <span class="s1">&#39;良い&#39;</span><span class="p">,</span> <span class="s1">&#39;普通&#39;</span><span class="p">,</span> <span class="s1">&#39;悪い&#39;</span><span class="p">,</span> <span class="n">nan</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>① 「評価」が「nan」のデータを表示</p>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;評価&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()]</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>index</p></th>
+<th class="head"><p>居住地</p></th>
+<th class="head"><p>年代</p></th>
+<th class="head"><p>性別</p></th>
+<th class="head"><p>旅行の時期</p></th>
+<th class="head"><p>同行者</p></th>
+<th class="head"><p>評価</p></th>
+<th class="head"><p>タイトル</p></th>
+<th class="head"><p>口コミ</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>89</p></td>
+<td><p>広島</p></td>
+<td><p>20代</p></td>
+<td><p>男性</p></td>
+<td><p>2019-06-01 00:00:00</p></td>
+<td><p>友達</p></td>
+<td><p>NaN</p></td>
+<td><p>少し残念というのが正直な気持ち</p></td>
+<td><p>東京から来た友人と宮島へ観光に行きましたが、鳥居が保全工事中だったため、鳥居の大部分を見ることができませんでした。友人は楽しんでいましたが、やはり目玉の鳥居を見ることができなかったのは残念です。午後に食べた穴子飯は美味しかったです。友人はまた行きたいと言っていました。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>② index=89 の「nan」のデータを書き換え</p>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">89</span><span class="p">,</span> <span class="s2">&quot;評価&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;欠損&quot;</span>
+</pre></div>
+</div>
+<p>③ 修正後のデータを確認</p>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">89</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>index</p></th>
+<th class="head"><p>居住地</p></th>
+<th class="head"><p>年代</p></th>
+<th class="head"><p>性別</p></th>
+<th class="head"><p>旅行の時期</p></th>
+<th class="head"><p>同行者</p></th>
+<th class="head"><p>評価</p></th>
+<th class="head"><p>タイトル</p></th>
+<th class="head"><p>口コミ</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>89</p></td>
+<td><p>広島</p></td>
+<td><p>20代</p></td>
+<td><p>男性</p></td>
+<td><p>2019-06-01 00:00:00</p></td>
+<td><p>友達</p></td>
+<td><p>欠損</p></td>
+<td><p>少し残念というのが正直な気持ち</p></td>
+<td><p>東京から来た友人と宮島へ観光に行きましたが、鳥居が保全工事中だったため、鳥居の大部分を見ることができませんでした。友人は楽しんでいましたが、やはり目玉の鳥居を見ることができなかったのは残念です。午後に食べた穴子飯は美味しかったです。友人はまた行きたいと言っていました。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="id10">
+<h2><span class="section-number">7.2. </span>基礎的な解析<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<section id="id11">
+<h3><span class="section-number">7.2.1. </span>語の出現頻度（集計）<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">spacy</span> <span class="n">ginza</span> <span class="n">ja</span><span class="o">-</span><span class="n">ginza</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;ja_ginza&#39;</span><span class="p">)</span>
+
+<span class="c1"># 口コミデータの読み込み</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;miyajima_sample.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;旅行の時期&#39;</span><span class="p">])</span>
+
+<span class="c1"># 名詞・固有名詞・形容詞</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+
+<span class="c1"># ストップワード</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
+
+<span class="c1"># 単語リストを作成</span>
+<span class="n">all_terms</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;口コミ&#39;</span><span class="p">]:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">all_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+<span class="c1"># 頻度を集計</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">all_terms</span><span class="p">)</span>
+<span class="n">top_words</span> <span class="o">=</span> <span class="n">counter</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">top_words</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="s1">&#39;宮島(PROPN)&#39;</span><span class="p">,</span> <span class="mi">209</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;こと(NOUN)&#39;</span><span class="p">,</span> <span class="mi">148</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;もみじ(NOUN)&#39;</span><span class="p">,</span> <span class="mi">79</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;お(NOUN)&#39;</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;厳島神社(PROPN)&#39;</span><span class="p">,</span> <span class="mi">74</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;牡蠣(NOUN)&#39;</span><span class="p">,</span> <span class="mi">66</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;鹿(NOUN)&#39;</span><span class="p">,</span> <span class="mi">52</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;お店(NOUN)&#39;</span><span class="p">,</span> <span class="mi">48</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;饅頭(NOUN)&#39;</span><span class="p">,</span> <span class="mi">47</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;鳥居(NOUN)&#39;</span><span class="p">,</span> <span class="mi">46</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;人(NOUN)&#39;</span><span class="p">,</span> <span class="mi">45</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;方(NOUN)&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;多い(ADJ)&#39;</span><span class="p">,</span> <span class="mi">41</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;ため(NOUN)&#39;</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;水族館(NOUN)&#39;</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;良い(ADJ)&#39;</span><span class="p">,</span> <span class="mi">34</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;観光(NOUN)&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;紅葉(NOUN)&#39;</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;もの(NOUN)&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+ <span class="p">(</span><span class="s1">&#39;場所(NOUN)&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">)]</span>
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h3><span class="section-number">7.2.2. </span>語の出現頻度（ワードクラウド）<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">fonts</span><span class="o">-</span><span class="n">ipaexfont</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ワードクラウド</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">wordcloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">WordCloud</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">font_manager</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;miyajima_sample.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;旅行の時期&#39;</span><span class="p">])</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="c1"># texts = df[&quot;タイトル&quot;].to_list()</span>
+
+<span class="c1"># 名詞・固有名詞・形容詞</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+
+<span class="c1"># ストップワード</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
+
+<span class="c1"># 単語リストを作成</span>
+<span class="n">all_terms</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+
+  <span class="c1"># 改行文字（&quot;\n&quot;,&quot;\r\n&quot;等）を一括で除去。ワードクラウドでは改行文字はエラーとなるため</span>
+  <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+
+  <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+          <span class="n">all_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+
+<span class="c1"># 頻度を集計</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">all_terms</span><span class="p">)</span>
+
+<span class="n">freq_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">term</span><span class="p">,</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">counter</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">freq_dict</span><span class="p">[</span><span class="n">term</span><span class="p">]</span> <span class="o">=</span> <span class="n">cnt</span>
+
+<span class="n">jp_font_path</span> <span class="o">=</span> <span class="s2">&quot;/usr/share/fonts/opentype/ipaexfont-gothic/ipaexg.ttf&quot;</span>
+
+<span class="c1"># WordCloud の生成</span>
+<span class="n">wc</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">background_color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">font_path</span><span class="o">=</span><span class="n">jp_font_path</span><span class="p">,</span>
+    <span class="c1"># max_words=100,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">wc</span> <span class="o">=</span> <span class="n">wc</span><span class="o">.</span><span class="n">generate_from_frequencies</span><span class="p">(</span><span class="n">freq_dict</span><span class="p">)</span>
+
+<span class="c1"># 表示</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wc</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;bilinear&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<img alt="../_images/out-sightseeing_wc.png" src="../_images/out-sightseeing_wc.png" />
+</section>
+<section id="id13">
+<h3><span class="section-number">7.2.3. </span>共起ネットワーク（語の関係性・文脈）<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">pyvis</span> <span class="n">japanize_matplotlib</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ==== ネットワーク描画用の関数群 ====</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_words</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">pos_tags</span><span class="p">,</span> <span class="n">stopwords</span><span class="p">):</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">sent</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">pos_tags</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stopwords</span><span class="p">:</span>
+            <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">words</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">count_cooccurrence</span><span class="p">(</span><span class="n">sents</span><span class="p">,</span> <span class="n">token_length</span><span class="o">=</span><span class="s1">&#39;{2,}&#39;</span><span class="p">):</span>
+    <span class="n">token_pattern</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">b</span><span class="se">\\</span><span class="s1">w</span><span class="si">{</span><span class="n">token_length</span><span class="si">}</span><span class="se">\\</span><span class="s1">b&#39;</span>
+    <span class="n">count_model</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">token_pattern</span><span class="o">=</span><span class="n">token_pattern</span><span class="p">)</span>
+
+    <span class="n">X</span> <span class="o">=</span> <span class="n">count_model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">sents</span><span class="p">)</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">count_model</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+    <span class="n">word_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">X</span><span class="p">[</span><span class="n">X</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">Xc</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">X</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">words</span><span class="p">,</span> <span class="n">word_counts</span><span class="p">,</span> <span class="n">Xc</span><span class="p">,</span> <span class="n">X</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">word_weights</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">word_counts</span><span class="p">):</span>
+    <span class="n">count_max</span> <span class="o">=</span> <span class="n">word_counts</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">word_counts</span><span class="p">):</span>
+        <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">word</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="n">count</span> <span class="o">/</span> <span class="n">count_max</span><span class="p">}))</span>
+    <span class="k">return</span> <span class="n">weights</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cooccurrence_weights</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">Xc</span><span class="p">,</span> <span class="n">weight_cutoff</span><span class="p">):</span>
+    <span class="n">Xc_max</span> <span class="o">=</span> <span class="n">Xc</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">cutoff</span> <span class="o">=</span> <span class="n">weight_cutoff</span> <span class="o">*</span> <span class="n">Xc_max</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">Xc</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">Xc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">cutoff</span><span class="p">:</span>
+            <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">words</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">Xc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">/</span> <span class="n">Xc_max</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">weights</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyvis.network</span><span class="w"> </span><span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_network</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">word_counts</span><span class="p">,</span> <span class="n">Xc</span><span class="p">,</span> <span class="n">weight_cutoff</span><span class="p">):</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+
+    <span class="n">weights_w</span> <span class="o">=</span> <span class="n">word_weights</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">word_counts</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">weights_w</span><span class="p">)</span>
+
+    <span class="n">weights_c</span> <span class="o">=</span> <span class="n">cooccurrence_weights</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">Xc</span><span class="p">,</span> <span class="n">weight_cutoff</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">(</span><span class="n">weights_c</span><span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">isolates</span><span class="p">(</span><span class="n">G</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">G</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">pyplot_network</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="n">weights_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">get_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">300</span> <span class="o">*</span> <span class="n">weights_n</span><span class="p">)</span>
+
+    <span class="n">weights_e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">get_edge_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">20</span> <span class="o">*</span> <span class="n">weights_e</span><span class="p">)</span>
+
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">font_family</span><span class="o">=</span><span class="s1">&#39;IPAexGothic&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">nx2pyvis_G</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>
+    <span class="n">pyvis_G</span> <span class="o">=</span> <span class="n">Network</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s1">&#39;800px&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s1">&#39;800px&#39;</span><span class="p">,</span> <span class="n">notebook</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cdn_resources</span><span class="o">=</span><span class="s2">&quot;in_line&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">attrs</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">pyvis_G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">node</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">attrs</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">pyvis_G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">20</span> <span class="o">*</span> <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">pyvis_G</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+
+<span class="c1"># 口コミデータの読み込み</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;miyajima_sample.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;旅行の時期&quot;</span><span class="p">])</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 品詞とストップワードの設定</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">,</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">)</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;こと&quot;</span><span class="p">,</span> <span class="s2">&quot;お&quot;</span><span class="p">,</span> <span class="s2">&quot;ため&quot;</span><span class="p">,</span> <span class="s2">&quot;もの&quot;</span><span class="p">]</span>
+
+<span class="c1"># 口コミを解析し共起を算出</span>
+<span class="n">sents</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">nlp</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;口コミ&#39;</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">sents</span><span class="p">:</span>
+        <span class="n">sents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">extract_words</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">target_pos</span><span class="p">,</span> <span class="n">stop_words</span><span class="p">)))</span>
+
+<span class="n">words</span><span class="p">,</span> <span class="n">word_counts</span><span class="p">,</span> <span class="n">Xc</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">count_cooccurrence</span><span class="p">(</span><span class="n">sents</span><span class="p">,</span> <span class="n">token_length</span><span class="o">=</span><span class="s1">&#39;{1,}&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># ネットワークの生成（グラフが密になる場合は、パラメータを大きくする）</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">create_network</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">word_counts</span><span class="p">,</span> <span class="n">Xc</span><span class="p">,</span> <span class="mf">0.015</span><span class="p">)</span>
+
+<span class="c1"># 動的ネットワークの描画</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">nx2pyvis_G</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="n">net</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="s1">&#39;network_miyajima.html&#39;</span><span class="p">)</span>
+
+<span class="c1"># Colabで可視化</span>
+<span class="n">net</span><span class="o">.</span><span class="n">prep_notebook</span><span class="p">()</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">generate_html</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">html</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>出力</strong><br />
+<img alt="../_images/out-sightseeing_network.png" src="../_images/out-sightseeing_network.png" /></p>
+</section>
+</section>
+<section id="id14">
+<h2><span class="section-number">7.3. </span>発展的な分析<a class="headerlink" href="#id14" title="Link to this heading">#</a></h2>
+<section id="id15">
+<h3><span class="section-number">7.3.1. </span>クラスタリング（分類・話題抽出）<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># K-means</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># GiNZAの日本語モデルをロード</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 対象文書</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;miyajima_sample.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;旅行の時期&#39;</span><span class="p">])</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+<span class="c1"># 形態素解析：名詞・固有名詞</span>
+<span class="n">target_pos</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;NOUN&quot;</span><span class="p">,</span> <span class="s2">&quot;PROPN&quot;</span><span class="p">)</span>
+<span class="c1"># stop_words = [&quot;\n&quot;]</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;こと&quot;</span><span class="p">,</span> <span class="s2">&quot;お&quot;</span><span class="p">,</span> <span class="s2">&quot;ため&quot;</span><span class="p">,</span> <span class="s2">&quot;もの&quot;</span><span class="p">]</span>
+
+<span class="n">processed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="n">target_pos</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span><span class="p">)</span>
+    <span class="n">processed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">terms</span><span class="p">))</span>
+
+<span class="c1"># TF-IDFを計算</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">split_by_space</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>   <span class="c1"># 空白で分割してリストにする</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">split_by_space</span><span class="p">,</span> <span class="n">token_pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">processed</span><span class="p">)</span>
+
+<span class="c1"># TF-IDFをDataFrame化</span>
+<span class="n">df_tfidf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">doc_ids</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)):</span>
+    <span class="n">doc_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;D</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">df_tfidf</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">doc_ids</span>
+
+<span class="c1"># TF-IDFの値</span>
+<span class="c1"># print(&quot;＜TF-IDF＞&quot;)</span>
+<span class="c1"># print(df_tfidf)</span>
+
+<span class="c1"># K-meansクラスタリング</span>
+<span class="n">K</span><span class="o">=</span><span class="mi">5</span>
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># 文書ごとのクラスタを表示（DataFrameで保存）</span>
+<span class="n">df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;文書ID&quot;</span><span class="p">:</span> <span class="n">doc_ids</span><span class="p">,</span>
+    <span class="s2">&quot;文書&quot;</span><span class="p">:</span> <span class="n">texts</span><span class="p">,</span>
+    <span class="s2">&quot;クラスタ&quot;</span><span class="p">:</span> <span class="n">labels</span>
+<span class="p">})</span>
+
+<span class="c1"># クラスタリング結果</span>
+<span class="c1"># print(&quot;\n＜クラスタリング結果＞&quot;)</span>
+<span class="c1"># print(df_result)</span>
+
+<span class="c1"># クラスタ内訳</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+    <span class="n">cluster_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_result</span><span class="p">[</span><span class="n">df_result</span><span class="p">[</span><span class="s2">&quot;クラスタ&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;クラスタ </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">cluster_size</span><span class="si">}</span><span class="s2">件&quot;</span><span class="p">)</span>
+
+<span class="c1"># 補足：各クラスタの代表語を表示</span>
+<span class="n">terms</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+<span class="n">order_centroids</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">＜各クラスタの上位語＞&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+    <span class="n">top_terms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">order_centroids</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:</span><span class="mi">10</span><span class="p">]:</span>
+        <span class="n">top_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">terms</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;クラスタ </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">top_terms</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>クラスタ 0: 37件
+クラスタ 1: 22件
+クラスタ 2: 42件
+クラスタ 3: 35件
+クラスタ 4: 40件
+
+＜各クラスタの上位語＞
+クラスタ 0: 水族館, 宮島, シカ, 饅頭, もみじ, バーベキュー, 天, 弥山, コース, 観光地
+クラスタ 1: 揚げる, もみじ, 紅葉, 宮島, 饅頭, 秋, 際, 普通, 場所, 方
+クラスタ 2: 厳島神社, 宮島, 花火, 時間, 時, 方, 大鳥居, 鳥居, 夜, 水族館
+クラスタ 3: 鹿, 宮島, ところ, 食べ物, 場所, 観光客, 店, 神社, 人, 気
+クラスタ 4: 牡蠣, お店, 宮島, 観光, もみじ, 饅頭, 焼く, 鳥居, 友人, 場所
+</pre></div>
+</div>
+<section id="id16">
+<h4><span class="section-number">7.3.1.1. </span>指定したクラスタの口コミ<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">no</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">df_result</span><span class="p">[</span><span class="n">df_result</span><span class="p">[</span><span class="s2">&quot;クラスタ&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">no</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>index</p></th>
+<th class="head"><p>文書ID</p></th>
+<th class="head"><p>文書</p></th>
+<th class="head"><p>クラスタ</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>D5</p></td>
+<td><p>試験の帰りに宮島へ寄りました。フェリーから降りてすぐに昼食をとろうとなり、商店街を歩きました。簡単に食べるものを何個か食べたかったため、サンドdeおにぎりのお子様ランチをたべました。椅子がなかったので海沿いのベンチで食べたんですが、シカが二頭ほど寄ってきたので気を付けたほうが良いです。あと、ごみ箱が簡単に見つけれないため、あらかじめ確認してものを食べるのをお勧めします。昼食の後はみやじマリン水族館へ行きました。道のりが遠く、夏だと汗がでるため水分をしっかりと商店街で買いました。水族館に行った後は再び商店街に戻り、かき氷とにぎり天を食べました。最後に紅葉堂で3つもみじ饅頭を買い、夕方前にフェリーで帰りました。</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>D6</p></td>
+<td><p>お昼にサンドdeおにぎりを食べた。友達がお子様ランチのおにぎりを食べていておいしそうだった。外で食べていたのでシカに食べられないようにするのが大変だった。シカからはとても獣の臭いがした。この日も大鳥居は工事していた。いつまでやるのかはわからないが、早く工事が終わってほしい。その後、宮島の水族館に行った。意外と遠くて足がとても疲れた。そのあと無事に帰ったが、足が痛いので水族館には当分行かないと思う。</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>D11</p></td>
+<td><p>宮島の弥山に登るため、今回は初めて大元コースに挑戦しました。まず厳島神社に参拝した後、宮島水族館を右手に見ながら、大元公園に到着。大元公園を起点とする大元コースで、弥山山頂を目指しました。このコースは弥山登山の３つのコースのうち、最も上級者向けと言われています。紅葉谷コースと大聖院コースは何度か登ったことがありますが、今回の大元コースは初挑戦でした。登山道のすぐそばを清流が流れ、巨石と奇岩が多く見られるこのコースは、他の２つのコースよりも自然豊かで、チャレンジしがいがありました。次回は、紅葉の頃にまた訪れたいと思います。</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>22</p></td>
+<td><p>D23</p></td>
+<td><p>ゴミ箱が無かった</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>25</p></td>
+<td><p>D26</p></td>
+<td><p>自然が好きな人は本当に良かったです！</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>27</p></td>
+<td><p>D28</p></td>
+<td><p>工事中で何も見れなかった。</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="id17">
+<h3><span class="section-number">7.3.2. </span>感情分析（ポジネガ）<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">transformers</span> <span class="n">sentencepiece</span>
+<span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">torch</span> <span class="n">torchvision</span> <span class="n">torchaudio</span>
+</pre></div>
+</div>
+<p>上記、エラーが出る場合はセッションを再起動して再度試してみる</p>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForSequenceClassification</span><span class="p">,</span> <span class="n">TextClassificationPipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="c1"># モデルの読み込み</span>
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;cardiffnlp/twitter-xlm-roberta-base-sentiment&quot;</span>
+<span class="n">tok</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+<span class="n">mdl</span> <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+
+<span class="c1"># パイプライン作成</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">TextClassificationPipeline</span><span class="p">(</span>
+    <span class="n">task</span><span class="o">=</span><span class="s2">&quot;sentiment-analysis&quot;</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tok</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">mdl</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span>
+<span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;miyajima_sample.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;旅行の時期&#39;</span><span class="p">])</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;口コミ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+<span class="c1"># 推論とDataFrame化</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">t</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># 各ラベルごとのスコア</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;文章&quot;</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]),</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>index</p></th>
+<th class="head"><p>文章</p></th>
+<th class="head"><p>positive</p></th>
+<th class="head"><p>neutral</p></th>
+<th class="head"><p>negative</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>自然の景色　雅な社殿　ときめきいっぱいの商店街　海のにおい　いいよお</p></td>
+<td><p>0.779</p></td>
+<td><p>0.173</p></td>
+<td><p>0.048</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>パワースポットでもある厳島神社を参拝したり、牡蠣やもみじ饅頭、穴子飯をはじめとしたグルメは有名で食べ歩きを楽しめます。また、カヤックや弥山登山などアクティビティも充実。おすすめは、商店街の裏路地を散策することです。商店街の賑やかさとはまた違う雰囲気で、落ち着いた雰囲気のカフェやレトロな文具店などがあり、ゆったりとした時間を過ごすことができます。和風旅館もあり、世界遺産の島に宿泊できる贅沢も味わえます。</p></td>
+<td><p>0.775</p></td>
+<td><p>0.199</p></td>
+<td><p>0.026</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>宮島のグルメを楽しむために母と訪問しました。昼食は、牡蠣屋という牡蠣料理専門店で牡蠣屋定食をいただきました。牡蠣屋定食は、焼き牡蠣、カキフライ、牡蠣飯など、牡蠣料理を一通り楽しむことができます。昼食を食べたあとは、厳島神社と鳥居を眺めてから、GEBURAというレモンを使ったカクテルやジュースが楽しめるお店に行きました。美味しいし、200円でおかわりもできるのでお勧めです。</p></td>
+<td><p>0.739</p></td>
+<td><p>0.23</p></td>
+<td><p>0.03</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>牡蠣好きには堪らないです！！</p></td>
+<td><p>0.214</p></td>
+<td><p>0.136</p></td>
+<td><p>0.65</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="id18">
+<h4><span class="section-number">7.3.2.1. </span>ポジネガ平均<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ポジティブ平均：</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;positive&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ネガティブ平均：</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;negative&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ポジティブ平均：0.5942613636363636
+ネガティブ平均：0.1769318181818182
+</pre></div>
+</div>
+</section>
+<section id="id19">
+<h4><span class="section-number">7.3.2.2. </span>ポジティブ値が上位の投稿<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;positive&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>index</p></th>
+<th class="head"><p>文章</p></th>
+<th class="head"><p>positive</p></th>
+<th class="head"><p>neutral</p></th>
+<th class="head"><p>negative</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>25</p></td>
+<td><p>自然が好きな人は本当に良かったです！</p></td>
+<td><p>0.93</p></td>
+<td><p>0.051</p></td>
+<td><p>0.019</p></td>
+</tr>
+<tr class="row-odd"><td><p>162</p></td>
+<td><p>とてもいいところでした。</p></td>
+<td><p>0.926</p></td>
+<td><p>0.055</p></td>
+<td><p>0.019</p></td>
+</tr>
+<tr class="row-even"><td><p>56</p></td>
+<td><p>広島産の牡蠣をとことん満喫できました。お酒にも合い，牡蠣づくしなのにリーズナブルで，お洒落なお店でした。レモンジュースもフレッシュで美味しかったです。</p></td>
+<td><p>0.918</p></td>
+<td><p>0.067</p></td>
+<td><p>0.014</p></td>
+</tr>
+<tr class="row-odd"><td><p>90</p></td>
+<td><p>宮島に2019年に訪れましたが、建造物やその他の歴史的なものが沢山あり、とても満喫できました！</p></td>
+<td><p>0.91</p></td>
+<td><p>0.074</p></td>
+<td><p>0.016</p></td>
+</tr>
+<tr class="row-even"><td><p>42</p></td>
+<td><p>もうなくなってしまいましたが、宮島の花火大会は広島の花火大会の中で一番センスが良く、世界遺産とのコラボレーションが感動ものでした。</p></td>
+<td><p>0.903</p></td>
+<td><p>0.068</p></td>
+<td><p>0.029</p></td>
+</tr>
+<tr class="row-odd"><td><p>174</p></td>
+<td><p>シカが可愛かった❤</p></td>
+<td><p>0.898</p></td>
+<td><p>0.079</p></td>
+<td><p>0.023</p></td>
+</tr>
+<tr class="row-even"><td><p>17</p></td>
+<td><p>お寺などを見たりしてとても充実した時間を過ごすことが出来ました</p></td>
+<td><p>0.897</p></td>
+<td><p>0.088</p></td>
+<td><p>0.015</p></td>
+</tr>
+<tr class="row-odd"><td><p>169</p></td>
+<td><p>宮島口からフェリーに乗り宮島に着きました。日本人より外国の方々の方が多くビックリしました。島には世界遺産の厳島神社やお土産物屋さんがあり楽しめました。よかったです。</p></td>
+<td><p>0.896</p></td>
+<td><p>0.069</p></td>
+<td><p>0.035</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./html"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05_clustering.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>文書分類</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="20_youtube.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>ソーシャルメディアデータの分析</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">7.1. データの確認</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">7.1.1. データの中身を確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">7.1.2. 「データ数」「期間」の確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">7.1.3. 一つの投稿（口コミ）の文字数を確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">7.1.4. 「口コミの文字数」の分布を確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">7.1.5. カテゴリカルデータの種類の確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">7.1.6. カテゴリカルデータの内訳の確認</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">7.1.7. 欠損値の補完</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">7.2. 基礎的な解析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">7.2.1. 語の出現頻度（集計）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">7.2.2. 語の出現頻度（ワードクラウド）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">7.2.3. 共起ネットワーク（語の関係性・文脈）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">7.3. 発展的な分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">7.3.1. クラスタリング（分類・話題抽出）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">7.3.1.1. 指定したクラスタの口コミ</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">7.3.2. 感情分析（ポジネガ）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">7.3.2.1. ポジネガ平均</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">7.3.2.2. ポジティブ値が上位の投稿</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuki Ogawa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

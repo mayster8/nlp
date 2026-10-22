@@ -1,0 +1,1183 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5. 感情分析 &#8212; 自然言語処理</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'html/04_analysis';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. 文書分類" href="05_clustering.html" />
+    <link rel="prev" title="4. 可視化" href="03_visualization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_top.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">自然言語処理</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">導入</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_intro.html">1. テキストマイニングとは</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_deploy.html">2. 環境構築</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">基礎的な解析</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_basic_analysis.html">3. 前処理・形態素解析・特徴抽出</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_visualization.html">4. 可視化</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">分析手法</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. 感情分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_clustering.html">6. 文書分類</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">応用編</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="10_sightseeing.html">7. 観光データの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_youtube.html">8. ソーシャルメディアデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="30_llm.html">9. 大規模言語モデル（LLM）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">その他</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="99_dictionary.html">10. 辞書の拡張</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/html/04_analysis.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>感情分析</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.1. 感情分析とは</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.1.1. 感情分析の応用場面</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.2. 感情スコアの出し方</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.2.1. ① 辞書ベース感情分析の具体例</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">5.2.1.1. 複数文での平均スコア計算例</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">5.2.1.1.1. プログラム例（ポジネガ辞書）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bert">5.2.2. ② 機械学習・深層学習ベース（例：BERT）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#roberta">5.2.2.1. プログラム例（RoBERTaモデルによるポジネガスコア）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">5.3. 発展：多クラス感情分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">5.3.1. 多クラス感情分析とは</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">5.3.2. BERTによる多クラス感情分析</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">5.3.3. プログラム例（BERTによる多クラス感情分析）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">5.4. 補足：複数文を含んだ文書の感情スコア算出について</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">5.4.1. ① 一文単位でスコアを算出して平均する方法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">5.4.2. ② 複数文をまとめて1つのテキストとして扱う方法</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">5. </span>感情分析<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="admonition- admonition">
+<p class="admonition-title">今回のゴール</p>
+<ul class="simple">
+<li><p>感情分析の目的と応用場面を理解する</p></li>
+<li><p>辞書ベースとBERTベースの感情分析の違いを理解する</p></li>
+<li><p>感情スコアの計算方法を体験する</p></li>
+<li><p>多クラス感情分析を知る</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<section id="id2">
+<h2><span class="section-number">5.1. </span>感情分析とは<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><strong>感情分析（Sentiment Analysis）</strong> は、テキストデータから「ポジティブ」「ネガティブ」などの感情を自動的に判定する技術。<br />
+SNS・レビュー・ニュース・発言ログなどの大量テキストから、人々の意見・印象・反応を可視化することができる。</p>
+<hr class="docutils" />
+<section id="id3">
+<h3><span class="section-number">5.1.1. </span>感情分析の応用場面<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>分野</p></th>
+<th class="head"><p>応用例</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SNS分析</p></td>
+<td><p>Twitterやブログの投稿から人・組織への評価を調べる</p></td>
+</tr>
+<tr class="row-odd"><td><p>マーケティング</p></td>
+<td><p>新商品に対するポジティブ・ネガティブ比率を分析</p></td>
+</tr>
+<tr class="row-even"><td><p>教育</p></td>
+<td><p>学生の授業アンケートから心理傾向を抽出</p></td>
+</tr>
+<tr class="row-odd"><td><p>政治・社会</p></td>
+<td><p>世論や選挙関連の意見分析</p></td>
+</tr>
+<tr class="row-even"><td><p>顧客対応</p></td>
+<td><p>問い合わせメールの感情を自動判別して優先対応</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h2><span class="section-number">5.2. </span>感情スコアの出し方<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>感情スコア（sentiment score）は、文章の中のポジティブ語・ネガティブ語の出現状況を基に算出する。<br />
+代表的な方法は以下の2つ。</p>
+<p><strong>① 辞書ベース（ルールベース）</strong></p>
+<ul class="simple">
+<li><p>あらかじめ用意された「感情辞書」を使う</p></li>
+<li><p>各単語にスコア（例：喜 +1.0、悲 -1.0）が登録されている</p></li>
+<li><p>文書内の単語を調べて合計する</p></li>
+</ul>
+<p><strong>② 機械学習・深層学習ベース（例：BERT）</strong></p>
+<ul class="simple">
+<li><p>文の意味全体をモデルが学習してスコア化する</p></li>
+<li><p>文脈に依存する表現も理解できる</p></li>
+</ul>
+<hr class="docutils" />
+<section id="id5">
+<h3><span class="section-number">5.2.1. </span>① 辞書ベース感情分析の具体例<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p><strong>例文</strong></p>
+<blockquote>
+<div><p>この映画はとても面白かったが、少し退屈な場面もあった。</p>
+</div></blockquote>
+<hr class="docutils" />
+<p><strong>ステップ1：文を単語に分割する</strong><br />
+形態素解析を行い、感情に関連する単語を抽出する。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>抽出単語</p></th>
+<th class="head"><p>備考</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>面白い</p></td>
+<td><p>ポジティブ表現</p></td>
+</tr>
+<tr class="row-odd"><td><p>退屈</p></td>
+<td><p>ネガティブ表現</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<p><strong>ステップ2：辞書から感情スコアを参照</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>単語</p></th>
+<th class="head"><p>感情極性</p></th>
+<th class="head"><p>スコア</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>面白い</p></td>
+<td><p>ポジティブ</p></td>
+<td><p>+2</p></td>
+</tr>
+<tr class="row-odd"><td><p>退屈</p></td>
+<td><p>ネガティブ</p></td>
+<td><p>-1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<p><strong>ステップ3：スコアの集計</strong></p>
+<p>文章全体の感情スコアは次のように計算する。</p>
+<blockquote>
+<div><p>この映画はとても<u>面白</u>かったが、少し<u>退屈</u>な場面もあった。</p>
+</div></blockquote>
+<p>総合スコア：
+[
+(+2) + (-1) = +1
+]</p>
+<p><strong>→ 結果：ややポジティブ</strong></p>
+<hr class="docutils" />
+<section id="id6">
+<h4><span class="section-number">5.2.1.1. </span>複数文での平均スコア計算例<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<p><strong>例：あるユーザのレビュー投稿</strong></p>
+<blockquote>
+<div><p>この映画は最高だった。<br />
+ストーリーは退屈だった。<br />
+映像は素晴らしいが、内容は少し残念だ。<br />
+音楽は普通だった。</p>
+</div></blockquote>
+<p><strong>ポジネガ辞書</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>感情の種類</p></th>
+<th class="head"><p>単語例</p></th>
+<th class="head"><p>スコア</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>強いポジティブ</p></td>
+<td><p>最高、感動、素晴らしい</p></td>
+<td><p>+2</p></td>
+</tr>
+<tr class="row-odd"><td><p>ややポジティブ</p></td>
+<td><p>良い、楽しい、嬉しい</p></td>
+<td><p>+1</p></td>
+</tr>
+<tr class="row-even"><td><p>ニュートラル（中立）</p></td>
+<td><p>普通、まあまあ</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>ややネガティブ</p></td>
+<td><p>退屈、残念、不安</p></td>
+<td><p>−1</p></td>
+</tr>
+<tr class="row-even"><td><p>強いネガティブ</p></td>
+<td><p>最悪、嫌い、ひどい</p></td>
+<td><p>−2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>計算例</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>文</p></th>
+<th class="head"><p>総スコア</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>この映画は<u>最高</u>だった。</p></td>
+<td><p>+2</p></td>
+</tr>
+<tr class="row-odd"><td><p>ストーリーは<u>退屈</u>だった。</p></td>
+<td><p>-1</p></td>
+</tr>
+<tr class="row-even"><td><p>映像は<u>素晴らしい</u>が、内容は少し<u>残念</u>だ。</p></td>
+<td><p>+1</p></td>
+</tr>
+<tr class="row-odd"><td><p>音楽は<u>普通</u>だった。</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>平均スコア：
+[
+((+2) + (-1) + (+1) + (0)) / 4 = 0.5
+]</p>
+<p><strong>→ 全体としてはややポジティブな傾向であると判断できる。</strong></p>
+<hr class="docutils" />
+<section id="id7">
+<h5><span class="section-number">5.2.1.1.1. </span>プログラム例（ポジネガ辞書）<a class="headerlink" href="#id7" title="Link to this heading">#</a></h5>
+<p><strong>ライブラリインストール（必要に応じて）</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">spacy</span> <span class="n">ginza</span> <span class="n">ja</span><span class="o">-</span><span class="n">ginza</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
+
+<span class="c1"># 感情スコア付き辞書（見出し語）</span>
+<span class="n">word_scores</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;最高&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;感動&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;素晴らしい&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;良い&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;楽しい&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;嬉しい&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;普通&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;まあまあ&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;退屈&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;残念&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;不安&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;最悪&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;嫌い&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;ひどい&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;この映画は最高だった。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ストーリーは退屈だった。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;映像は素晴らしいが、内容は少し残念だ。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;音楽は普通だった。&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="n">lemma</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">lemma_</span>
+        <span class="k">if</span> <span class="n">lemma</span> <span class="ow">in</span> <span class="n">word_scores</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">score</span> <span class="o">+</span> <span class="n">word_scores</span><span class="p">[</span><span class="n">lemma</span><span class="p">]</span>
+    <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;→ スコア:&quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+
+<span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">:</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="n">s</span>
+<span class="n">average</span> <span class="o">=</span> <span class="n">total</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;平均スコア:&quot;</span><span class="p">,</span> <span class="n">average</span><span class="p">)</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p><strong>出力</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>この映画は最高だった。 → スコア: 2
+ストーリーは退屈だった。 → スコア: -1
+映像は素晴らしいが、内容は少し残念だ。 → スコア: 1
+音楽は普通だった。 → スコア: 0
+平均スコア: 0.5
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="bert">
+<h3><span class="section-number">5.2.2. </span>② 機械学習・深層学習ベース（例：BERT）<a class="headerlink" href="#bert" title="Link to this heading">#</a></h3>
+<p>BERTは、Googleが開発した大規模言語モデルであり、単語の文脈を深く理解することができる。<br />
+BERTベースの感情分析では、テキストを文脈ごとにベクトル化し、ポジティブ・ネガティブなどのクラスに分類する。</p>
+<section id="roberta">
+<h4><span class="section-number">5.2.2.1. </span>プログラム例（RoBERTaモデルによるポジネガスコア）<a class="headerlink" href="#roberta" title="Link to this heading">#</a></h4>
+<p><strong>RoBERTaモデルのインストール</strong><br />
+今回は、Hugging Face の公開モデルを使って文章の感情（ポジティブ／ネガティブ／ニュートラル）を判定する<br />
+<a class="reference external" href="https://huggingface.co/cardiffnlp/twitter-xlm-roberta-base-sentiment">cardiffnlp/twitter-xlm-roberta-base-sentiment</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="n">transformers</span> <span class="n">sentencepiece</span> <span class="o">-</span><span class="n">U</span> <span class="n">torch</span> <span class="n">torchvision</span> <span class="n">torchaudio</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForSequenceClassification</span><span class="p">,</span> <span class="n">TextClassificationPipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="c1"># モデルの読み込み</span>
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;cardiffnlp/twitter-xlm-roberta-base-sentiment&quot;</span>
+<span class="n">tok</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+<span class="n">mdl</span> <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+
+<span class="c1"># パイプライン作成</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">TextClassificationPipeline</span><span class="p">(</span>
+    <span class="n">task</span><span class="o">=</span><span class="s2">&quot;sentiment-analysis&quot;</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tok</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">mdl</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span>
+<span class="p">)</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;この映画はとても面白かった。映像も綺麗だった。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;期待していたけど、ちょっと退屈だった。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;最悪の出来でした。二度と見たくない。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;普通かな。特に印象に残らなかった。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;主演俳優の演技が素晴らしかった！&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># 推論とDataFrame化</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">),</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;件&quot;</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">t</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># 各ラベルごとのスコア</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;文章&quot;</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]),</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+<span class="n">df_out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+<span class="n">df_out</span>
+</pre></div>
+</div>
+<p><strong>出力</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>文章</p></th>
+<th class="head text-right"><p>positive</p></th>
+<th class="head text-right"><p>neutral</p></th>
+<th class="head text-right"><p>negative</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>この映画はとても面白かった。映像も綺麗だった。</p></td>
+<td class="text-right"><p>0.930</p></td>
+<td class="text-right"><p>0.052</p></td>
+<td class="text-right"><p>0.018</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>期待していたけど、ちょっと退屈だった。</p></td>
+<td class="text-right"><p>0.053</p></td>
+<td class="text-right"><p>0.141</p></td>
+<td class="text-right"><p>0.806</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>最悪の出来でした。二度と見たくない。</p></td>
+<td class="text-right"><p>0.026</p></td>
+<td class="text-right"><p>0.032</p></td>
+<td class="text-right"><p>0.941</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>普通かな。特に印象に残らなかった。</p></td>
+<td class="text-right"><p>0.065</p></td>
+<td class="text-right"><p>0.244</p></td>
+<td class="text-right"><p>0.691</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>主演俳優の演技が素晴らしかった！</p></td>
+<td class="text-right"><p>0.919</p></td>
+<td class="text-right"><p>0.051</p></td>
+<td class="text-right"><p>0.030</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id8">
+<h2><span class="section-number">5.3. </span>発展：多クラス感情分析<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<p>これまでの講義では、「ポジティブ」「ネガティブ」といった<strong>2値分類の感情分析</strong>を扱った。<br />
+しかし、人間の感情には「喜び」「怒り」「悲しみ」「恐れ」「驚き」など、より多様な種類がある。<br />
+このような複数の感情カテゴリに分類する分析を <strong>「多クラス感情分析（multi-class sentiment analysis）」</strong> という。</p>
+<hr class="docutils" />
+<section id="id9">
+<h3><span class="section-number">5.3.1. </span>多クラス感情分析とは<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>多クラス感情分析では、文章をあらかじめ定義された**複数の感情カテゴリのいずれか（またはいくつか）**に分類する。<br />
+分類対象となる感情は研究や応用分野によって異なるが、代表的な例としては以下がある。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>感情カテゴリ</p></th>
+<th class="head"><p>英語表現</p></th>
+<th class="head"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>喜び</p></td>
+<td><p>Joy</p></td>
+<td><p>ポジティブで幸福感を含む感情</p></td>
+</tr>
+<tr class="row-odd"><td><p>悲しみ</p></td>
+<td><p>Sadness</p></td>
+<td><p>喪失感や落胆</p></td>
+</tr>
+<tr class="row-even"><td><p>期待</p></td>
+<td><p>Anticipation</p></td>
+<td><p>将来への期待や希望</p></td>
+</tr>
+<tr class="row-odd"><td><p>驚き</p></td>
+<td><p>Surprise</p></td>
+<td><p>予想外の出来事への反応</p></td>
+</tr>
+<tr class="row-even"><td><p>怒り</p></td>
+<td><p>Anger</p></td>
+<td><p>不満や攻撃性を含む感情</p></td>
+</tr>
+<tr class="row-odd"><td><p>恐れ</p></td>
+<td><p>Fear</p></td>
+<td><p>不安や危険への反応</p></td>
+</tr>
+<tr class="row-even"><td><p>嫌悪</p></td>
+<td><p>Disgust</p></td>
+<td><p>拒絶や嫌悪の感情</p></td>
+</tr>
+<tr class="row-odd"><td><p>信頼</p></td>
+<td><p>Trust</p></td>
+<td><p>他者への安心・信頼感</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>これらの8種類は、心理学者ロバート・プルチックの「感情の輪（Wheel of Emotions）」に基づく分類であり、自然言語処理でもよく利用される。</p>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h3><span class="section-number">5.3.2. </span>BERTによる多クラス感情分析<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>多クラス感情分析には、近年では <strong>BERT</strong> や <strong>RoBERTa</strong> などの事前学習済み言語モデルがよく使われる。<br />
+BERTは大量のテキストから文の意味を深く学習しており、文の特徴を自動的に抽出して分類タスクに応用できる。</p>
+<p>このモデルを使うと、単語ベースの特徴抽出や辞書ベースの手法に比べて、文脈に基づいた精度の高い感情分類が可能になる。<br />
+今回は、日本語向けに学習された多クラス感情モデルを用いる。</p>
+</section>
+<hr class="docutils" />
+<section id="id11">
+<h3><span class="section-number">5.3.3. </span>プログラム例（BERTによる多クラス感情分析）<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>以下は、<strong>8クラス感情分析</strong>を行うシンプルなPythonサンプル。<br />
+事前学習済みモデルとして <code class="docutils literal notranslate"><span class="pre">koshin2001/Japanese-to-emotions</span></code> を使用する。</p>
+<p><strong>ライブラリのインストール</strong><br />
+Google Colab 環境では、以下２つを順に実行する（クラッシュ回避のため）</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">torch</span><span class="o">==</span><span class="mf">2.8.0</span> <span class="n">torchvision</span><span class="o">==</span><span class="mf">0.23.0</span> <span class="n">torchaudio</span><span class="o">==</span><span class="mf">2.8.0</span> <span class="o">--</span><span class="n">quiet</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">transformers</span> <span class="n">sentencepiece</span> <span class="n">fugashi</span> <span class="n">unidic</span><span class="o">-</span><span class="n">lite</span> <span class="n">pandas</span><span class="o">==</span><span class="mf">2.2.2</span> <span class="o">--</span><span class="n">quiet</span>
+</pre></div>
+</div>
+<p><strong>プログラム</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForSequenceClassification</span><span class="p">,</span> <span class="n">TextClassificationPipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="c1"># モデル読み込み</span>
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;koshin2001/Japanese-to-emotions&quot;</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+
+<span class="c1"># BERT処理</span>
+<span class="k">if</span> <span class="s2">&quot;token_type_ids&quot;</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">,</span> <span class="s2">&quot;model_input_names&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">model_input_names</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">model_input_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="s2">&quot;token_type_ids&quot;</span><span class="p">:</span>
+            <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">tokenizer</span><span class="o">.</span><span class="n">model_input_names</span> <span class="o">=</span> <span class="n">names</span>
+
+<span class="c1"># 8クラスの日本語ラベル</span>
+<span class="n">custom_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;喜び&quot;</span><span class="p">,</span> <span class="s2">&quot;悲しみ&quot;</span><span class="p">,</span> <span class="s2">&quot;期待&quot;</span><span class="p">,</span> <span class="s2">&quot;驚き&quot;</span><span class="p">,</span> <span class="s2">&quot;怒り&quot;</span><span class="p">,</span> <span class="s2">&quot;恐れ&quot;</span><span class="p">,</span> <span class="s2">&quot;嫌悪&quot;</span><span class="p">,</span> <span class="s2">&quot;信頼&quot;</span><span class="p">]</span>
+
+<span class="c1"># 感情分析パイプライン</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">TextClassificationPipeline</span><span class="p">(</span>
+    <span class="n">task</span><span class="o">=</span><span class="s2">&quot;text-classification&quot;</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span>
+<span class="p">)</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;明日の発表が楽しみです！&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;最悪の結果になってしまった…&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;信じられない、どうしてこんなことに。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;先生に怒られて腹が立った。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;正直ちょっと不安です。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;あなたのことを信頼しています。&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># 推論とDataFrame化</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;感情分析中&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;件&quot;</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;文章&quot;</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;LABEL_&quot;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">custom_labels</span><span class="p">):</span>
+                    <span class="n">label</span> <span class="o">=</span> <span class="n">custom_labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="n">row</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]),</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+<span class="c1"># ===== DataFrame化 =====</span>
+<span class="n">df_out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;文章&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">custom_labels</span>
+<span class="n">df_out</span> <span class="o">=</span> <span class="n">df_out</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+<span class="n">df_out</span>
+
+</pre></div>
+</div>
+<hr class="docutils" />
+<p><strong>出力</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>文章</p></th>
+<th class="head"><p>喜び</p></th>
+<th class="head"><p>悲しみ</p></th>
+<th class="head"><p>期待</p></th>
+<th class="head"><p>驚き</p></th>
+<th class="head"><p>怒り</p></th>
+<th class="head"><p>恐れ</p></th>
+<th class="head"><p>嫌悪</p></th>
+<th class="head"><p>信頼</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>明日の発表が楽しみです！</p></td>
+<td><p>0.321</p></td>
+<td><p>0.003</p></td>
+<td><p>0.587</p></td>
+<td><p>0.014</p></td>
+<td><p>0.001</p></td>
+<td><p>0.004</p></td>
+<td><p>0.002</p></td>
+<td><p>0.061</p></td>
+</tr>
+<tr class="row-odd"><td><p>最悪の結果になってしまった…</p></td>
+<td><p>0.003</p></td>
+<td><p>0.606</p></td>
+<td><p>0.004</p></td>
+<td><p>0.023</p></td>
+<td><p>0.033</p></td>
+<td><p>0.196</p></td>
+<td><p>0.132</p></td>
+<td><p>0.003</p></td>
+</tr>
+<tr class="row-even"><td><p>信じられない、どうしてこんなことに。</p></td>
+<td><p>0.012</p></td>
+<td><p>0.241</p></td>
+<td><p>0.016</p></td>
+<td><p>0.319</p></td>
+<td><p>0.030</p></td>
+<td><p>0.247</p></td>
+<td><p>0.117</p></td>
+<td><p>0.011</p></td>
+</tr>
+<tr class="row-odd"><td><p>先生に怒られて腹が立った。</p></td>
+<td><p>0.006</p></td>
+<td><p>0.413</p></td>
+<td><p>0.006</p></td>
+<td><p>0.028</p></td>
+<td><p>0.212</p></td>
+<td><p>0.057</p></td>
+<td><p>0.249</p></td>
+<td><p>0.005</p></td>
+</tr>
+<tr class="row-even"><td><p>正直ちょっと不安です。</p></td>
+<td><p>0.006</p></td>
+<td><p>0.104</p></td>
+<td><p>0.010</p></td>
+<td><p>0.052</p></td>
+<td><p>0.008</p></td>
+<td><p>0.767</p></td>
+<td><p>0.083</p></td>
+<td><p>0.012</p></td>
+</tr>
+<tr class="row-odd"><td><p>あなたのことを信頼しています。</p></td>
+<td><p>0.218</p></td>
+<td><p>0.081</p></td>
+<td><p>0.215</p></td>
+<td><p>0.025</p></td>
+<td><p>0.024</p></td>
+<td><p>0.023</p></td>
+<td><p>0.035</p></td>
+<td><p>0.409</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id12">
+<h2><span class="section-number">5.4. </span>補足：複数文を含んだ文書の感情スコア算出について<a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
+<p>複数文を含んだ文書において、感情スコアをどのように算出するかは、<br />
+以下の2つの考え方がある。</p>
+<p><strong>① 一文単位でスコアを算出して平均する方法</strong><br />
+<strong>② 複数文をまとめて1つのテキストとして扱う方法</strong></p>
+<hr class="docutils" />
+<section id="id13">
+<h3><span class="section-number">5.4.1. </span>① 一文単位でスコアを算出して平均する方法<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>文書を文ごとに分割し（句点「。」などで区切る）、<br />
+各文ごとにポジティブ・ネガティブスコアを算出して平均する。</p>
+<p><strong>例</strong></p>
+<blockquote>
+<div><p>「映画の前半は退屈だった。後半は最高だった！」</p>
+</div></blockquote>
+<p>→ 「映画の前半は退屈だった」：ネガティブ（-1） + 「後半は最高だった！」：ポジティブ（+1） / 2<br />
+<strong>→ 平均スコア： 0（中立的な印象）</strong></p>
+<p><strong>メリット</strong></p>
+<ul class="simple">
+<li><p>文ごとの感情のばらつきを反映できる</p></li>
+<li><p>複数の意見が混在する投稿に対応できる</p></li>
+<li><p>SNSや口コミ分析では一般的な方法</p></li>
+</ul>
+<p><strong>デメリット</strong></p>
+<ul class="simple">
+<li><p>文分割の精度に影響を受ける</p></li>
+<li><p>感情の強さ（重み）を考慮しにくい</p></li>
+</ul>
+<p><strong>適している場面</strong></p>
+<ul class="simple">
+<li><p>SNS投稿・レビューなど複数意見が混じるケース</p></li>
+<li><p>辞書ベース手法やシンプルな機械学習モデルを使う場合</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id14">
+<h3><span class="section-number">5.4.2. </span>② 複数文をまとめて1つのテキストとして扱う方法<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>文書全体を1つの文章として入力し、まとめて感情スコアを算出する。<br />
+文単位ではなく、全体のトーンや文脈を重視する。</p>
+<p><strong>例</strong></p>
+<blockquote>
+<div><p>「最初はどうなるか不安だった。だけど結果的にはすごく満足している。」</p>
+</div></blockquote>
+<p>→ 不安（ネガティブ）＋ 満足（ポジティブ）だが、<br />
+<strong>→ 全体では「ポジティブ寄りの感情」と判断される。</strong></p>
+<p>モデルが前後の文脈を理解して、最終的な印象を出せる。</p>
+<p><strong>メリット</strong></p>
+<ul class="simple">
+<li><p>BERTなど文脈を理解するモデルではこちらが有効</p></li>
+<li><p>文脈全体のトーンや感情の流れを把握できる</p></li>
+<li><p>文分割不要でシンプルに実装できる</p></li>
+</ul>
+<p><strong>デメリット</strong></p>
+<ul class="simple">
+<li><p>部分的な強い感情が平均化されやすい</p></li>
+<li><p>投稿が長すぎるとモデルのトークン長を超える場合がある（例：512字）</p></li>
+</ul>
+<p><strong>適している場面</strong></p>
+<ul class="simple">
+<li><p>レビューやニュース記事など全体印象を評価したい場合</p></li>
+<li><p>BERT / RoBERTa などの文脈理解モデルを利用する場合</p></li>
+</ul>
+<hr class="docutils" />
+<!-- **ポイント** 
+> - 「文単位平均」は構成のばらつきを反映しやすい  
+> - 「全体一括処理」は文脈理解モデルで効果的  
+> - 分析目的とモデル特性に応じて選択することが重要
+ -->
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./html"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_visualization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>可視化</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05_clustering.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>文書分類</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.1. 感情分析とは</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.1.1. 感情分析の応用場面</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.2. 感情スコアの出し方</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.2.1. ① 辞書ベース感情分析の具体例</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">5.2.1.1. 複数文での平均スコア計算例</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">5.2.1.1.1. プログラム例（ポジネガ辞書）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bert">5.2.2. ② 機械学習・深層学習ベース（例：BERT）</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#roberta">5.2.2.1. プログラム例（RoBERTaモデルによるポジネガスコア）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">5.3. 発展：多クラス感情分析</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">5.3.1. 多クラス感情分析とは</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">5.3.2. BERTによる多クラス感情分析</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">5.3.3. プログラム例（BERTによる多クラス感情分析）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">5.4. 補足：複数文を含んだ文書の感情スコア算出について</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">5.4.1. ① 一文単位でスコアを算出して平均する方法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">5.4.2. ② 複数文をまとめて1つのテキストとして扱う方法</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Yuki Ogawa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
