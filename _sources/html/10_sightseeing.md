@@ -9,7 +9,7 @@
 ---
 ## データの確認
 宮島の口コミデータ  
-<a href="http://ogawa.isslab.org/nlp/data/miyajima_sample.csv">http://ogawa.isslab.org/nlp/data/miyajima_sample.csv</a>  
+<a href="https://mayster8.github.io/nlp/data/miyajima_sample.csv">https://mayster8.github.io/nlp/data/miyajima_sample.csv</a>  
 
 ### データの中身を確認
 - `miyajima_sample.csv` を Google Colab に配置  

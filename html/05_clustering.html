@@ -728,7 +728,7 @@ document.write(`
 <li><p>話題をまたいで出てくる単語（「人気」「友人」「週末」など）を避けている</p></li>
 <li><p>文書の数をある程度（18件）確保している</p></li>
 </ul>
-<p><strong>データ</strong>：<a class="reference external" href="http://ogawa.isslab.org/nlp/data/data-kmeans.csv">data-kmeans.csv</a>（列：<code class="docutils literal notranslate"><span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">text</span></code>）。下のプログラムは、このURLから直接読み込む。手元のファイルを使う場合は、Google Colab に配置して <code class="docutils literal notranslate"><span class="pre">pd.read_csv(&quot;data-kmeans.csv&quot;,</span> <span class="pre">encoding=&quot;utf-8-sig&quot;)</span></code> のようにファイル名を指定する。なお、このcsvは文字コードが UTF-8（BOM付き）なので、<code class="docutils literal notranslate"><span class="pre">encoding=&quot;utf-8-sig&quot;</span></code> を指定している（Excelで開いても文字化けしない）。</p>
+<p><strong>データ</strong>：<a class="reference external" href="https://mayster8.github.io/nlp/data/data-kmeans.csv">data-kmeans.csv</a>（列：<code class="docutils literal notranslate"><span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">text</span></code>）。下のプログラムは、このURLから直接読み込む。手元のファイルを使う場合は、Google Colab に配置して <code class="docutils literal notranslate"><span class="pre">pd.read_csv(&quot;data-kmeans.csv&quot;,</span> <span class="pre">encoding=&quot;utf-8-sig&quot;)</span></code> のようにファイル名を指定する。なお、このcsvは文字コードが UTF-8（BOM付き）なので、<code class="docutils literal notranslate"><span class="pre">encoding=&quot;utf-8-sig&quot;</span></code> を指定している（Excelで開いても文字化けしない）。</p>
 <p><strong>プログラム</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
@@ -737,7 +737,7 @@ document.write(`
 <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
 
 <span class="c1"># CSVから文書を読み込む（URLから直接読み込める）</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://ogawa.isslab.org/nlp/data/data-kmeans.csv&quot;</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://mayster8.github.io/nlp/data/data-kmeans.csv&quot;</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 <span class="n">texts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
 
@@ -1060,7 +1060,7 @@ K-means のように「クラスタ数K」を先に決めなくても、後か�
 <hr class="docutils" />
 <section id="id17">
 <h3><span class="section-number">6.3.7. </span>18文書で試す（演習5と同じデータ）<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
-<p>K-meansと同じ <a class="reference external" href="http://ogawa.isslab.org/nlp/data/data-kmeans.csv">data-kmeans.csv</a>（18文書）を使い、階層的クラスタリングで樹形図を作る。</p>
+<p>K-meansと同じ <a class="reference external" href="https://mayster8.github.io/nlp/data/data-kmeans.csv">data-kmeans.csv</a>（18文書）を使い、階層的クラスタリングで樹形図を作る。</p>
 <p><strong>プログラム</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
@@ -1072,7 +1072,7 @@ K-means のように「クラスタ数K」を先に決めなくても、後か�
 
 <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
 <span class="c1"># CSVから文書を読み込む（URLから直接読み込める）</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://ogawa.isslab.org/nlp/data/data-kmeans.csv&quot;</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://mayster8.github.io/nlp/data/data-kmeans.csv&quot;</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 <span class="n">texts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
 
@@ -1275,7 +1275,7 @@ K-means のように「クラスタ数K」を先に決めなくても、後か�
 <hr class="docutils" />
 <section id="lda">
 <h3><span class="section-number">6.4.2. </span>プログラム例（LDAによるトピックモデル）<a class="headerlink" href="#lda" title="Link to this heading">#</a></h3>
-<p>K-means・階層的クラスタリングと同じ <a class="reference external" href="http://ogawa.isslab.org/nlp/data/data-kmeans.csv">data-kmeans.csv</a>（18文書）を使う。LDAは文書数・語数が少ないと結果が不安定になりやすいので、<strong>1つの文書にしか出ない単語を除く</strong>（<code class="docutils literal notranslate"><span class="pre">min_df=2</span></code>）など、いくつか設定を工夫している。</p>
+<p>K-means・階層的クラスタリングと同じ <a class="reference external" href="https://mayster8.github.io/nlp/data/data-kmeans.csv">data-kmeans.csv</a>（18文書）を使う。LDAは文書数・語数が少ないと結果が不安定になりやすいので、<strong>1つの文書にしか出ない単語を除く</strong>（<code class="docutils literal notranslate"><span class="pre">min_df=2</span></code>）など、いくつか設定を工夫している。</p>
 <p><strong>プログラム</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span>
@@ -1283,7 +1283,7 @@ K-means のように「クラスタ数K」を先に決めなくても、後か�
 
 <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ja_ginza&quot;</span><span class="p">)</span>
 <span class="c1"># CSVから文書を読み込む（URLから直接読み込める）</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://ogawa.isslab.org/nlp/data/data-kmeans.csv&quot;</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://mayster8.github.io/nlp/data/data-kmeans.csv&quot;</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span>
 <span class="n">texts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
 

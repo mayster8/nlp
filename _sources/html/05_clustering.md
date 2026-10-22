@@ -181,7 +181,7 @@ display(df_top)
 - 話題をまたいで出てくる単語（「人気」「友人」「週末」など）を避けている
 - 文書の数をある程度（18件）確保している
 
-**データ**：[data-kmeans.csv](http://ogawa.isslab.org/nlp/data/data-kmeans.csv)（列：`id`, `text`）。下のプログラムは、このURLから直接読み込む。手元のファイルを使う場合は、Google Colab に配置して `pd.read_csv("data-kmeans.csv", encoding="utf-8-sig")` のようにファイル名を指定する。なお、このcsvは文字コードが UTF-8（BOM付き）なので、`encoding="utf-8-sig"` を指定している（Excelで開いても文字化けしない）。
+**データ**：[data-kmeans.csv](https://mayster8.github.io/nlp/data/data-kmeans.csv)（列：`id`, `text`）。下のプログラムは、このURLから直接読み込む。手元のファイルを使う場合は、Google Colab に配置して `pd.read_csv("data-kmeans.csv", encoding="utf-8-sig")` のようにファイル名を指定する。なお、このcsvは文字コードが UTF-8（BOM付き）なので、`encoding="utf-8-sig"` を指定している（Excelで開いても文字化けしない）。
 
 **プログラム**
 ```python
@@ -192,7 +192,7 @@ from sklearn.cluster import KMeans
 nlp = spacy.load("ja_ginza")
 
 # CSVから文書を読み込む（URLから直接読み込める）
-url = "http://ogawa.isslab.org/nlp/data/data-kmeans.csv"
+url = "https://mayster8.github.io/nlp/data/data-kmeans.csv"
 df = pd.read_csv(url, encoding="utf-8-sig")
 texts = df["text"].to_list()
 
@@ -419,7 +419,7 @@ print(df_result)
 
 ### 18文書で試す（演習5と同じデータ）
 
-K-meansと同じ [data-kmeans.csv](http://ogawa.isslab.org/nlp/data/data-kmeans.csv)（18文書）を使い、階層的クラスタリングで樹形図を作る。
+K-meansと同じ [data-kmeans.csv](https://mayster8.github.io/nlp/data/data-kmeans.csv)（18文書）を使い、階層的クラスタリングで樹形図を作る。
 
 **プログラム**
 ```python
@@ -433,7 +433,7 @@ from scipy.spatial.distance import squareform
 
 nlp = spacy.load("ja_ginza")
 # CSVから文書を読み込む（URLから直接読み込める）
-url = "http://ogawa.isslab.org/nlp/data/data-kmeans.csv"
+url = "https://mayster8.github.io/nlp/data/data-kmeans.csv"
 df = pd.read_csv(url, encoding="utf-8-sig")
 texts = df["text"].to_list()
 
@@ -540,7 +540,7 @@ print(df_result.sort_values("クラスタ").to_string(index=False))
 
 ### プログラム例（LDAによるトピックモデル）
 
-K-means・階層的クラスタリングと同じ [data-kmeans.csv](http://ogawa.isslab.org/nlp/data/data-kmeans.csv)（18文書）を使う。LDAは文書数・語数が少ないと結果が不安定になりやすいので、**1つの文書にしか出ない単語を除く**（`min_df=2`）など、いくつか設定を工夫している。
+K-means・階層的クラスタリングと同じ [data-kmeans.csv](https://mayster8.github.io/nlp/data/data-kmeans.csv)（18文書）を使う。LDAは文書数・語数が少ないと結果が不安定になりやすいので、**1つの文書にしか出ない単語を除く**（`min_df=2`）など、いくつか設定を工夫している。
 
 **プログラム**  
 
@@ -551,7 +551,7 @@ from sklearn.decomposition import LatentDirichletAllocation
 
 nlp = spacy.load("ja_ginza")
 # CSVから文書を読み込む（URLから直接読み込める）
-url = "http://ogawa.isslab.org/nlp/data/data-kmeans.csv"
+url = "https://mayster8.github.io/nlp/data/data-kmeans.csv"
 df = pd.read_csv(url, encoding="utf-8-sig")
 texts = df["text"].to_list()
 

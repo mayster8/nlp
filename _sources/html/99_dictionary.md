@@ -124,9 +124,9 @@ for text in texts:
 #### プログラム例（Wikipediaページタイトルの用語追加）
 
 **辞書ファイル**  
-- <a href="http://ogawa.isslab.org/nlp/data/wiki_20261014_top_1000.json" download>wiki_20261014_top_1000.json</a>
-- <a href="http://ogawa.isslab.org/nlp/data/wiki_20261014_top_10000.json" download>wiki_20261014_top_10000.json</a>
-- <a href="http://ogawa.isslab.org/nlp/data/wiki_20261014_top_30000.json" download>wiki_20261014_top_30000.json</a>
+- <a href="https://mayster8.github.io/nlp/data/wiki_20261014_top_1000.json" download>wiki_20261014_top_1000.json</a>
+- <a href="https://mayster8.github.io/nlp/data/wiki_20261014_top_10000.json" download>wiki_20261014_top_10000.json</a>
+- <a href="https://mayster8.github.io/nlp/data/wiki_20261014_top_30000.json" download>wiki_20261014_top_30000.json</a>
 
 上記のファイルをダウンロードして、Google Colab に保存しておく
 
