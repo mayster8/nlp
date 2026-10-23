@@ -211,7 +211,7 @@ BERTベースの感情分析では、テキストを文脈ごとにベクトル�
 ```python
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, TextClassificationPipeline
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 # モデルの読み込み
 model_id = "cardiffnlp/twitter-xlm-roberta-base-sentiment"
@@ -315,7 +315,7 @@ Google Colab 環境では、以下２つを順に実行する（クラッシュ�
 ```python
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, TextClassificationPipeline
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 # モデル読み込み
 model_id = "koshin2001/Japanese-to-emotions"

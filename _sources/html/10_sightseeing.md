@@ -581,7 +581,7 @@ df_result[df_result["クラスタ"] == no]
 ```python
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, TextClassificationPipeline
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 # モデルの読み込み
 model_id = "cardiffnlp/twitter-xlm-roberta-base-sentiment"

@@ -101,7 +101,7 @@ plt.show()
 import spacy
 import pandas as pd
 from collections import Counter
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 nlp = spacy.load('ja_ginza')
 
@@ -182,7 +182,7 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
 import pandas as pd
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 nlp = spacy.load("ja_ginza")
 
@@ -338,7 +338,7 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
 import pandas as pd
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 nlp = spacy.load("ja_ginza")
 
@@ -486,7 +486,7 @@ plt.show()
 ```python
 import spacy
 import pandas as pd
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 # 形態素解析モデル
 nlp = spacy.load("ja_ginza")
@@ -739,7 +739,7 @@ plt.show()
 ```python
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, TextClassificationPipeline
-from tqdm.notebook import tqdm
+from tqdm.auto import tqdm
 
 # モデルの読み込み
 model_id = "cardiffnlp/twitter-xlm-roberta-base-sentiment"
@@ -994,8 +994,7 @@ plt.show()
 ```python
 import pytchat
 import pandas as pd
-from tqdm.notebook import tqdm  # Google Colab ではこちらを使う
-# from tqdm import tqdm # ローカル環境ではこちらを使う
+from tqdm.auto import tqdm
 
 # 設定
 VIDEO_ID = "bVvBEltNXSY"  # https://www.youtube.com/watch?v=bVvBEltNXSY
