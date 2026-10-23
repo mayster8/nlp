@@ -204,7 +204,7 @@ BERTベースの感情分析では、テキストを文脈ごとにベクトル�
 [cardiffnlp/twitter-xlm-roberta-base-sentiment](https://huggingface.co/cardiffnlp/twitter-xlm-roberta-base-sentiment)
 
 ```python
-!pip install -q transformers sentencepiece -U torch torchvision torchaudio
+!pip install -q transformers sentencepiece
 ```
 
 **プログラム**
@@ -303,12 +303,9 @@ BERTは大量のテキストから文の意味を深く学習しており、文�
 事前学習済みモデルとして `koshin2001/Japanese-to-emotions` を使用する。
 
 **ライブラリのインストール**  
-Google Colab 環境では、以下２つを順に実行する（クラッシュ回避のため）
+日本語BERTのトークナイザが使う形態素解析器（fugashi）と辞書（unidic-lite）もあわせてインストールする
 ```python
-!pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --quiet
-```
-```python
-!pip install transformers sentencepiece fugashi unidic-lite pandas==2.2.2 --quiet
+!pip install transformers sentencepiece fugashi unidic-lite --quiet
 ```
 
 **プログラム**

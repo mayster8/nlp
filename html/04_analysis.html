@@ -646,7 +646,7 @@ BERTベースの感情分析では、テキストを文脈ごとにベクトル�
 <p><strong>RoBERTaモデルのインストール</strong><br />
 今回は、Hugging Face の公開モデルを使って文章の感情（ポジティブ／ネガティブ／ニュートラル）を判定する<br />
 <a class="reference external" href="https://huggingface.co/cardiffnlp/twitter-xlm-roberta-base-sentiment">cardiffnlp/twitter-xlm-roberta-base-sentiment</a></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="n">transformers</span> <span class="n">sentencepiece</span> <span class="o">-</span><span class="n">U</span> <span class="n">torch</span> <span class="n">torchvision</span> <span class="n">torchaudio</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="n">transformers</span> <span class="n">sentencepiece</span>
 </pre></div>
 </div>
 <p><strong>プログラム</strong></p>
@@ -803,11 +803,8 @@ BERTは大量のテキストから文の意味を深く学習しており、文�
 <p>以下は、<strong>8クラス感情分析</strong>を行うシンプルなPythonサンプル。<br />
 事前学習済みモデルとして <code class="docutils literal notranslate"><span class="pre">koshin2001/Japanese-to-emotions</span></code> を使用する。</p>
 <p><strong>ライブラリのインストール</strong><br />
-Google Colab 環境では、以下２つを順に実行する（クラッシュ回避のため）</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">torch</span><span class="o">==</span><span class="mf">2.8.0</span> <span class="n">torchvision</span><span class="o">==</span><span class="mf">0.23.0</span> <span class="n">torchaudio</span><span class="o">==</span><span class="mf">2.8.0</span> <span class="o">--</span><span class="n">quiet</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">transformers</span> <span class="n">sentencepiece</span> <span class="n">fugashi</span> <span class="n">unidic</span><span class="o">-</span><span class="n">lite</span> <span class="n">pandas</span><span class="o">==</span><span class="mf">2.2.2</span> <span class="o">--</span><span class="n">quiet</span>
+日本語BERTのトークナイザが使う形態素解析器（fugashi）と辞書（unidic-lite）もあわせてインストールする</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">transformers</span> <span class="n">sentencepiece</span> <span class="n">fugashi</span> <span class="n">unidic</span><span class="o">-</span><span class="n">lite</span> <span class="o">--</span><span class="n">quiet</span>
 </pre></div>
 </div>
 <p><strong>プログラム</strong></p>

@@ -573,9 +573,7 @@ df_result[df_result["クラスタ"] == no]
 
 ```python
 !pip -q install transformers sentencepiece
-!pip -q install -U torch torchvision torchaudio
 ```
-上記、エラーが出る場合はセッションを再起動して再度試してみる
 
 **プログラム**  
 ```python

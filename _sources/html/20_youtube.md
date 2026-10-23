@@ -732,7 +732,7 @@ plt.show()
 ### 投稿コメントのポジネガ
 
 ```python
-!pip install -q transformers sentencepiece -U torch torchvision torchaudio
+!pip install -q transformers sentencepiece
 ```
 
 **プログラム**  
@@ -889,14 +889,6 @@ plt.show()
 ---
 
 ### 投稿コメントの感情
-
-```python
-!pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --quiet
-```
-
-```python
-!pip install transformers sentencepiece fugashi unidic-lite pandas==2.2.2 --quiet
-```
 
 **プログラム**
 ```python

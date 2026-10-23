@@ -1041,10 +1041,8 @@ document.write(`
 <section id="id17">
 <h3><span class="section-number">7.3.2. </span>感情分析（ポジネガ）<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="n">transformers</span> <span class="n">sentencepiece</span>
-<span class="err">!</span><span class="n">pip</span> <span class="o">-</span><span class="n">q</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">torch</span> <span class="n">torchvision</span> <span class="n">torchaudio</span>
 </pre></div>
 </div>
-<p>上記、エラーが出る場合はセッションを再起動して再度試してみる</p>
 <p><strong>プログラム</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForSequenceClassification</span><span class="p">,</span> <span class="n">TextClassificationPipeline</span>
