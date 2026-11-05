@@ -779,8 +779,16 @@ df[df["author"] == 515]
 
 ### コメント数の推移
 
-- `elapsedTime`（配信開始からの経過時間）を **分** に変換して横軸にする
+- `elapsedTime`（配信開始からの経過時間）を **秒** に変換し、`BIN_SEC` で指定した区間ごとにまとめて横軸にする
 - `elapsedTime` は「時:分:秒」または「分:秒」の文字列で、配信開始前の投稿はマイナス（例：`-10:41`）になる
+- `FILES` に書いたファイルの数だけグラフを表示する（1つだけでもよい）
+
+```{note}
+`BIN_SEC`（区間の幅）は、ライブの長さに合わせて変更する。以降の時系列のプログラムも同じ。
+- `BIN_SEC = 60`：1分ごと（数十分〜数時間のライブ）
+- `BIN_SEC = 10`：10秒ごと（THE FIRST TAKE など、数分の短いライブ）
+- `BIN_SEC = 600`：10分ごと（半日など、長時間のライブ）
+```
 
 **プログラム**  
 ```python
@@ -793,8 +801,11 @@ FILES = {
     "10号機（成功）": "youtube_livechat-sZGyK9jfoy4.csv",
 }
 
-# elapsedTime（配信開始からの経過時間）を分に変換
-def to_minutes(t):
+# 集計する区間の幅（秒）。例：10（10秒ごと）、60（1分ごと）、600（10分ごと）
+BIN_SEC = 60
+
+# elapsedTime（配信開始からの経過時間）を秒に変換
+def to_seconds(t):
     t = str(t)
     sign = 1
     if t.startswith("-"):  # 配信開始前の投稿はマイナス（例：-10:41）
@@ -803,29 +814,37 @@ def to_minutes(t):
     seconds = 0
     for x in t.split(":"):  # 「時:分:秒」または「分:秒」
         seconds = seconds * 60 + int(x)
-    return (sign * seconds) // 60
+    return sign * seconds
 
-fig, axes = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
+# グラフに表示する区間の名前
+if BIN_SEC % 60 == 0:
+    BIN_LABEL = f"{BIN_SEC // 60}分ごと"
+else:
+    BIN_LABEL = f"{BIN_SEC}秒ごと"
+
+fig, axes = plt.subplots(len(FILES), 1, figsize=(10, 3.5 * len(FILES)), sharex=True, squeeze=False)
 
 i = 0
 for name, file in FILES.items():
+    ax = axes[i][0]
     df = pd.read_csv(file, encoding="utf-8-sig", parse_dates=["datetime"])
 
-    # 配信開始からの経過時間（分）
-    df["elapsed_min"] = df["elapsedTime"].apply(to_minutes)
+    # 配信開始からの経過時間（秒）を区間ごとにまとめ、分に直す
+    df["elapsed_sec"] = df["elapsedTime"].apply(to_seconds)
+    df["elapsed_min"] = (df["elapsed_sec"] // BIN_SEC) * BIN_SEC / 60
 
-    # 1分ごとのコメント数
+    # 区間ごとのコメント数
     counts = df.groupby("elapsed_min").size().reset_index(name="count")
 
-    axes[i].plot(counts["elapsed_min"], counts["count"])
-    axes[i].axvline(0, color="red", linestyle="--", label="配信開始")
-    axes[i].set_title(name)
-    axes[i].set_ylabel("コメント数（1分ごと）")
-    axes[i].legend()
-    axes[i].grid(True, linestyle="--", alpha=0.5)
+    ax.plot(counts["elapsed_min"], counts["count"])
+    ax.axvline(0, color="red", linestyle="--", label="配信開始")
+    ax.set_title(name)
+    ax.set_ylabel(f"コメント数（{BIN_LABEL}）")
+    ax.legend()
+    ax.grid(True, linestyle="--", alpha=0.5)
+    ax.set_xlabel("配信開始からの経過時間（分）")
     i = i + 1
 
-axes[1].set_xlabel("配信開始からの経過時間（分）")
 plt.tight_layout()
 plt.show()
 ```
@@ -849,8 +868,11 @@ FILES = {
     "10号機（成功）": "youtube_livechat-sZGyK9jfoy4.csv",
 }
 
-# elapsedTime（配信開始からの経過時間）を分に変換
-def to_minutes(t):
+# 集計する区間の幅（秒）。例：10（10秒ごと）、60（1分ごと）、600（10分ごと）
+BIN_SEC = 60
+
+# elapsedTime（配信開始からの経過時間）を秒に変換
+def to_seconds(t):
     t = str(t)
     sign = 1
     if t.startswith("-"):  # 配信開始前の投稿はマイナス（例：-10:41）
@@ -859,26 +881,33 @@ def to_minutes(t):
     seconds = 0
     for x in t.split(":"):  # 「時:分:秒」または「分:秒」
         seconds = seconds * 60 + int(x)
-    return (sign * seconds) // 60
+    return sign * seconds
+
+# グラフに表示する区間の名前
+if BIN_SEC % 60 == 0:
+    BIN_LABEL = f"{BIN_SEC // 60}分ごと"
+else:
+    BIN_LABEL = f"{BIN_SEC}秒ごと"
 
 plt.figure(figsize=(10, 4))
 for name, file in FILES.items():
     df = pd.read_csv(file, encoding="utf-8-sig", parse_dates=["datetime"])
 
-    # 配信開始からの経過時間（分）
-    df["elapsed_min"] = df["elapsedTime"].apply(to_minutes)
+    # 配信開始からの経過時間（秒）を区間ごとにまとめ、分に直す
+    df["elapsed_sec"] = df["elapsedTime"].apply(to_seconds)
+    df["elapsed_min"] = (df["elapsed_sec"] // BIN_SEC) * BIN_SEC / 60
 
     counts = df.groupby("elapsed_min").size().reset_index(name="count")
 
-    # 移動平均（5分）
+    # 移動平均（5区間）
     counts["smooth"] = counts["count"].rolling(window=5, center=True).mean()
 
     plt.plot(counts["elapsed_min"], counts["smooth"], label=name, linewidth=2)
 
 plt.axvline(0, color="red", linestyle="--", label="配信開始")
-plt.title("コメント数の推移（移動平均5分）")
+plt.title(f"コメント数の推移（{BIN_LABEL}、移動平均5区間）")
 plt.xlabel("配信開始からの経過時間（分）")
-plt.ylabel("コメント数（1分あたり）")
+plt.ylabel(f"コメント数（{BIN_LABEL}）")
 plt.legend()
 plt.grid(True, linestyle="--", alpha=0.5)
 plt.show()
@@ -907,8 +936,11 @@ FILES = {
     "10号機（成功）": "youtube_livechat-sZGyK9jfoy4.csv",
 }
 
-# elapsedTime（配信開始からの経過時間）を分に変換
-def to_minutes(t):
+# 集計する区間の幅（秒）。例：10（10秒ごと）、60（1分ごと）、600（10分ごと）
+BIN_SEC = 60
+
+# elapsedTime（配信開始からの経過時間）を秒に変換
+def to_seconds(t):
     t = str(t)
     sign = 1
     if t.startswith("-"):  # 配信開始前の投稿はマイナス（例：-10:41）
@@ -917,7 +949,13 @@ def to_minutes(t):
     seconds = 0
     for x in t.split(":"):  # 「時:分:秒」または「分:秒」
         seconds = seconds * 60 + int(x)
-    return (sign * seconds) // 60
+    return sign * seconds
+
+# グラフに表示する区間の名前
+if BIN_SEC % 60 == 0:
+    BIN_LABEL = f"{BIN_SEC // 60}分ごと"
+else:
+    BIN_LABEL = f"{BIN_SEC}秒ごと"
 
 # キーワードと検索パターン（正規表現）
 patterns = {
@@ -929,33 +967,35 @@ patterns = {
     "分離": "分離",
 }
 
-fig, axes = plt.subplots(2, 1, figsize=(10, 7), sharex=True)
+fig, axes = plt.subplots(len(FILES), 1, figsize=(10, 3.5 * len(FILES)), sharex=True, squeeze=False)
 
 i = 0
 for name, file in FILES.items():
+    ax = axes[i][0]
     df = pd.read_csv(file, encoding="utf-8-sig", parse_dates=["datetime"])
 
-    # 配信開始からの経過時間（分）
-    df["elapsed_min"] = df["elapsedTime"].apply(to_minutes)
+    # 配信開始からの経過時間（秒）を区間ごとにまとめ、分に直す
+    df["elapsed_sec"] = df["elapsedTime"].apply(to_seconds)
+    df["elapsed_min"] = (df["elapsed_sec"] // BIN_SEC) * BIN_SEC / 60
 
     for key, pattern in patterns.items():
-        # キーワードを含むコメントを抽出し、1分ごとに集計
+        # キーワードを含むコメントを抽出し、区間ごとに集計
         df_kw = df[df["message"].str.contains(pattern, na=False, regex=True)]
         counts_kw = df_kw.groupby("elapsed_min").size()
 
-        # コメントが無い時間（分）を0件として補う
-        all_min = range(int(df["elapsed_min"].min()), int(df["elapsed_min"].max()) + 1)
-        counts_kw = counts_kw.reindex(all_min, fill_value=0)
+        # キーワードを含むコメントが無い区間を0件として補う
+        all_bins = df["elapsed_min"].drop_duplicates().sort_values()
+        counts_kw = counts_kw.reindex(all_bins, fill_value=0)
 
-        axes[i].plot(counts_kw.index, counts_kw.values, label=key)
+        ax.plot(counts_kw.index, counts_kw.values, label=key)
 
-    axes[i].set_title(name)
-    axes[i].set_ylabel("コメント数（1分ごと）")
-    axes[i].legend(loc="upper left")
-    axes[i].grid(True, linestyle="--", alpha=0.5)
+    ax.set_title(name)
+    ax.set_ylabel(f"コメント数（{BIN_LABEL}）")
+    ax.legend(loc="upper left")
+    ax.grid(True, linestyle="--", alpha=0.5)
+    ax.set_xlabel("配信開始からの経過時間（分）")
     i = i + 1
 
-axes[1].set_xlabel("配信開始からの経過時間（分）")
 plt.tight_layout()
 plt.show()
 ```
@@ -1093,8 +1133,11 @@ FILES_PN = {
     "10号機（成功）": "youtube_livechat-sZGyK9jfoy4-pn.csv",
 }
 
-# elapsedTime（配信開始からの経過時間）を分に変換
-def to_minutes(t):
+# 集計する区間の幅（秒）。例：10（10秒ごと）、60（1分ごと）、600（10分ごと）
+BIN_SEC = 60
+
+# elapsedTime（配信開始からの経過時間）を秒に変換
+def to_seconds(t):
     t = str(t)
     sign = 1
     if t.startswith("-"):  # 配信開始前の投稿はマイナス（例：-10:41）
@@ -1103,33 +1146,41 @@ def to_minutes(t):
     seconds = 0
     for x in t.split(":"):  # 「時:分:秒」または「分:秒」
         seconds = seconds * 60 + int(x)
-    return (sign * seconds) // 60
+    return sign * seconds
 
-fig, axes = plt.subplots(2, 1, figsize=(10, 7), sharex=True)
+# グラフに表示する区間の名前
+if BIN_SEC % 60 == 0:
+    BIN_LABEL = f"{BIN_SEC // 60}分ごと"
+else:
+    BIN_LABEL = f"{BIN_SEC}秒ごと"
+
+fig, axes = plt.subplots(len(FILES_PN), 1, figsize=(10, 3.5 * len(FILES_PN)), sharex=True, squeeze=False)
 
 i = 0
 for name, file in FILES_PN.items():
+    ax = axes[i][0]
     df_pn = pd.read_csv(file, encoding="utf-8-sig", parse_dates=["datetime"])
 
-    # 配信開始からの経過時間（分）
-    df_pn["elapsed_min"] = df_pn["elapsedTime"].apply(to_minutes)
+    # 配信開始からの経過時間（秒）を区間ごとにまとめ、分に直す
+    df_pn["elapsed_sec"] = df_pn["elapsedTime"].apply(to_seconds)
+    df_pn["elapsed_min"] = (df_pn["elapsed_sec"] // BIN_SEC) * BIN_SEC / 60
 
-    # 1分ごとの平均スコア
+    # 区間ごとの平均スコア
     df_time = df_pn.groupby("elapsed_min")[["positive", "negative"]].mean().reset_index()
 
-    # 移動平均で平滑化（5分）
+    # 移動平均で平滑化（5区間）
     df_time["pos_smooth"] = df_time["positive"].rolling(window=5, center=True).mean()
     df_time["neg_smooth"] = df_time["negative"].rolling(window=5, center=True).mean()
 
-    axes[i].plot(df_time["elapsed_min"], df_time["pos_smooth"], label="ポジティブ", color="orange", linewidth=2)
-    axes[i].plot(df_time["elapsed_min"], df_time["neg_smooth"], label="ネガティブ", color="blue", linewidth=2)
-    axes[i].set_title(name)
-    axes[i].set_ylabel("スコア（平均値）")
-    axes[i].legend(loc="upper left")
-    axes[i].grid(True, linestyle="--", alpha=0.5)
+    ax.plot(df_time["elapsed_min"], df_time["pos_smooth"], label="ポジティブ", color="orange", linewidth=2)
+    ax.plot(df_time["elapsed_min"], df_time["neg_smooth"], label="ネガティブ", color="blue", linewidth=2)
+    ax.set_title(name)
+    ax.set_ylabel("スコア（平均値）")
+    ax.legend(loc="upper left")
+    ax.grid(True, linestyle="--", alpha=0.5)
+    ax.set_xlabel("配信開始からの経過時間（分）")
     i = i + 1
 
-axes[1].set_xlabel("配信開始からの経過時間（分）")
 plt.tight_layout()
 plt.show()
 ```
@@ -1268,8 +1319,11 @@ FILES_EMO = {
     "10号機（成功）": "youtube_livechat-sZGyK9jfoy4-emo.csv",
 }
 
-# elapsedTime（配信開始からの経過時間）を分に変換
-def to_minutes(t):
+# 集計する区間の幅（秒）。例：10（10秒ごと）、60（1分ごと）、600（10分ごと）
+BIN_SEC = 60
+
+# elapsedTime（配信開始からの経過時間）を秒に変換
+def to_seconds(t):
     t = str(t)
     sign = 1
     if t.startswith("-"):  # 配信開始前の投稿はマイナス（例：-10:41）
@@ -1278,7 +1332,13 @@ def to_minutes(t):
     seconds = 0
     for x in t.split(":"):  # 「時:分:秒」または「分:秒」
         seconds = seconds * 60 + int(x)
-    return (sign * seconds) // 60
+    return sign * seconds
+
+# グラフに表示する区間の名前
+if BIN_SEC % 60 == 0:
+    BIN_LABEL = f"{BIN_SEC // 60}分ごと"
+else:
+    BIN_LABEL = f"{BIN_SEC}秒ごと"
 
 # 表示する感情
 # emo_labels = ["喜び", "悲しみ", "期待", "驚き", "怒り", "恐れ", "嫌悪", "信頼"]
@@ -1296,33 +1356,35 @@ styles = {
     "嫌悪":   {"color": "#8B4513", "linestyle": ":"},   # 茶色・点線
 }
 
-fig, axes = plt.subplots(2, 1, figsize=(11, 7), sharex=True)
+fig, axes = plt.subplots(len(FILES_EMO), 1, figsize=(11, 3.5 * len(FILES_EMO)), sharex=True, squeeze=False)
 
 i = 0
 for name, file in FILES_EMO.items():
+    ax = axes[i][0]
     df_emo = pd.read_csv(file, encoding="utf-8-sig", parse_dates=["datetime"])
 
-    # 配信開始からの経過時間（分）
-    df_emo["elapsed_min"] = df_emo["elapsedTime"].apply(to_minutes)
+    # 配信開始からの経過時間（秒）を区間ごとにまとめ、分に直す
+    df_emo["elapsed_sec"] = df_emo["elapsedTime"].apply(to_seconds)
+    df_emo["elapsed_min"] = (df_emo["elapsed_sec"] // BIN_SEC) * BIN_SEC / 60
 
-    # 1分ごとの平均スコア
+    # 区間ごとの平均スコア
     df_grouped = df_emo.groupby("elapsed_min")[emo_labels].mean().reset_index()
 
-    # 移動平均で平滑化（5分）
+    # 移動平均で平滑化（5区間）
     for emo in emo_labels:
         df_grouped[emo] = df_grouped[emo].rolling(window=5, center=True).mean()
-        axes[i].plot(
+        ax.plot(
             df_grouped["elapsed_min"], df_grouped[emo], label=emo,
             color=styles[emo]["color"], linestyle=styles[emo]["linestyle"], linewidth=2
         )
 
-    axes[i].set_title(name)
-    axes[i].set_ylabel("感情スコア（平均）")
-    axes[i].legend(loc="upper left", bbox_to_anchor=(1.01, 1))  # 凡例はグラフの外（右側）に表示
-    axes[i].grid(True, linestyle="--", alpha=0.5)
+    ax.set_title(name)
+    ax.set_ylabel("感情スコア（平均）")
+    ax.legend(loc="upper left", bbox_to_anchor=(1.01, 1))  # 凡例はグラフの外（右側）に表示
+    ax.grid(True, linestyle="--", alpha=0.5)
+    ax.set_xlabel("配信開始からの経過時間（分）")
     i = i + 1
 
-axes[1].set_xlabel("配信開始からの経過時間（分）")
 plt.tight_layout()
 plt.show()
 ```
