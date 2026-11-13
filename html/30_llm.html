@@ -529,13 +529,21 @@ document.write(`
 <span class="n">unmasker</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span><span class="s2">&quot;fill-mask&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;sbintuitions/modernbert-ja-130m&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 予測させたい部分を &lt;mask&gt; にする</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;私はカフェで&lt;mask&gt;を注文しました&quot;</span>
-<span class="c1"># text = &quot;朝起きたら&lt;mask&gt;が降っていました。&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;私はカフェで&lt;mask&gt;を注文しました&quot;</span>
+<span class="c1"># text = &quot;この映画は本当に&lt;mask&gt;と思った。&quot;</span>
 <span class="c1"># text = &quot;昨日は&lt;mask&gt;で授業を受けました。&quot;</span>
 <span class="c1"># text = &quot;昨日は&lt;mask&gt;で講義を受けました。&quot;</span>
-<span class="c1"># text = &quot;この映画は本当に&lt;mask&gt;と思った。&quot;</span>
-<span class="c1"># text = &quot;学校に行く途中で&lt;mask&gt;を落としました。&quot;</span>
+
+<span class="c1"># 計算</span>
+<span class="c1"># text = &quot;1たす1は&lt;mask&gt;です。&quot;</span>
+<span class="c1"># text = &quot;3たす5は&lt;mask&gt;です。&quot;</span>
+
+<span class="c1"># 学習時期</span>
+<span class="c1"># text = &quot;今年の干支は&lt;mask&gt;です。&quot;</span>
+
+<span class="c1"># ステレオタイプ</span>
+<span class="c1"># text = &quot;父は&lt;mask&gt;として働いています。&quot;</span>
+<span class="c1"># text = &quot;母は&lt;mask&gt;として働いています。&quot;</span>
 
 <span class="n">results</span> <span class="o">=</span> <span class="n">unmasker</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;原文:&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>

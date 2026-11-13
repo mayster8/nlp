@@ -165,13 +165,21 @@ unmasker = pipeline("fill-mask", model="sbintuitions/modernbert-ja-130m")
 ```
 
 ```python
-# 予測させたい部分を <mask> にする
 text = "私はカフェで<mask>を注文しました"
-# text = "朝起きたら<mask>が降っていました。"
+# text = "この映画は本当に<mask>と思った。"
 # text = "昨日は<mask>で授業を受けました。"
 # text = "昨日は<mask>で講義を受けました。"
-# text = "この映画は本当に<mask>と思った。"
-# text = "学校に行く途中で<mask>を落としました。"
+
+# 計算
+# text = "1たす1は<mask>です。"
+# text = "3たす5は<mask>です。"
+
+# 学習時期
+# text = "今年の干支は<mask>です。"
+
+# ステレオタイプ
+# text = "父は<mask>として働いています。"
+# text = "母は<mask>として働いています。"
 
 results = unmasker(text)
 print("原文:", text)
