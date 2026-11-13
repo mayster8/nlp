@@ -1,0 +1,5 @@
+/* 出力（```text のブロック）を折り返して表示し、横スクロールをなくす */
+div.highlight-text div.highlight pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
